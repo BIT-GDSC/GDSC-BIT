@@ -4,7 +4,9 @@ function App() {
 
   return (
     <>
-      <h1>Welcome to GDSC Bengal Institute of Technology.</h1>
+      <h1>Welcome to GDSC Bengal Institute of Technology.
+        We are working on it.
+      </h1>
     </>
   )
 }
