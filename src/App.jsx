@@ -1,10 +1,15 @@
 import './App.css'
+import { Main } from './components/Main'
+import { Navbar } from './components/Navbar'
+import { Socials } from './components/Socials'
 
 function App() {
 
   return (
     <>
-      <h1>Welcome to GDSC Bengal Institute of Technology.</h1>
+      <Navbar />
+      <Main />
+      <Socials />
     </>
   )
 }

@@ -1,0 +1,10 @@
+import logo from '../assets/logo.png'
+import socialBg from '../assets/socials-bg.png'
+import mail from '../assets/mail.png'
+import bracket from '../assets/bracket.png'
+import insta from '../assets/insta.png'
+import linkedin from '../assets/linkedin.png'
+import x from '../assets/x.png'
+import github from '../assets/github.png'
+import discord from '../assets/discord.png'
+export { discord, logo, socialBg, mail, bracket, insta, linkedin, x, github }
