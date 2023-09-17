@@ -7,11 +7,26 @@ export const Navbar = () => {
           <img src={logo} alt='logo' />
         </div>
         <div className='Navbar-links'>
-          <div className='Navbar-link'>Events</div>
-          <div className='Navbar-link'>Team</div>
-          <div className='Navbar-link'>Projects</div>
-          <div className='Navbar-link'>Specials</div>
-          <div className='Navbar-link'>Archive</div>
+          <div className='Navbar-link'>
+            <span>Events</span>
+            <div className='Navbar-link-highlight' />
+          </div>
+          <div className='Navbar-link'>
+            <span>Team</span>
+            <div className='Navbar-link-highlight' />
+          </div>
+          <div className='Navbar-link'>
+            <span>Projects</span>
+            <div className='Navbar-link-highlight' />
+          </div>
+          <div className='Navbar-link'>
+            <span>Specials</span>
+            <div className='Navbar-link-highlight' />
+          </div>
+          <div className='Navbar-link'>
+            <span>Archive</span>
+            <div className='Navbar-link-highlight' />
+          </div>
         </div>
         <div className='Navbar-signin'>Sign in</div>
         <div className='Navbar-menu-toggler'>
