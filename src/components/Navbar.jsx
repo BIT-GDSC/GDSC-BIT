@@ -1,4 +1,7 @@
+import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import { navData } from '../utils/navbar'
+
 export const Navbar = () => {
   return (
     <div className='Navbar-container'>
@@ -7,26 +10,12 @@ export const Navbar = () => {
           <img src={logo} alt='logo' />
         </div>
         <div className='Navbar-links'>
-          <div className='Navbar-link'>
-            <span>Events</span>
-            <div className='Navbar-link-highlight' />
-          </div>
-          <div className='Navbar-link'>
-            <span>Team</span>
-            <div className='Navbar-link-highlight' />
-          </div>
-          <div className='Navbar-link'>
-            <span>Projects</span>
-            <div className='Navbar-link-highlight' />
-          </div>
-          <div className='Navbar-link'>
-            <span>Specials</span>
-            <div className='Navbar-link-highlight' />
-          </div>
-          <div className='Navbar-link'>
-            <span>Archive</span>
-            <div className='Navbar-link-highlight' />
-          </div>
+          {navData.map((item) => (
+            <Link to={item.link} className='Navbar-link' key={item.id}>
+              <span>{item.name}</span>
+              <div className='Navbar-link-highlight' />
+            </Link>
+          ))}
         </div>
         <div className='Navbar-signin'>Sign in</div>
         <div className='Navbar-menu-toggler'>
