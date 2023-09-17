@@ -6,11 +6,11 @@ import { Socials } from './components/Socials'
 function App() {
 
   return (
-    <>
+    <div>
       <Navbar />
       <Main />
       <Socials />
-    </>
+    </div>
   )
 }
 

@@ -15,6 +15,10 @@ export const Navbar = () => {
           <div className='Navbar-link'>Archive</div>
         </div>
         <div className='Navbar-signin'>Sign in</div>
+        <div className='Navbar-menu-toggler'>
+          <div className='Navbar-menu-toggler-top'></div>
+          <div className='Navbar-menu-toggler-bottom'></div>
+        </div>
       </div>
     </div>
   )

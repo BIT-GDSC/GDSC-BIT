@@ -7,4 +7,6 @@ import linkedin from '../assets/linkedin.png'
 import x from '../assets/x.png'
 import github from '../assets/github.png'
 import discord from '../assets/discord.png'
-export { discord, logo, socialBg, mail, bracket, insta, linkedin, x, github }
+import home_bg from '../assets/home_bg.png'
+import home_cloud from '../assets/home_cloud.png'
+export { discord, logo, socialBg, mail, bracket, insta, linkedin, x, github, home_bg, home_cloud}
