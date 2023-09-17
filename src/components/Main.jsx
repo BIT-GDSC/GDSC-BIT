@@ -1,4 +1,4 @@
-import { home_bg, home_cloud } from '../assets'
+import { home_bg } from '../assets'
 
 export const Main = () => {
   return (
@@ -8,8 +8,7 @@ export const Main = () => {
           <img src={home_bg} alt='background' />
         </div>
       </div>
-      <div className='Main-cloud-bg'>
-      </div>
+      <div className='Main-cloud-bg'></div>
     </div>
   )
 }
