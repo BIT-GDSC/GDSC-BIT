@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
-import logo from '../assets/logo.png'
-import { navData } from '../utils/navbar'
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
+import { navData } from '../utils/navbar';
 
 export const Navbar = () => {
   return (

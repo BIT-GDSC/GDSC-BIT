@@ -1,5 +1,6 @@
-import { socialLinks } from '../utils/socials'
-import { socialBg } from '../assets'
+import { socialLinks } from '../utils/socials';
+import { socialBg } from '../assets';
+
 export const Socials = () => {
   return (
     <div className='socials-container'>

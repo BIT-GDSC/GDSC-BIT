@@ -1,4 +1,4 @@
-import { home_bg } from '../assets'
+import { home_bg } from '../assets';
 
 export const Main = () => {
   return (
