@@ -17,10 +17,10 @@ app.use('/api/status', (req, res) => {
 });
 
 // Frontend Routes
-app.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')))
+app.use(express.static(path.resolve(__dirname, 'client', 'dist')))
 app.get('*', (req, res) => {
     res.sendFile(
-        path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
+        path.resolve(__dirname, 'client', 'dist', 'index.html'),
         function (err) {
             if (err) {
                 res.status(500).send(err)
