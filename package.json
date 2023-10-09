@@ -4,7 +4,9 @@
   "description": "We are working on it. Stay tuned for more updates.",
   "scripts": {
     "client": "cd client && npm run dev",
-    "dev": "concurrently \"npm run client\""
+    "build": "cd client && npm run build",
+    "server": "npm run build && cd server && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "GDSC Bengal Institute of Technology",
