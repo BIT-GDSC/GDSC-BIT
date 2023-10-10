@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "We are working on it. Stay tuned for more updates.",
   "scripts": {
-    "dev": "nodemon index.js",
-    "build": "cd ./client && npm i && npm run build"
+    "build": "cd ./client && npm i && npm run build",
+    "dev": "npm run build && nodemon index.js"
   },
   "author": "GDSC Bengal Institute of Technology",
   "dependencies": {
