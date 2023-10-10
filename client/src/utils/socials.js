@@ -1,41 +1,32 @@
-import {
-  bracket,
-  insta,
-  linkedin,
-  x,
-  github, 
-  discord
-} from '../assets'
-
 export const socialLinks = [
   {
     text: 'Community',
-    icon: bracket,
+    icon: "/bracket.png",
     link: 'https://gdsc.community.dev/bengal-institute-of-technology/'
   },
   {
     text: 'Instagram',
-    icon: insta,
+    icon: "/insta.png",
     link: 'https://www.instagram.com/gdsc.bit/'
   },
   {
     text: 'LinkedIn',
-    icon: linkedin,
+    icon: "/linkedin.png",
     link: 'https://www.linkedin.com/company/97886448/admin/feed/posts/'
   },
   {
     text: 'GitHub',
-    icon: github,
+    icon: "/github.png",
     link: 'https://github.com/BIT-GDSC'
   },
   {
     text: 'Discord',
-    icon: discord,
+    icon: "/discord.png",
     link: 'https://discord.gg/JbEsNVn5Ka'
   },
   {
     text: 'X.com',
-    icon: x,
+    icon: "/x.png",
     link: 'https://twitter.com/gdscbit'
   }
 ]

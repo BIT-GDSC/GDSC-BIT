@@ -1,11 +1,10 @@
 import { socialLinks } from '../utils/socials';
-import { socialBg } from '../assets';
 
 export const Socials = () => {
   return (
     <div className='socials-container'>
       <div className='socials-bg'>
-        <img src={socialBg} alt='logo' />
+        <img src="/socials-bg.png" alt='logo' />
       </div>
       <div className='socials-title-container'>
         <div className='socials-title'>

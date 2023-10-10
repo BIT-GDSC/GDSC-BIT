@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
 import { navData } from '../utils/navbar';
 
 export const Navbar = () => {
@@ -7,7 +6,7 @@ export const Navbar = () => {
     <div className='Navbar-container'>
       <div className='Navbar-flex-container'>
         <Link to="/" className='Navbar-logo'>
-          <img src={logo} alt='logo' />
+          <img src="/logo.png" alt='logo' />
         </Link>
         <div className='Navbar-links'>
           {navData.map((item) => (

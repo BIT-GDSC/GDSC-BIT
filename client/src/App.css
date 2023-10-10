@@ -106,7 +106,7 @@ a {
     top: 36vh;
     width: 100%;
     height: 150px;
-    background-image: url("./assets/home_cloud.png");
+    background-image: url("/home_cloud.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
