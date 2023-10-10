@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 
 const useWindowHeight = () => {
     const [height, setHeight] = useState(undefined);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
             setHeight(window.innerHeight);
+            setIsReady(true);
         };
 
         window.addEventListener('resize', handleResize);
@@ -14,7 +16,7 @@ const useWindowHeight = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    return { height };
+    return { height, isReady };
 };
 
 export default useWindowHeight;

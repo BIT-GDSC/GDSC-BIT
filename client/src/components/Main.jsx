@@ -4,7 +4,7 @@ export const Main = () => {
   return (
     <>
       <div className='Main-content'>
-        <div className='Main-content-bg'>
+        <div className='Main-content-bg pt-[88px]'>
           <img src={home_bg} alt='background' />
         </div>
       </div>
