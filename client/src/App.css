@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
     font-family: Open Sans, sans-serif;
     margin: 0;
@@ -94,15 +98,9 @@ a {
     color: #ffffff;
 }
 
-/* Main content container */
-.Main-content-container {
-    padding-top: calc(101.5px + 1rem);
-    height: 440px;
-    overflow: hidden;
-    background: linear-gradient(#FFBC39, #F9F9F9)
-}
-
+/* Main content */
 .Main-content {
+    padding-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -121,14 +119,14 @@ a {
 
 /* socials */
 .socials-container {
+    padding-top: 200px;
     width: 100%;
     position: relative;
-    padding: 2rem 0;
 }
 
 .socials-bg {
     position: absolute;
-    top: 0;
+    top: 15vh;
     width: 100%;
     height: 435px;
     z-index: -1;

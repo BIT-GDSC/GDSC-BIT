@@ -1,7 +1,7 @@
 import { Main } from '../components/Main';
 import { Socials } from '../components/Socials';
 
-export const Home = () => {
+const Home = () => {
   return (
     <>
       <Main />
@@ -9,3 +9,5 @@ export const Home = () => {
     </>
   )
 }
+
+export default Home

@@ -12,8 +12,11 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
 // Backend Routes
-app.use('/api/status', (req, res) => {
-    res.send("Server Running!");
+app.get('/api/status', (req, res) => {
+    res.status(201).json({
+        success: true,
+        msg: "Server Running",
+    });
 });
 
 // Frontend Routes

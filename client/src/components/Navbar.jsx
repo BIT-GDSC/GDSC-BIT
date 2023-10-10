@@ -6,9 +6,9 @@ export const Navbar = () => {
   return (
     <div className='Navbar-container'>
       <div className='Navbar-flex-container'>
-        <div className='Navbar-logo'>
+        <Link to="/" className='Navbar-logo'>
           <img src={logo} alt='logo' />
-        </div>
+        </Link>
         <div className='Navbar-links'>
           {navData.map((item) => (
             <Link to={item.link} className='Navbar-link' key={item.id}>

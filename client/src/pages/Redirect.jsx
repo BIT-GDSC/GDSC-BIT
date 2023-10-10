@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const Redirect = ({ route }) => {
+const Redirect = ({ route }) => {
   useEffect(() => {
     if (route === 'game')
       window.location.replace('https://bit-gdsc.github.io/PokePrompt/')
@@ -12,3 +12,5 @@ export const Redirect = ({ route }) => {
 
   return <div></div>
 }
+
+export default Redirect

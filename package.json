@@ -4,7 +4,8 @@
   "description": "We are working on it. Stay tuned for more updates.",
   "scripts": {
     "build": "cd ./client && npm i && npm run build",
-    "dev": "npm run build && nodemon index.js"
+    "dev": "npm run build && nodemon index.js",
+    "client": "cd ./client && npm run dev"
   },
   "author": "GDSC Bengal Institute of Technology",
   "dependencies": {
