@@ -3,6 +3,8 @@ require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const { readdirSync } = require('fs');
+const connectDatabase = require('./api/config/connectDatabase');
 
 const app = express();
 
@@ -12,6 +14,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
 // Backend Routes
+readdirSync("./api/routes").map((r) => app.use("/api/", require('./api/routes/' + r)));
 app.get('/api/status', (req, res) => {
     res.status(201).json({
         success: true,
@@ -33,6 +36,8 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Connected to PORT => ${PORT}`);
+connectDatabase().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Connected to PORT => ${PORT}`);
+    })
 });
