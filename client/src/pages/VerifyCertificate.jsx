@@ -30,12 +30,12 @@ const CertificateImage = () => {
       </p>
       <img
         src={certData.verifyQR}
-        className='absolute bottom-[4px] right-[49px] md:bottom-[11px] md:right-[76px] lg:bottom-[16px] lg:right-[110px] w-[32px] h-[45px] md:w-[51px] md:h-[52px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+        className='absolute bottom-[1px] right-[47.05px] w-[34px] h-[50px] md:bottom-[11px] md:right-[76px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[110px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
         alt='Verify QR'
       />
       <img
         src={certData.skillBoostQR}
-        className='absolute bottom-[4px] right-[7px] md:bottom-[11px] md:right-[11px] lg:bottom-[16px] lg:right-[11px] w-[32px] h-[45px] md:w-[51px] md:h-[52px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+        className='absolute bottom-[1px] right-[6px] w-[34px] h-[50px] md:bottom-[11px] md:right-[11px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[11px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
         alt='Skill Boost QR'
       />
     </div>
@@ -66,12 +66,16 @@ const VerifyCertificate = () => {
           .then((result) => {
             if (result.success === true) {
               setCertData({
+                _id: result.data._id,
                 fullName: result.data.fullName,
+                verifyURL: result.data.verifyURL,
                 verifyQR: result.data.verifyQR,
                 skillBoostQR: result.data.skillBoostQR,
                 message: ""
               });
-              setCertLoading(false);
+              setTimeout(() => {
+                setCertLoading(false);
+              }, 2000);
             }
 
             if (result.success === false) {
@@ -104,12 +108,23 @@ const VerifyCertificate = () => {
     >
       <div className='h-full pt-[88px] flex flex-col gap-5 items-center justify-center'>
         {certLoading ? (
-          <div className='relative w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border rounded'>
-            <Skeleton baseColor='#fff' highlightColor='#ffc657' className='absolute -top-[4px] left-0 w-full h-full' />
-            <p className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 text-[#4A90F4] text-xl font-extrabold'>
-              Validating...
-            </p>
-          </div>
+          <>
+            <div className='relative w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border rounded'>
+              {/* <Skeleton baseColor='#fff' highlightColor='#ffc657' className='absolute -top-[4px] left-0 w-full h-full' /> */}
+              <Skeleton className='absolute -top-[4px] left-0 w-full h-full' />
+              <p className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 text-xl font-extrabold'>
+                Validating...
+              </p>
+            </div>
+            <div className='flex items-center gap-3 flex-col sm:flex-row sm:gap-5'>
+              <div className='w-[150px] h-[35px]'>
+                <Skeleton className='w-full h-full' />
+              </div>
+              <div className='w-[150px] h-[35px]'>
+                <Skeleton className='w-full h-full' />
+              </div>
+            </div>
+          </>
         ) : (
           certData.message ? (
             <div className='relative bg-white w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border rounded text-xl font-extrabold'>
@@ -120,13 +135,21 @@ const VerifyCertificate = () => {
           ) : (
             <>
               <CertificateImage />
-              <PDFDownloadLink document={<MyDocument certData={certData} />} fileName="certificate.pdf">
-                {({ blob, url, loading, error }) => (
-                  <div className='w-[110px] h-[35px] bg-[#FFBC39] hover:bg-[#4A90F4] hover:rounded-xl duration-200 text-white font-extrabold flex items-center justify-center'>
-                    {loading ? 'Generating...' : 'Download'}
-                  </div>
-                )}
-              </PDFDownloadLink >
+              <div className='flex items-center gap-3 flex-col sm:flex-row sm:gap-5'>
+                <PDFDownloadLink document={<MyDocument certData={certData} />} fileName="certificate.pdf">
+                  {({ blob, url, loading, error }) => (
+                    <div className='w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'>
+                      {loading ? 'Wait' : 'Download'}
+                    </div>
+                  )}
+                </PDFDownloadLink >
+                <a
+                  href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=Google%20Cloud%20Study%20Jam%202023&organizationId=97886448&issueYear=2023&issueMonth=10&certId=${certData._id}&certUrl=${certData.verifyURL}`}
+                  className='w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
+                >
+                  Add to LinkedIn
+                </a>
+              </div>
             </>
           )
         )}
