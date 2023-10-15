@@ -35,7 +35,7 @@ app.get('*', (req, res) => {
     )
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 connectDatabase().then(() => {
     app.listen(PORT, () => {
         console.log(`Connected to PORT => ${PORT}`);

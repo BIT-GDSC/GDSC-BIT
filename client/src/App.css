@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Island+Moments&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 * {
     font-family: Open Sans, sans-serif;
@@ -23,6 +26,11 @@ p {
 a {
     text-decoration: none;
     color: inherit;
+}
+
+/* Certificate Verification Styles */
+.candidate-name{
+    font-family: "Island Moments";
 }
 
 .Navbar-container {

@@ -7,13 +7,23 @@ import {
   Document,
   Image,
   StyleSheet,
-  PDFDownloadLink
+  PDFDownloadLink,
+  Font
 } from '@react-pdf/renderer'
 import useWindowHeight from '../utils/useWindowHeight'
 import { useCertStore } from '../store'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
+// Font register for PDF
+Font.register({
+  family: 'Island Moments',
+  fonts: [
+    {
+      src: '/Fonts/IslandMoments-Regular.ttf'
+    }
+  ]
+})
 const MyDocument = ({ certData }) => (
   <Document>
     <Page size={[2500, 1704]} style={styles.page}>
@@ -37,7 +47,7 @@ const CertificateImage = () => {
         className='w-full h-full'
         alt='Certificate Template'
       />
-      <p className='absolute left-1/2 -translate-x-1/2 text-xl md:text-3xl lg:text-5xl text-gray-600 mt-5 md:mt-6 lg:mt-10'>
+      <p className='candidate-name absolute left-1/2 -translate-x-1/2 text-xl md:text-3xl lg:text-5xl text-gray-600 mt-5 md:mt-6 lg:mt-10'>
         {certData.fullName}
       </p>
       <img
@@ -73,7 +83,7 @@ const VerifyCertificate = () => {
           headers: CustomHeader
         }
 
-        fetch(`/api/cert/verify/${certificateID}`, config)
+        fetch(`http://localhost:5001/api/cert/verify/${certificateID}`, config)
           .then(response => response.json())
           .then(result => {
             if (result.success === true) {
@@ -111,14 +121,14 @@ const VerifyCertificate = () => {
 
   return (
     <div
-      className='overflow-hidden'
+      className='overflow-hidden md:overflow-auto pb-8'
       style={{
-        height: `${height}px`,
+        minHeight: `${height}px`,
         opacity: isReady ? 1 : 0,
         transition: 'opacity 0.5s linear'
       }}
     >
-      <div className='h-full pt-[88px] flex flex-col gap-5 items-center justify-center'>
+      <div className='h-full pt-[120px] flex flex-col gap-5 items-center justify-center'>
         {certLoading ? (
           <>
             <div className='relative w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border rounded'>
@@ -129,11 +139,11 @@ const VerifyCertificate = () => {
               </p>
             </div>
             <div className='flex items-center gap-3 flex-col sm:flex-row sm:gap-5'>
-              <div className='w-[150px] h-[35px]'>
-                <Skeleton className='w-full h-full' />
+              <div className='rounded-2xl overflow-hidden w-[150px] h-[35px]'>
+                <Skeleton className='w-full p-4 h-full' />
               </div>
-              <div className='w-[150px] h-[35px]'>
-                <Skeleton className='w-full h-full' />
+              <div className='rounded-2xl overflow-hidden w-[150px] h-[35px]'>
+                <Skeleton className='w-full p-4 h-full' />
               </div>
             </div>
           </>
@@ -152,14 +162,17 @@ const VerifyCertificate = () => {
                 fileName='certificate.pdf'
               >
                 {({ blob, url, loading, error }) => (
-                  <div className='w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'>
-                    {loading ? 'Wait' : 'Download'}
-                  </div>
+                  <button
+                    disabled={loading}
+                    className='rounded-2xl w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'
+                  >
+                    {loading ? 'Wait...' : 'Download'}
+                  </button>
                 )}
               </PDFDownloadLink>
               <a
                 href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=Google%20Cloud%20Study%20Jam%202023&organizationId=97886448&issueYear=2023&issueMonth=10&certId=${certData._id}&certUrl=${certData.verifyURL}`}
-                className='w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
+                className='rounded-2xl w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
               >
                 Add to LinkedIn
               </a>
@@ -193,11 +206,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: '850px',
-    fontSize: '96px',
+    top: '830px',
+    fontSize: '130px',
     color: 'rgb(75 85 99 / 1)',
     textAlign: 'center',
-    margin: 'auto'
+    margin: 'auto',
+    fontFamily: 'Island Moments'
   },
   verify: {
     position: 'absolute',
