@@ -85,7 +85,7 @@ const VerifyCertificate = () => {
           headers: CustomHeader
         }
 
-        fetch(`http://localhost:5000/api/cert/verify/${certificateID}`, config)
+        fetch(`/api/cert/verify/${certificateID}`, config)
           .then(response => response.json())
           .then(result => {
             if (result.success === true) {
