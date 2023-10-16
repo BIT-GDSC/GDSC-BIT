@@ -6,7 +6,8 @@ const CertificateSchema = mongoose.Schema({
     email: String,
     verifyURL: String,
     verifyQR: String,
-    skillBoostQR: String
+    skillBoostQR: String,
+    certificate: String
 });
 
 const Certificate = mongoose.model('Certificate', CertificateSchema)

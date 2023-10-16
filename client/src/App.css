@@ -28,11 +28,6 @@ a {
     color: inherit;
 }
 
-/* Certificate Verification Styles */
-.candidate-name{
-    font-family: "Island Moments";
-}
-
 .Navbar-container {
     position: fixed;
     width: 100%;
@@ -194,5 +189,36 @@ a {
     .socials-grid-wrapper {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
+    }
+}
+
+/* Certificate Verification Styles */
+.candidate-name {
+    font-family: "Island Moments";
+}
+
+.loader-dot:after {
+    content: "";
+    font-weight: bold;
+    animation-name: loading-text;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes loading-text {
+    0% {
+        content: "";
+    }
+
+    25% {
+        content: ".";
+    }
+
+    50% {
+        content: "..";
+    }
+
+    75% {
+        content: "...";
     }
 }

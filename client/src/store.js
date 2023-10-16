@@ -7,6 +7,7 @@ export const useCertStore = create((set) => ({
         verifyURL: "",
         verifyQR: "",
         skillBoostQR: "",
+        certificate: "",
         message: ""
     },
     setCertData: (certData) => set({ certData: certData }),
