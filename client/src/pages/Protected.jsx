@@ -10,7 +10,7 @@ const Protected = () => {
     return <Loader />;
   }
 
-  if (!verifySuccess) {
+  if (!verifySuccess && location.pathname !== "/auth") {
     localStorage.setItem('prevPath', location.pathname);
     return <Navigate to="/auth" />;
   }
