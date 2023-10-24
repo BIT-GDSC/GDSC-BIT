@@ -1,25 +1,42 @@
 const passport = require('passport');
-const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
+const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 const User = require('../models/userModel.js');
 const cloudinary = require('cloudinary');
 
+passport.serializeUser((user, done) => {
+    const serializedUser = {
+        id: user.id,
+    };
+    done(null, serializedUser);
+});
+
+passport.deserializeUser(async (serializedUser, done) => {
+    try {
+        const user = await User.findById(serializedUser.id);
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
+});
+
 passport.use(
-    new GoogleStrategy(
+    new LinkedInStrategy(
         {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`,
+            clientID: process.env.LINKEDIN_CLIENT_ID,
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+            callbackURL: `${process.env.BACKEND_URL}/auth/linkedin/callback`,
+            scope: ["r_emailaddress", "r_liteprofile"],
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
                 let user = await User.findOne({
-                    $or: [{ googleId: profile.id }, { email: profile.emails[0].value }]
+                    $or: [{ linkedinId: profile.id }, { email: profile.emails[0].value }]
                 });
 
                 if (!user) {
-                    const imageUpload = await cloudinary.v2.uploader.upload(profile.photos[0].value, { folder: "BIT" });
+                    const imageUpload = await cloudinary.v2.uploader.upload(profile.photos[0].value);
                     user = await User.create({
-                        googleId: profile.id,
+                        linkedinId: profile.id,
                         authType: "register",
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
@@ -39,8 +56,7 @@ passport.use(
                 return done(null, user);
             }
             catch (error) {
-                console.error('Error:', error);
-                done(error, false);
+                return done(error);
             }
         }
     )

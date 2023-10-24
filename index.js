@@ -7,6 +7,7 @@ const { readdirSync } = require('fs');
 const { v2 } = require("cloudinary");
 const passport = require('passport');
 require('./api/config/googleAuth.js');
+require('./api/config/linkedinAuth.js');
 const connectDatabase = require('./api/config/connectDatabase.js');
 
 const app = express();
@@ -38,6 +39,23 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'em
 // Google authentication callback route
 app.get('/auth/google/callback', function (req, res, next) {
     passport.authenticate('google', { session: false }, function (err, user, info) {
+        if (err) {
+            console.error(err);
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${encodeURIComponent(err.message)}`);
+        }
+        if (!user) {
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?error=User not found`);
+        }
+        return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}`);
+    })(req, res, next);
+});
+
+// LinkedIn authentication route
+app.get('/auth/linkedin', passport.authenticate("linkedin", { state: "SOME STATE" }));
+
+// LinkedIn authentication callback route
+app.get('/auth/linkedin/callback', function (req, res, next) {
+    passport.authenticate('linkedin', { session: false }, function (err, user, info) {
         if (err) {
             console.error(err);
             return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${encodeURIComponent(err.message)}`);
