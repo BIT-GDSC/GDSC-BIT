@@ -177,7 +177,7 @@ const NewUser = () => {
             <div className='flex flex-col gap-[0.75rem]'>
                 <div className='flex flex-col gap-[0.25rem] items-center'>
                     <div className='w-[80px] h-[80px] bg-white border rounded-full overflow-hidden'>
-                        <img 
+                        <img
                             src={avatar}
                             className='w-full h-full object-contain'
                         />
@@ -223,13 +223,19 @@ const NewUser = () => {
 }
 
 const SocialAuth = () => {
+    const isProduction = import.meta.env.MODE === 'production';
+
     const handleGoogleAuth = () => {
-        const authUrl = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
+        const authUrl = isProduction
+            ? "https://gdsc-bit.vercel.app/auth/google"
+            : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL;
         window.location.href = authUrl;
     };
 
     const handleLinkedInAuth = () => {
-        const authUrl = `${import.meta.env.VITE_BACKEND_URL}/auth/linkedin`;
+        const authUrl = isProduction
+            ? "https://gdsc-bit.vercel.app/auth/linkedin"
+            : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL;
         window.location.href = authUrl;
     };
 
@@ -250,8 +256,8 @@ const SocialAuth = () => {
                 <span className='font-[400] text-[0.8125rem]'>Continue with LinkedIn</span>
             </button>
         </div>
-    )
-}
+    );
+};
 
 const InputBox = ({ id, type, value, setValue }) => {
     return (
