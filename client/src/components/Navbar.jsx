@@ -16,7 +16,9 @@ export const Navbar = () => {
             </Link>
           ))}
         </div>
-        <div className='Navbar-signin'>Sign in</div>
+        <Link to="/auth" className='Navbar-signin'>
+          Sign in
+        </Link>
         <div className='Navbar-menu-toggler'>
           <div className='Navbar-menu-toggler-top'></div>
           <div className='Navbar-menu-toggler-bottom'></div>

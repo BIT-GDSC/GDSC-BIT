@@ -11,4 +11,13 @@ export const useCertStore = create((set) => ({
         message: ""
     },
     setCertData: (certData) => set({ certData: certData }),
-}))
+}));
+
+export const useAuthStore = create((set) => ({
+    user: null,
+    setUser: (user) => set({ user: user }),
+    verifyLoading: false,
+    setVerifyLoading: (verifyLoading) => set({ verifyLoading: verifyLoading }),
+    verifySuccess: false,
+    setVerifySuccess: (verifySuccess) => set({ verifySuccess: verifySuccess }),
+}));

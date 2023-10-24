@@ -15,6 +15,7 @@
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.16.0",
+    "sonner": "^1.0.3",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
