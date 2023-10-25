@@ -4,10 +4,11 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { readdirSync } = require('fs');
-const { v2 } = require("cloudinary");
+const session = require('express-session')
 const passport = require('passport');
 require('./api/config/googleAuth.js');
 require('./api/config/linkedinAuth.js');
+const { v2 } = require("cloudinary");
 const connectDatabase = require('./api/config/connectDatabase.js');
 
 const app = express();
@@ -16,7 +17,15 @@ app.use(express.json({ limit: '25mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
+
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'SECRET'
+}));
+
 app.use(passport.initialize());
+app.use(passport.session());
 
 v2.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -51,7 +60,10 @@ app.get('/auth/google/callback', function (req, res, next) {
 });
 
 // LinkedIn authentication route
-app.get('/auth/linkedin', passport.authenticate("linkedin", { state: "SOME STATE" }));
+app.get('/auth/linkedin', passport.authenticate('linkedin', {
+    scope: ['openid', 'profile', 'email'],
+    // scope: ['openid', 'profile', 'email', 'r_emailaddress', 'r_liteprofile'],
+}));
 
 // LinkedIn authentication callback route
 app.get('/auth/linkedin/callback', function (req, res, next) {
