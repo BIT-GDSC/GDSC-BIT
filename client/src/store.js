@@ -14,6 +14,8 @@ export const useCertStore = create((set) => ({
 }));
 
 export const useAuthStore = create((set) => ({
+    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user
+    setAuthType: (authType) => set({ authType: authType }),
     user: null,
     setUser: (user) => set({ user: user }),
     verifyLoading: false,

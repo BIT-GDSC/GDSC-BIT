@@ -4,11 +4,12 @@ import { useAuthStore } from '../store';
 import useWindowHeight from '../utils/useWindowHeight';
 import { toast } from 'sonner';
 
+// Auth page component
 const Auth = () => {
     const navigate = useNavigate();
     const { height, isReady } = useWindowHeight();
     const { setUser, setVerifyLoading, setVerifySuccess } = useAuthStore();
-    const [authType, setAuthType] = useState("sign-in");
+    const { authType, setAuthType } = useAuthStore();
 
     const urlParams = new URLSearchParams(window.location.search);
     const authenticationType = urlParams.get('type');
@@ -57,12 +58,17 @@ const Auth = () => {
                             />
                         </div>
                         <p className='font-[600] text-[1.1rem] md:text-[1.25rem]'>
-                            {authType === "sign-in" ? "Sign in" : "Create your account"}
+                            {authType === "sign-in" ? "Sign in"
+                                : authType === "sign-up" ? "Create your account"
+                                    : authType === "otp-verify" ? "Verify your account"
+                                        : authType === "new-user" ? "Describe yourself"
+                                            : ""
+                            }
                         </p>
                         <p className='font-[400] text-[0.75rem] md:text-[1rem] text-[#000000a6] pt-[1px]'>to continue to GDSC Bengal Institute of Technology</p>
                     </div>
 
-                    {authType !== "new-user" ? (
+                    {authType === "sign-in" || authType === "sign-up" ? (
                         <>
                             <SocialAuth />
 
@@ -72,41 +78,50 @@ const Auth = () => {
                                 <div className='w-full h-[1px] bg-[#00000029]' />
                             </div>
 
-                            <ManualAuth
-                                authType={authType}
-                            />
-                        </>
-                    ) : (
-                        <NewUser />
-                    )}
+                            <ManualAuth />
 
-                    <div className='flex items-center gap-[0.25rem] font-[400] text-[0.8125rem]'>
-                        <p className='text-[#000000a6]'>
-                            {authType === "sign-in" ? "New here" : "Already have account"}?
-                        </p>
-                        <button
-                            className='text-[#103fef] hover:underline'
-                            onClick={() => setAuthType(authType === "sign-in" ? "sign-up" : "sign-in")}
-                        >
-                            {authType === "sign-in" ? "Create account" : "Login"}
-                        </button>
-                    </div>
+                            <div className='flex items-center gap-[0.25rem] font-[400] text-[0.8125rem]'>
+                                <p className='text-[#000000a6]'>
+                                    {authType === "sign-in" ? "New here" : "Already have account"}?
+                                </p>
+                                <button
+                                    className='text-[#103fef] hover:underline'
+                                    onClick={() => setAuthType(authType === "sign-in" ? "sign-up" : "sign-in")}
+                                >
+                                    {authType === "sign-in" ? "Create account" : "Login"}
+                                </button>
+                            </div>
+                        </>
+                    ) : authType === "otp-verify" ? (
+                        <OTPVerify />
+                    ) : authType === "new-user" ? (
+                        <NewUser />
+                    ) : (
+                        <div>Invalid authentication type</div>
+                    )}
                 </div>
             </div>
         </div>
     )
 };
 
-const ManualAuth = ({ authType }) => {
+// Email, Password & Reset Password component
+const ManualAuth = () => {
+    const { authType, setAuthType } = useAuthStore();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleAuth = (e) => {
         e.preventDefault();
-        console.log({ email, password });
 
-        toast.error("Currently under maintainance!");
+        if (authType === "sign-up") {
+            setAuthType("otp-verify");
+            toast.success("An OTP has been sent to your email", { duration: 7500 });
+        }
+        else {
+            toast.error("Currently under maintainance!");
+        }
     }
 
     return (
@@ -158,16 +173,74 @@ const ManualAuth = ({ authType }) => {
     )
 };
 
+// OTP verification component
+const OTPVerify = () => {
+    const { setAuthType } = useAuthStore();
+    const [otp, setOtp] = useState(Array(5).fill(''));
+
+    const handleChange = (target, idx) => {
+        if (target.value) {
+            setOtp([...otp.slice(0, idx), target.value, ...otp.slice(idx + 1)]);
+            const nextSibling = target.nextElementSibling;
+            if (nextSibling) {
+                nextSibling.focus();
+            }
+        }
+    };
+
+    const handleKeyDown = (e, idx) => {
+        if (e.key === "Backspace" && !otp[idx]) {
+            const prevSibling = e.target.previousElementSibling;
+            if (prevSibling) {
+                prevSibling.focus();
+            }
+        }
+    };
+
+    const handleOTPSubmit = (e) => {
+        const otpValue = otp.join('');
+
+        toast.success("OTP verified successfully!", { duration: 7500 });
+        setAuthType("new-user");
+    };
+
+    return (
+        <div className='flex flex-col gap-[1.5rem]'>
+            <div className="flex justify-center space-x-4">
+                {otp.map((num, idx) => (
+                    <input
+                        className="w-12 h-12 border-2 border-[#00000029] rounded-lg text-center text-lg"
+                        type="text"
+                        name={`otp${idx}`}
+                        key={idx}
+                        value={num}
+                        onChange={(e) => handleChange(e.target, idx)}
+                        onKeyDown={(e) => handleKeyDown(e, idx)}
+                        maxLength={1}
+                    />
+                ))}
+            </div>
+            <button
+                type='button'
+                className='py-[0.625rem] px-[1.25rem] bg-[#103FEF] text-white hover:bg-[#FFBC39] duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]'
+                onClick={handleOTPSubmit}
+            >
+                VERIFY
+            </button>
+        </div>
+    );
+};
+
+// User detail component
 const NewUser = () => {
     const { user } = useAuthStore();
 
-    const [avatar, setAvatar] = useState(user.avatar.url || "/user.svg");
-    const [firstName, setFirstName] = useState(user.firstName || "");
-    const [lastName, setLastName] = useState(user.lastName || "");
+    const [avatar, setAvatar] = useState(user ? user.avatar.url : "/user.svg");
+    const [firstName, setFirstName] = useState(user ? user.firstName : "");
+    const [lastName, setLastName] = useState(user ? user.lastName : "");
 
     const handleNewUser = (e) => {
         e.preventDefault();
-        console.log({ firstName, lastName });
 
         toast.error("Currently under maintainance!");
     }
@@ -222,21 +295,27 @@ const NewUser = () => {
     )
 }
 
+// Socials authentication component
 const SocialAuth = () => {
     const isProduction = import.meta.env.MODE === 'production';
 
     const handleGoogleAuth = () => {
         const authUrl = isProduction
-            ? "https://gdsc-bit.vercel.app/auth/google"
+            ? 'https://gdsc-bit.vercel.app/auth/google'
             : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL;
         window.location.href = authUrl;
     };
 
     const handleLinkedInAuth = () => {
-        const authUrl = isProduction
-            ? "https://gdsc-bit.vercel.app/auth/linkedin"
-            : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL;
-        window.location.href = authUrl;
+        if (isProduction) {
+            toast.error("Currently under maintainance!");
+        }
+        else {
+            const authUrl = isProduction
+                ? 'https://gdsc-bit.vercel.app/auth/linkedin'
+                : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL;
+            window.location.href = authUrl;
+        }
     };
 
     return (
@@ -259,6 +338,7 @@ const SocialAuth = () => {
     );
 };
 
+// Refactored input
 const InputBox = ({ id, type, value, setValue }) => {
     return (
         <input
