@@ -14,6 +14,8 @@ export const useAuthStore = create((set) => ({
     setRegisterLoading: (registerLoading) => set({ registerLoading: registerLoading }),
     registerSuccess: false,
     setRegisterSuccess: (registerSuccess) => set({ registerSuccess: registerSuccess }),
+    verifyOTP: false,
+    setVerifyOTP: (verifyOTP) => set({ verifyOTP: verifyOTP })
 }));
 
 export const useRegisterStore = create((set) => ({
@@ -70,6 +72,32 @@ export const useRegisterStore = create((set) => ({
                     if (result.success === true) toast.success(result.msg, { duration: 7500 });
                     if (result.success === false) toast.error("Something went wrong... Try again later!", { duration: 7500 });
                 })
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
+        }
+    },
+    userRegisterVerifyOTP: async (otp) => {
+        try {
+            useAuthStore.getState().setVerifyOTP(true);
+            const CustomHeader = new Headers();
+            CustomHeader.append("token", localStorage.getItem("token"));
+            CustomHeader.append("otp", otp);
+            const config = {
+                method: 'GET',
+                headers: CustomHeader,
+            }
+
+            fetch(`/api/register-verify-otp`, config)
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
+                        useAuthStore.getState().setAuthType("new-user");
+                    }
+                    if (result.success === false) toast.error(result.msg, { duration: 7500 });
+                })
+                .finally(() => useAuthStore.getState().setVerifyOTP(false));
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");

@@ -18,19 +18,22 @@ exports.userRegisterCredential = async (req, res) => {
 
         const encryptedPassword = await bcrypt.hash(password, 10);
         const randomOTP = generateOTP(5);
+        const otpCreatedAt = new Date();
 
         if (user && user.isVerified === false) {
             user = await User.findByIdAndUpdate(user._id, {
                 email,
                 password: encryptedPassword,
-                registerOTP: randomOTP
+                registerOTP: randomOTP,
+                otpCreatedAt
             });
         }
         else {
             user = await User.create({
                 email,
                 password: encryptedPassword,
-                registerOTP: randomOTP
+                registerOTP: randomOTP,
+                otpCreatedAt
             });
         }
 
@@ -59,8 +62,10 @@ exports.userRegisterResendOTP = async (req, res) => {
             message: `Here's your OTP: ${randomOTP}`
         });
 
+        const otpCreatedAt = new Date();
         await User.findByIdAndUpdate(req.user._id, {
-            registerOTP: randomOTP
+            registerOTP: randomOTP,
+            otpCreatedAt
         });
 
         res.status(200).json({
@@ -78,9 +83,35 @@ exports.userRegisterResendOTP = async (req, res) => {
 
 exports.userRegisterVerifyOTP = async (req, res) => {
     try {
+        const otp = req.headers["otp"];
+        if (req.user.registerOTP !== otp) {
+            return res.status(400).json({
+                success: false,
+                msg: "OTP doesn't match... Try again!",
+            });
+        }
+
+        const otpCreatedAt = new Date(req.user.otpCreatedAt);
+        const currentTime = new Date();
+        const diffMinutes = (currentTime - otpCreatedAt) / 1000 / 60;
+
+        if (diffMinutes > 30) {
+            return res.status(400).json({
+                success: false,
+                msg: "OTP has expired... Try again!",
+            });
+        }
+
+        await User.updateOne({ _id: req.user._id }, {
+            $unset: {
+                registerOTP: 1,
+                otpCreatedAt: 1
+            }
+        });
+
         res.status(200).json({
             success: true,
-            msg: "User register verify otp route",
+            msg: "OTP verified!",
         });
     }
     catch (error) {

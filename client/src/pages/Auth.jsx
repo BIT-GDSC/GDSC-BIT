@@ -130,8 +130,13 @@ const ManualAuth = () => {
         e.preventDefault();
 
         localStorage.removeItem("token");
-
-        if (authType === "sign-up") userRegisterCredential(email, password);
+        if (!email) return toast.error("Enter email to proceed!");
+        if (!password) return toast.error("Enter password to proceed!");
+        if (authType === "sign-up") {
+            if (!confirmPassword) return toast.error("Retype your password to proceed!");
+            if (password !== confirmPassword) return toast.error("Password doesn't match!");
+            userRegisterCredential(email, password);
+        }
         else if (authType === "sign-in") userLogin(email, password);
     }
 
@@ -187,10 +192,9 @@ const ManualAuth = () => {
 
 // OTP verification component
 const OTPVerify = () => {
-    const { registerSuccess } = useAuthStore();
-    const { userRegisterResendOTP } = useRegisterStore();
+    const { registerSuccess, verifyOTP } = useAuthStore();
+    const { userRegisterResendOTP, userRegisterVerifyOTP } = useRegisterStore();
 
-    const { setAuthType } = useAuthStore();
     const [otp, setOtp] = useState(Array(5).fill(''));
 
     const handleChange = (target, idx) => {
@@ -212,9 +216,9 @@ const OTPVerify = () => {
 
     const handleSubmitOTP = () => {
         const otpValue = otp.join('');
+        if (otpValue.length < 5) return toast.error("Enter OTP to proceed!");
 
-        toast.success("OTP verified successfully!", { duration: 7500 });
-        setAuthType("new-user");
+        userRegisterVerifyOTP(otpValue);
     };
 
     const handleResendOTP = () => {
@@ -249,10 +253,11 @@ const OTPVerify = () => {
             </div>
             <button
                 type='button'
-                className='py-[0.625rem] px-[1.25rem] bg-[#103FEF] text-white hover:bg-[#FFBC39] duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]'
+                disabled={verifyOTP}
+                className={`py-[0.625rem] px-[1.25rem] text-white ${verifyOTP ? "bg-[#FFBC39] cursor-not-allowed" : "bg-[#103FEF] hover:bg-[#FFBC39]"} duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
                 onClick={handleSubmitOTP}
             >
-                VERIFY
+                {verifyOTP ? "VERIFYING" : "VERIFY"}
             </button>
         </div>
     );
@@ -371,7 +376,7 @@ const InputBox = ({ id, type, value, setValue }) => {
         <input
             id={id}
             type={type}
-            required
+            // required
             value={value}
             onChange={e => setValue(e.target.value)}
             className='py-[0.625rem] px-[1rem] border border-[#00000029] focus:outline-[#FFBC39] rounded-[0.375rem] font-[400] text-[0.8125rem]'

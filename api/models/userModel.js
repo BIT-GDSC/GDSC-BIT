@@ -20,6 +20,7 @@ const UserSchema = mongoose.Schema({
     },
     registerOTP: String,
     forgotOTP: String,
+    otpCreatedAt: Date,
     jwtLoginToken: String,
     joinedOn: {
         type: Date,

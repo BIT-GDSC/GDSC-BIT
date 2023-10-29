@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/register-credential", userRegisterCredential);
 router.get("/register-resend-otp", isAuthenticatedUser, userRegisterResendOTP);
-router.get("/register-verify-otp", userRegisterVerifyOTP);
+router.get("/register-verify-otp", isAuthenticatedUser, userRegisterVerifyOTP);
 router.get("/register-details", userRegisterDetails);
 router.post("/login", userLogin);
 
