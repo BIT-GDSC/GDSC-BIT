@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 const Auth = () => {
     const navigate = useNavigate();
     const { height, isReady } = useWindowHeight();
-    const { setUser, setVerifyLoading, setVerifySuccess } = useAuthStore();
+    const { user, setUser, setVerifyLoading, setVerifySuccess } = useAuthStore(); console.log(user);
     const { authType, setAuthType } = useAuthStore();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -80,16 +80,27 @@ const Auth = () => {
 
                             <ManualAuth />
 
-                            <div className='flex items-center gap-[0.25rem] font-[400] text-[0.8125rem]'>
-                                <p className='text-[#000000a6]'>
-                                    {authType === "sign-in" ? "New here" : "Already have account"}?
-                                </p>
-                                <button
-                                    className='text-[#103fef] hover:underline'
-                                    onClick={() => setAuthType(authType === "sign-in" ? "sign-up" : "sign-in")}
-                                >
-                                    {authType === "sign-in" ? "Create account" : "Login"}
-                                </button>
+                            <div className='flex justify-between'>
+                                <div className='flex items-center gap-[0.25rem] font-[400] text-[0.8125rem]'>
+                                    <p className='text-[#000000a6]'>
+                                        {authType === "sign-in" ? "New here" : "Already have account"}?
+                                    </p>
+                                    <button
+                                        className='text-[#103fef] hover:underline'
+                                        onClick={() => setAuthType(authType === "sign-in" ? "sign-up" : "sign-in")}
+                                    >
+                                        {authType === "sign-in" ? "Create account" : "Login"}
+                                    </button>
+                                </div>
+                                {authType === "sign-in" && (
+                                    <button
+                                        type='button'
+                                        className='flex items-center justify-end font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+                                        onClick={() => toast.error("Currently under maintainance!")}
+                                    >
+                                        Forgot Password
+                                    </button>
+                                )}
                             </div>
                         </>
                     ) : authType === "otp-verify" ? (
@@ -110,7 +121,7 @@ const ManualAuth = () => {
     const { authType, verifyLoading, registerLoading } = useAuthStore();
     const { userRegisterCredential } = useRegisterStore();
     const { userLogin } = useLoginStore();
-    
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -118,12 +129,10 @@ const ManualAuth = () => {
     const handleAuth = async (e) => {
         e.preventDefault();
 
-        if (authType === "sign-up") {
-            userRegisterCredential(email, password);
-        }
-        else {
-            userLogin(email, password);
-        }
+        localStorage.removeItem("token");
+
+        if (authType === "sign-up") userRegisterCredential(email, password);
+        else if (authType === "sign-in") userLogin(email, password);
     }
 
     return (

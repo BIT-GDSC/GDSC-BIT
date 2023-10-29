@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-// const JWT = require('jsonwebtoken');
+const JWT = require('jsonwebtoken');
 
 const UserSchema = mongoose.Schema({
     googleId: String,
@@ -17,11 +17,30 @@ const UserSchema = mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false,
-    }
+    },
+    registerOTP: String,
+    forgotOTP: String,
+    jwtLoginToken: String,
+    joinedOn: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
-UserSchema.methods.comparePassword = async function (enteredPasssword) {
+UserSchema.methods.comparePassword = async (enteredPasssword) => {
     return bcrypt.compare(enteredPasssword, this.password);
+};
+
+UserSchema.methods.getJWTToken = () => {
+    const loginToken = JWT.sign(
+        { userId: this._id },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRE,
+        }
+    );
+    this.jwtLoginToken = loginToken;
+    return loginToken;
 };
 
 const User = mongoose.model('User', UserSchema)

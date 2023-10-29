@@ -10,6 +10,6 @@ const router = express.Router();
 router.post("/register-credential", userRegisterCredential);
 router.get("/register-verify-otp", userRegisterVerifyOTP);
 router.get("/register-details", userRegisterDetails);
-router.get("/login", userLogin);
+router.post("/login", userLogin);
 
 module.exports = router;

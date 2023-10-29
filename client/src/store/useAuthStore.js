@@ -32,8 +32,9 @@ export const useRegisterStore = create((set) => ({
                 .then(response => response.json())
                 .then(result => {
                     if (result.success === true) {
-                        useAuthStore.getState().setAuthType("otp-verify");
+                        localStorage.setItem("token", result.token);
                         useAuthStore.getState().setUser(result.user);
+                        useAuthStore.getState().setAuthType("otp-verify");
                         toast.success(result.msg, { duration: 7500 });
                     }
 
@@ -54,7 +55,35 @@ export const useRegisterStore = create((set) => ({
 export const useLoginStore = create((set) => ({
     userLogin: async (email, password) => {
         try {
-            toast.error("Currently under maintainance!");
+            useAuthStore.getState().setVerifyLoading(true);
+            useAuthStore.getState().setVerifySuccess(false);
+            const CustomHeader = new Headers();
+            CustomHeader.append('Content-Type', 'application/json')
+            const config = {
+                method: 'POST',
+                headers: CustomHeader,
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            }
+            await fetch(`/api/login`, config)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
+                        localStorage.setItem("token", result.token);
+                        useAuthStore.getState().setUser(result.user);
+                        useAuthStore.getState().setVerifyLoading(false);
+                        useAuthStore.getState().setVerifySuccess(true);
+                    }
+
+                    if (result.success === false) {
+                        toast.error(result.msg, { duration: 7500 });
+                        useAuthStore.getState().setVerifyLoading(false);
+                        useAuthStore.getState().setVerifySuccess(false);
+                    }
+                })
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");
