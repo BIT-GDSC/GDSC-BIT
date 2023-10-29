@@ -9,6 +9,7 @@
   },
   "author": "GDSC Bengal Institute of Technology",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cloudinary": "^1.41.0",
     "cors": "^2.8.5",

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store';
+import { useAuthStore, useRegisterStore, useLoginStore } from '../store/useAuthStore';
 import useWindowHeight from '../utils/useWindowHeight';
 import { toast } from 'sonner';
 
@@ -107,20 +107,22 @@ const Auth = () => {
 
 // Email, Password & Reset Password component
 const ManualAuth = () => {
-    const { authType, setAuthType } = useAuthStore();
+    const { authType, verifyLoading, registerLoading } = useAuthStore();
+    const { userRegisterCredential } = useRegisterStore();
+    const { userLogin } = useLoginStore();
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleAuth = (e) => {
+    const handleAuth = async (e) => {
         e.preventDefault();
 
         if (authType === "sign-up") {
-            setAuthType("otp-verify");
-            toast.success("An OTP has been sent to your email", { duration: 7500 });
+            userRegisterCredential(email, password);
         }
         else {
-            toast.error("Currently under maintainance!");
+            userLogin(email, password);
         }
     }
 
@@ -164,10 +166,11 @@ const ManualAuth = () => {
                 )}
             </div>
             <button
+                disabled={registerLoading || verifyLoading}
                 type='submit'
-                className='py-[0.625rem] px-[1.25rem] bg-[#103FEF] text-white hover:bg-[#FFBC39] duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]'
+                className={`py-[0.625rem] px-[1.25rem] text-white ${registerLoading || verifyLoading ? "bg-[#FFBC39] cursor-not-allowed" : "bg-[#103FEF] hover:bg-[#FFBC39]"} duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
             >
-                CONTINUE
+                {registerLoading || verifyLoading ? "VERIFYING" : "CONTINUE"}
             </button>
         </form>
     )

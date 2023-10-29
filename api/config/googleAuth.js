@@ -28,6 +28,7 @@ passport.use(
                             public_id: imageUpload.public_id,
                             url: imageUpload.secure_url,
                         },
+                        isVerified: true
                     });
 
                     return done(null, user);

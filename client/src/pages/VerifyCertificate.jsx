@@ -11,7 +11,7 @@ import {
   Font
 } from '@react-pdf/renderer'
 import useWindowHeight from '../utils/useWindowHeight'
-import { useCertStore } from '../store'
+import { useCertStore } from '../store/useCertStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
