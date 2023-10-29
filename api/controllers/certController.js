@@ -16,7 +16,6 @@ exports.verifyCertificate = async (req, res) => {
         });
     }
     catch (error) {
-        console.log(error)
         res.send("Try again after some time!");
     }
 };

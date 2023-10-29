@@ -15,7 +15,7 @@ exports.userRegisterCredential = async (req, res) => {
                 msg: "User already exists!",
             });
         }
-        
+
         const encryptedPassword = await bcrypt.hash(password, 10);
         const randomOTP = generateOTP(5);
 
@@ -40,10 +40,35 @@ exports.userRegisterCredential = async (req, res) => {
             message: `Here's your OTP: ${randomOTP}`
         });
 
-        sendToken(user, 200, "An OTP has been sent to your email", res);
+        await sendToken(user, 200, "An OTP has been sent to your email", res);
     }
     catch (error) {
-        console.log(error);
+        res.status(500).json({
+            success: false,
+            msg: "Something went wrong... Try again later!"
+        });
+    }
+}
+
+exports.userRegisterResendOTP = async (req, res) => {
+    try {
+        const randomOTP = generateOTP(5);
+        await sendOTP({
+            email: req.user.email,
+            subject: "Verify Account | GDSC Bengal Institute of Technology",
+            message: `Here's your OTP: ${randomOTP}`
+        });
+
+        await User.findByIdAndUpdate(req.user._id, {
+            registerOTP: randomOTP
+        });
+
+        res.status(200).json({
+            success: true,
+            msg: "OTP sent to your email!",
+        });
+    }
+    catch (error) {
         res.status(500).json({
             success: false,
             msg: "Something went wrong... Try again later!"

@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 const Auth = () => {
     const navigate = useNavigate();
     const { height, isReady } = useWindowHeight();
-    const { user, setUser, setVerifyLoading, setVerifySuccess } = useAuthStore(); console.log(user);
+    const { setUser, setVerifyLoading, setVerifySuccess } = useAuthStore();
     const { authType, setAuthType } = useAuthStore();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -187,16 +187,17 @@ const ManualAuth = () => {
 
 // OTP verification component
 const OTPVerify = () => {
+    const { registerSuccess } = useAuthStore();
+    const { userRegisterResendOTP } = useRegisterStore();
+
     const { setAuthType } = useAuthStore();
     const [otp, setOtp] = useState(Array(5).fill(''));
 
     const handleChange = (target, idx) => {
-        if (target.value) {
-            setOtp([...otp.slice(0, idx), target.value, ...otp.slice(idx + 1)]);
-            const nextSibling = target.nextElementSibling;
-            if (nextSibling) {
-                nextSibling.focus();
-            }
+        setOtp([...otp.slice(0, idx), target.value, ...otp.slice(idx + 1)]);
+        const nextSibling = target.nextElementSibling;
+        if (nextSibling && target.value) {
+            nextSibling.focus();
         }
     };
 
@@ -209,33 +210,47 @@ const OTPVerify = () => {
         }
     };
 
-    const handleOTPSubmit = (e) => {
+    const handleSubmitOTP = () => {
         const otpValue = otp.join('');
 
         toast.success("OTP verified successfully!", { duration: 7500 });
         setAuthType("new-user");
     };
 
+    const handleResendOTP = () => {
+        if (registerSuccess) userRegisterResendOTP();
+        else toast.error("Session expired! Create you account again!", { duration: 7500 });
+    };
+
     return (
         <div className='flex flex-col gap-[1.5rem]'>
-            <div className="flex justify-center space-x-4">
-                {otp.map((num, idx) => (
-                    <input
-                        className="w-12 h-12 border-2 border-[#00000029] rounded-lg text-center text-lg"
-                        type="text"
-                        name={`otp${idx}`}
-                        key={idx}
-                        value={num}
-                        onChange={(e) => handleChange(e.target, idx)}
-                        onKeyDown={(e) => handleKeyDown(e, idx)}
-                        maxLength={1}
-                    />
-                ))}
+            <div className='flex flex-col gap-[1rem]'>
+                <div className="flex justify-center space-x-4">
+                    {otp.map((num, idx) => (
+                        <input
+                            className="w-12 h-12 border-2 border-[#00000029] focus:outline-[#FFBC39] rounded-lg text-center text-lg"
+                            type="text"
+                            name={`otp${idx}`}
+                            key={idx}
+                            value={num}
+                            onChange={(e) => handleChange(e.target, idx)}
+                            onKeyDown={(e) => handleKeyDown(e, idx)}
+                            maxLength={1}
+                        />
+                    ))}
+                </div>
+                <button
+                    type='button'
+                    className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+                    onClick={handleResendOTP}
+                >
+                    Resend OTP
+                </button>
             </div>
             <button
                 type='button'
                 className='py-[0.625rem] px-[1.25rem] bg-[#103FEF] text-white hover:bg-[#FFBC39] duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]'
-                onClick={handleOTPSubmit}
+                onClick={handleSubmitOTP}
             >
                 VERIFY
             </button>
@@ -247,9 +262,9 @@ const OTPVerify = () => {
 const NewUser = () => {
     const { user } = useAuthStore();
 
-    const [avatar, setAvatar] = useState(user ? user.avatar.url : "/user.svg");
-    const [firstName, setFirstName] = useState(user ? user.firstName : "");
-    const [lastName, setLastName] = useState(user ? user.lastName : "");
+    const [avatar, setAvatar] = useState(user && user.avatar?.url ? user.avatar.url : "/user.svg");
+    const [firstName, setFirstName] = useState(user && user?.firstName ? user.firstName : "");
+    const [lastName, setLastName] = useState(user && user?.lastName ? user.lastName : "");
 
     const handleNewUser = (e) => {
         e.preventDefault();
@@ -359,7 +374,7 @@ const InputBox = ({ id, type, value, setValue }) => {
             required
             value={value}
             onChange={e => setValue(e.target.value)}
-            className='py-[0.625rem] px-[1rem] border border-[#00000029] rounded-[0.375rem] font-[400] text-[0.8125rem]'
+            className='py-[0.625rem] px-[1rem] border border-[#00000029] focus:outline-[#FFBC39] rounded-[0.375rem] font-[400] text-[0.8125rem]'
         />
     )
 };

@@ -27,11 +27,11 @@ const UserSchema = mongoose.Schema({
     },
 });
 
-UserSchema.methods.comparePassword = async (enteredPasssword) => {
+UserSchema.methods.comparePassword = async function (enteredPasssword) {
     return bcrypt.compare(enteredPasssword, this.password);
 };
 
-UserSchema.methods.getJWTToken = () => {
+UserSchema.methods.getJWTToken = function () {
     const loginToken = JWT.sign(
         { userId: this._id },
         process.env.JWT_SECRET,

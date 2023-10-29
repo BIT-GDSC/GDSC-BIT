@@ -12,12 +12,15 @@ export const useAuthStore = create((set) => ({
     setVerifySuccess: (verifySuccess) => set({ verifySuccess: verifySuccess }),
     registerLoading: false,
     setRegisterLoading: (registerLoading) => set({ registerLoading: registerLoading }),
+    registerSuccess: false,
+    setRegisterSuccess: (registerSuccess) => set({ registerSuccess: registerSuccess }),
 }));
 
 export const useRegisterStore = create((set) => ({
     userRegisterCredential: async (email, password) => {
         try {
             useAuthStore.getState().setRegisterLoading(true);
+            useAuthStore.getState().setRegisterSuccess(false);
             const CustomHeader = new Headers();
             CustomHeader.append('Content-Type', 'application/json')
             const config = {
@@ -34,11 +37,13 @@ export const useRegisterStore = create((set) => ({
                     if (result.success === true) {
                         localStorage.setItem("token", result.token);
                         useAuthStore.getState().setUser(result.user);
+                        useAuthStore.getState().setRegisterSuccess(true);
                         useAuthStore.getState().setAuthType("otp-verify");
                         toast.success(result.msg, { duration: 7500 });
                     }
 
                     if (result.success === false) {
+                        useAuthStore.getState().setRegisterSuccess(false);
                         toast.error(result.msg, { duration: 7500 });
                     }
                 })
@@ -50,6 +55,26 @@ export const useRegisterStore = create((set) => ({
             toast.error("Something went wrong... Try again later!");
         }
     },
+    userRegisterResendOTP: async () => {
+        try {
+            const CustomHeader = new Headers();
+            CustomHeader.append("token", localStorage.getItem("token"));
+            const config = {
+                method: 'GET',
+                headers: CustomHeader,
+            }
+
+            fetch(`/api/register-resend-otp`, config)
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.success === true) toast.success(result.msg, { duration: 7500 });
+                    if (result.success === false) toast.error("Something went wrong... Try again later!", { duration: 7500 });
+                })
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
+        }
+    }
 }));
 
 export const useLoginStore = create((set) => ({
