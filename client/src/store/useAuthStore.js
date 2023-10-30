@@ -15,7 +15,9 @@ export const useAuthStore = create((set) => ({
     registerSuccess: false,
     setRegisterSuccess: (registerSuccess) => set({ registerSuccess: registerSuccess }),
     verifyOTP: false,
-    setVerifyOTP: (verifyOTP) => set({ verifyOTP: verifyOTP })
+    setVerifyOTP: (verifyOTP) => set({ verifyOTP: verifyOTP }),
+    registerDetail: false,
+    setRegisterDetail: (registerDetail) => set({ registerDetail: registerDetail })
 }));
 
 export const useRegisterStore = create((set) => ({
@@ -38,7 +40,6 @@ export const useRegisterStore = create((set) => ({
                 .then(result => {
                     if (result.success === true) {
                         localStorage.setItem("token", result.token);
-                        useAuthStore.getState().setUser(result.user);
                         useAuthStore.getState().setRegisterSuccess(true);
                         useAuthStore.getState().setAuthType("otp-verify");
                         toast.success(result.msg, { duration: 7500 });
@@ -98,6 +99,37 @@ export const useRegisterStore = create((set) => ({
                     if (result.success === false) toast.error(result.msg, { duration: 7500 });
                 })
                 .finally(() => useAuthStore.getState().setVerifyOTP(false));
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
+        }
+    },
+    userRegisterDetails: async ({ firstName, lastName, imageFile }) => {
+        try {
+            useAuthStore.getState().setRegisterDetail(true);
+            const formData = new FormData();
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
+            if (imageFile) formData.append('file', imageFile);
+
+            const CustomHeader = new Headers();
+            CustomHeader.append("token", localStorage.getItem("token"));
+            const config = {
+                method: 'POST',
+                headers: CustomHeader,
+                body: formData
+            };
+
+            fetch(`/api/register-details`, config)
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
+                        useAuthStore.getState().setAuthType("sign-in");
+                    }
+                    if (result.success === false) toast.error(result.msg, { duration: 7500 });
+                })
+                .finally(() => useAuthStore.getState().setRegisterDetail(false))
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, useRegisterStore, useLoginStore } from '../store/useAuthStore';
 import useWindowHeight from '../utils/useWindowHeight';
@@ -14,6 +14,7 @@ const Auth = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const authenticationType = urlParams.get('type');
     const userDataString = urlParams.get('response');
+    const token = urlParams.get('token');
 
     useEffect(() => {
         if (userDataString) {
@@ -39,6 +40,10 @@ const Auth = () => {
             }
         }
     }, [authenticationType]);
+
+    useEffect(() => {
+        if (token) localStorage.setItem('token', token);
+    }, [token]);
 
     return (
         <div
@@ -265,33 +270,58 @@ const OTPVerify = () => {
 
 // User detail component
 const NewUser = () => {
-    const { user } = useAuthStore();
+    const { user, registerDetail } = useAuthStore();
+    const { userRegisterDetails } = useRegisterStore();
 
-    const [avatar, setAvatar] = useState(user && user.avatar?.url ? user.avatar.url : "/user.svg");
+    const fileRef = useRef();
+    const [image, setImage] = useState(user && user.avatar?.url ? user.avatar.url : "");
+    const [imageFile, setImageFile] = useState(null);
     const [firstName, setFirstName] = useState(user && user?.firstName ? user.firstName : "");
     const [lastName, setLastName] = useState(user && user?.lastName ? user.lastName : "");
 
+    const handleFileChange = (e) => {
+        setImage(URL.createObjectURL(e.target.files[0]));
+        setImageFile(e.target.files[0]);
+        e.target.value = "";
+    };
+
     const handleNewUser = (e) => {
         e.preventDefault();
+        if (!firstName) return toast.error("First name is mandatory!");
+        if (!lastName) return toast.error("Last name is mandatory!");
 
-        toast.error("Currently under maintainance!");
-    }
+        userRegisterDetails({
+            firstName,
+            lastName,
+            ...imageFile ? { imageFile: imageFile } : { imageFile: "" }
+        });
+    };
 
     return (
         <form className='flex flex-col gap-[1.5rem]' onSubmit={handleNewUser}>
             <div className='flex flex-col gap-[0.75rem]'>
                 <div className='flex flex-col gap-[0.25rem] items-center'>
+                    <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        multiple={false}
+                        disabled={registerDetail}
+                        onChange={handleFileChange}
+                        ref={fileRef}
+                    />
                     <div className='w-[80px] h-[80px] bg-white border rounded-full overflow-hidden'>
                         <img
-                            src={avatar}
+                            src={image ? image : "/user.svg"}
                             className='w-full h-full object-contain'
                         />
                     </div>
                     <button
                         type='button'
                         className='w-fit font-[500] text-[0.8125rem] bg-slate-200 hover:bg-[#FFBC39] hover:text-white duration-200 py-[0.25rem] px-[0.5rem] rounded-lg'
+                        onClick={() => fileRef.current.click()}
                     >
-                        Upload
+                        {image ? "Change" : "Upload"}
                     </button>
                 </div>
                 <div className='flex flex-col gap-[0.25rem]'>
@@ -319,7 +349,7 @@ const NewUser = () => {
             </div>
             <button
                 type='submit'
-                className='py-[0.625rem] px-[1.25rem] bg-[#103FEF] text-white hover:bg-[#FFBC39] duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]'
+                className={`py-[0.625rem] px-[1.25rem] text-white ${registerDetail ? "bg-[#FFBC39] cursor-not-allowed" : "bg-[#103FEF] hover:bg-[#FFBC39]"} duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
             >
                 CREATE
             </button>
@@ -332,6 +362,7 @@ const SocialAuth = () => {
     const isProduction = import.meta.env.MODE === 'production';
 
     const handleGoogleAuth = () => {
+        localStorage.removeItem('token');
         const authUrl = isProduction
             ? 'https://gdsc-bit.vercel.app/auth/google'
             : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL;
@@ -339,6 +370,7 @@ const SocialAuth = () => {
     };
 
     const handleLinkedInAuth = () => {
+        localStorage.removeItem('token');
         if (isProduction) {
             toast.error("Currently under maintainance!");
         }

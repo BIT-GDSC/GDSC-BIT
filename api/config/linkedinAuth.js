@@ -31,11 +31,11 @@ passport.use(
         async (accessToken, refreshToken, profile, done) => {
             try {
                 let user = await User.findOne({
-                    $or: [{ linkedinId: profile.id }, { email: profile.emails[0].value }]
+                    $or: [{ email: profile.emails[0].value }, { linkedinId: profile.id },]
                 });
 
                 if (!user) {
-                    const imageUpload = await cloudinary.v2.uploader.upload(profile.photos[0].value);
+                    const imageUpload = await cloudinary.v2.uploader.upload(profile.photos[0].value, { folder: "BIT/Account" });
                     user = await User.create({
                         linkedinId: profile.id,
                         authType: "register",

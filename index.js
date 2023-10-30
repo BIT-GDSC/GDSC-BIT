@@ -10,6 +10,7 @@ require('./api/config/googleAuth.js');
 require('./api/config/linkedinAuth.js');
 const { v2 } = require("cloudinary");
 const connectDatabase = require('./api/config/connectDatabase.js');
+const socialToken = require('./api/utils/socialToken.js');
 
 const app = express();
 
@@ -46,8 +47,8 @@ app.get('/api/status', (req, res) => {
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // Google authentication callback route
-app.get('/auth/google/callback', function (req, res, next) {
-    passport.authenticate('google', { session: false }, function (err, user, info) {
+app.get('/auth/google/callback', async function (req, res, next) {
+    await passport.authenticate('google', { session: false }, async function (err, user, info) {
         if (err) {
             console.error(err);
             return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${encodeURIComponent(err.message)}`);
@@ -55,7 +56,10 @@ app.get('/auth/google/callback', function (req, res, next) {
         if (!user) {
             return res.redirect(`${process.env.FRONTEND_URL}/auth?error=User not found`);
         }
-        return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}`);
+        const token = socialToken(user);
+        await token.then(generatedToken => {
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}&token=${generatedToken}`);
+        })
     })(req, res, next);
 });
 
@@ -66,8 +70,8 @@ app.get('/auth/linkedin', passport.authenticate('linkedin', {
 }));
 
 // LinkedIn authentication callback route
-app.get('/auth/linkedin/callback', function (req, res, next) {
-    passport.authenticate('linkedin', { session: false }, function (err, user, info) {
+app.get('/auth/linkedin/callback', async function (req, res, next) {
+    await passport.authenticate('linkedin', { session: false }, async function (err, user, info) {
         if (err) {
             console.error(err);
             return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${encodeURIComponent(err.message)}`);
@@ -75,7 +79,10 @@ app.get('/auth/linkedin/callback', function (req, res, next) {
         if (!user) {
             return res.redirect(`${process.env.FRONTEND_URL}/auth?error=User not found`);
         }
-        return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}`);
+        const token = socialToken(user);
+        await token.then(generatedToken => {
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}&token=${generatedToken}`);
+        });
     })(req, res, next);
 });
 

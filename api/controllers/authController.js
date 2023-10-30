@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const sendToken = require('../utils/sendToken.js');
 const generateOTP = require('../utils/generateOTP.js');
 const sendOTP = require('../mail/sendOTP.js');
+const getDataUrl = require('../middleware/dataURL.js');
+const { v2 } = require('cloudinary');
 
 exports.userRegisterCredential = async (req, res) => {
     try {
@@ -43,7 +45,7 @@ exports.userRegisterCredential = async (req, res) => {
             message: `Here's your OTP: ${randomOTP}`
         });
 
-        await sendToken(user, 200, "An OTP has been sent to your email", res);
+        await sendToken(false, user, 200, "An OTP has been sent to your email", res);
     }
     catch (error) {
         res.status(500).json({
@@ -124,9 +126,34 @@ exports.userRegisterVerifyOTP = async (req, res) => {
 
 exports.userRegisterDetails = async (req, res) => {
     try {
+        const { firstName, lastName } = req.body;
+        const file = req.file;
+        let user;
+
+        if (file) {
+            const fileURL = getDataUrl(file);
+            const userImage = await v2.uploader.upload(fileURL.content, { folder: "BIT/Account" });
+            user = await User.findByIdAndUpdate(req.user._id, {
+                authType: "login",
+                firstName,
+                lastName,
+                avatar: {
+                    public_id: userImage.public_id,
+                    url: userImage.secure_url,
+                },
+                isVerified: true
+            });
+
+            return res.status(200).json({
+                success: true,
+                msg: "Your account is registered successfully!"
+            });
+        }
+        user = await User.findByIdAndUpdate(req.user._id, { authType: "login", firstName, lastName, isVerified: true });
+
         res.status(200).json({
             success: true,
-            msg: "User register verify otp route",
+            msg: "Your account is registered successfully!"
         });
     }
     catch (error) {
@@ -175,7 +202,7 @@ exports.userLogin = async (req, res) => {
             });
         }
 
-        await sendToken(user, 201, "Login success!", res);
+        await sendToken(true, user, 201, "Login success!", res);
     }
     catch (error) {
         res.status(500).json({
