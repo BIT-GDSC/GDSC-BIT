@@ -17,9 +17,9 @@ export const Socials = () => {
           {socialLinks.map((social, index) => {
             return (
               <div className='socials-grid' key={index}>
-                <a href={social.link} className='socials-grid-link'>
+                <a href={social.link} className='socials-grid-link hover:scale-105'>
                   <div className='socials-grid-link-icon'>
-                    <img src={social.icon} alt='logo' />
+                    <img src={social.icon} alt='logo' height={55} width={55}/>
                   </div>
                   <div className='socials-grid-link-text'>{social.text}</div>
                 </a>
