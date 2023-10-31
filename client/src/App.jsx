@@ -4,7 +4,7 @@ import Container from './components/Container';
 import Protected from './pages/Protected';
 import Home from './pages/Home';
 import Redirect from './pages/Redirect';
-import VerifyCertificate from './pages/VerifyCertificate';
+import VerifyCertificate from './pages/Certificate/VerifyCertificate';
 import Auth from './pages/Auth';
 import Test from './pages/Test';
 
