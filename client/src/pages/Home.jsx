@@ -1,11 +1,12 @@
-import { Main } from '../components/Main';
-import { Socials } from '../components/Socials';
+import { Main, Socials, Footer, Navbar, Events } from '../components'
 
 const Home = () => {
   return (
     <>
       <Main />
+      <Events />
       <Socials />
+      <Footer/>
     </>
   )
 }

@@ -6,9 +6,9 @@ export const Socials = () => {
       <div className='socials-bg'>
         <img src="/socials-bg.png" alt='logo' />
       </div>
-      <div className='socials-title-container'>
-        <div className='socials-title'>
-          <h1>Reach Us</h1>
+      <div className='socials-title-container section-title-container'>
+        <div className='socials-title section-title'>
+          <h1 className='section-heading'>Reach Us</h1>
           <p>with our socials</p>
         </div>
       </div>
