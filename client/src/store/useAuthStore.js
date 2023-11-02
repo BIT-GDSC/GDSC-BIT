@@ -1,15 +1,16 @@
 import { create } from 'zustand';
 import { toast } from 'sonner';
+import { useEffect } from 'react';
 
 export const useAuthStore = create((set) => ({
-    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user
-    setAuthType: (authType) => set({ authType: authType }),
     user: null,
     setUser: (user) => set({ user: user }),
     verifyLoading: false,
     setVerifyLoading: (verifyLoading) => set({ verifyLoading: verifyLoading }),
     verifySuccess: false,
     setVerifySuccess: (verifySuccess) => set({ verifySuccess: verifySuccess }),
+    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user
+    setAuthType: (authType) => set({ authType: authType }),
     registerLoading: false,
     setRegisterLoading: (registerLoading) => set({ registerLoading: registerLoading }),
     registerSuccess: false,
@@ -104,7 +105,7 @@ export const useRegisterStore = create((set) => ({
             toast.error("Something went wrong... Try again later!");
         }
     },
-    userRegisterDetails: async ({ firstName, lastName, imageFile }) => {
+    userRegisterDetails: async ({ firstName, lastName, imageFile, shallRedirect, navigate }) => {
         try {
             useAuthStore.getState().setRegisterDetail(true);
             const formData = new FormData();
@@ -126,6 +127,7 @@ export const useRegisterStore = create((set) => ({
                     if (result.success === true) {
                         toast.success(result.msg, { duration: 7500 });
                         useAuthStore.getState().setAuthType("sign-in");
+                        if (shallRedirect) navigate("/");
                     }
                     if (result.success === false) toast.error(result.msg, { duration: 7500 });
                 })
@@ -138,7 +140,7 @@ export const useRegisterStore = create((set) => ({
 }));
 
 export const useLoginStore = create((set) => ({
-    userLogin: async (email, password) => {
+    userLogin: async (email, password, navigate) => {
         try {
             useAuthStore.getState().setVerifyLoading(true);
             useAuthStore.getState().setVerifySuccess(false);
@@ -161,6 +163,7 @@ export const useLoginStore = create((set) => ({
                         useAuthStore.getState().setUser(result.user);
                         useAuthStore.getState().setVerifyLoading(false);
                         useAuthStore.getState().setVerifySuccess(true);
+                        navigate("/");
                     }
 
                     if (result.success === false) {
@@ -172,6 +175,37 @@ export const useLoginStore = create((set) => ({
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");
+        }
+    },
+    loadUser: async () => {
+        if (localStorage.getItem("token") === null || localStorage.getItem("token") === "") return;
+        try {
+            useAuthStore.getState().setVerifyLoading(true);
+            useAuthStore.getState().setVerifySuccess(false);
+            const CustomHeader = new Headers();
+            CustomHeader.append("token", localStorage.getItem("token"));
+            const config = {
+                method: 'GET',
+                headers: CustomHeader
+            }
+            await fetch(`/api/load-user`, config)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success === true) {
+                        useAuthStore.getState().setUser(result.user);
+                        useAuthStore.getState().setVerifyLoading(false);
+                        useAuthStore.getState().setVerifySuccess(true);
+                    }
+
+                    if (result.success === false) {
+                        localStorage.removeItem("token");
+                        useAuthStore.getState().setVerifyLoading(false);
+                        useAuthStore.getState().setVerifySuccess(false);
+                    }
+                })
+        }
+        catch (error) {
+            localStorage.removeItem("token");
         }
     }
 }));

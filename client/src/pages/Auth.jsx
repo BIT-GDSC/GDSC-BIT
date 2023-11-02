@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 const Auth = () => {
   const navigate = useNavigate()
   const { height, isReady } = useWindowHeight()
-  const { setUser, setVerifyLoading, setVerifySuccess } = useAuthStore()
+  const { setUser, setVerifyLoading, verifySuccess, setVerifySuccess } = useAuthStore()
   const { authType, setAuthType } = useAuthStore()
 
   const urlParams = new URLSearchParams(window.location.search)
@@ -36,7 +36,7 @@ const Auth = () => {
         if (prevPath) {
           navigate(prevPath)
           localStorage.removeItem('prevPath')
-        } else navigate('/test')
+        } else navigate('/');
       }
       if (authenticationType === 'register') {
         setAuthType('new-user')
@@ -144,6 +144,7 @@ const Auth = () => {
 
 // Email, Password & Reset Password component
 const ManualAuth = () => {
+  const navigate = useNavigate();
   const { authType, verifyLoading, registerLoading } = useAuthStore()
   const { userRegisterCredential } = useRegisterStore()
   const { userLogin } = useLoginStore()
@@ -164,7 +165,7 @@ const ManualAuth = () => {
       if (password !== confirmPassword)
         return toast.error("Password doesn't match!")
       userRegisterCredential(email, password)
-    } else if (authType === 'sign-in') userLogin(email, password)
+    } else if (authType === 'sign-in') userLogin(email, password, navigate)
   }
 
   return (
@@ -301,7 +302,8 @@ const OTPVerify = () => {
 
 // User detail component
 const NewUser = () => {
-  const { user, registerDetail } = useAuthStore()
+  const navigate = useNavigate();
+  const { verifySuccess, user, registerDetail } = useAuthStore()
   const { userRegisterDetails } = useRegisterStore()
 
   const fileRef = useRef()
@@ -330,7 +332,9 @@ const NewUser = () => {
     userRegisterDetails({
       firstName,
       lastName,
-      ...(imageFile ? { imageFile: imageFile } : { imageFile: '' })
+      ...(imageFile ? { imageFile: imageFile } : { imageFile: '' }),
+      ...(verifySuccess && user ? { shallRedirect: true } : { shallRedirect: false }),
+      navigate
     })
   }
 

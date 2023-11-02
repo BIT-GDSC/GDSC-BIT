@@ -211,3 +211,18 @@ exports.userLogin = async (req, res) => {
         });
     }
 }
+
+exports.loadUser = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            user: req.user,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            msg: "Something went wrong... Try again later!"
+        });
+    }
+}
