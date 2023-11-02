@@ -1,4 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Island+Moments&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Island+Moments&family=VT323&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+@font-face {
+    font-family: "Google Sans";
+    src: url('fonts/ProductSans-Regular.ttf');
+    font-weight: 100;
+    font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
@@ -10,6 +17,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 h1,
@@ -27,23 +40,31 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
 /***************************************** Global CSS ********************************/
 /* sectional titles globally */
-.section-heading{
-    font-size: 2rem;
-    font-weight: 600;
+#main-join-btn {
+    font-family: 'VT323', monospace;
 }
+
+.section-heading {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
 .section-title-container {
     display: flex;
     justify-content: center;
     text-align: center;
 }
-.section{
+
+.section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
 /* end */
 
 
@@ -89,7 +110,8 @@ a {
     padding: 1rem 1rem;
     background-color: #ffffff;
     border-radius: 1rem;
-    box-shadow: 0px 5px 3px #0000000A;
+    /* box-shadow: 0px 5px 3px #0000000A; */
+    box-shadow: 0 1px 5px 2px #00000040;
 }
 
 .Navbar-logo {
@@ -125,23 +147,117 @@ a {
     justify-content: center;
     align-items: center;
 }
-/* Events CSS */
-.events-toggler{
-    display: flex;
-    padding: 1rem 1.5rem;
-    border-radius: 45px;
-    border: 1px solid #d1d1d1 ;
-    box-shadow: 0 4 0 4 #00001f;
+
+/************************************************* Events CSS ***************************/
+.event-section {
+    padding-top: 100px;
+}
+
+.events-toggler {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 8px 1rem;
+    border-radius: 80px;
+    border: 1px solid #00000040;
     word-break: keep-all;
 }
-.events-toggler div{
-    padding: 1rem;
+
+.toggle-activator {
+    position: absolute;
+    top: 8px;
+    left: 1rem;
+    width: 110.3px;
+    height: 40px;
+    border-radius: 28px;
+    border: 1px solid #EA4235;
+    background-color: #EA423561;
+    transition: 400ms;
+}
+
+.events-toggler button {
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    text-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+    transition: 400ms;
+}
+
+.events-toggler button.active {
+    color: #EA4235;
+}
+
+.events-toggler button:nth-child(2).active~.toggle-activator {
+    transform: translateX(calc(110.3px * 1));
+}
+
+.events-toggler button:nth-child(3).active~.toggle-activator {
+    transform: translateX(calc(110.3px * 2));
+}
+
+.event-cards-container {
+    padding: 1rem 0;
+}
+
+.event-card {
+    position: relative;
+    height: 300px;
+    width: 300px;
+    background: no-repeat center/100%;
+    border: 1px solid #00000040;
+    border-radius: 22px;
+}
+
+.event-card-desc {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 30%;
+    width: 100%;
+    bottom: 0;
+    padding: .5rem;
+    color: #e8eaed;
+    border-radius: 0 0 22px 22px;
+    background: linear-gradient(#00000000, #00000080);
+}
+
+.event-card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
     font-size: 1.1rem;
 }
 
+.event-card-info {
+    padding: 0 .5rem;
+    font-size: .75rem;
+}
+
+.event-arrow-btn-container {
+    display: flex;
+    padding: .5rem 0;
+    gap: 3rem;
+}
+
+.event-left-arrow-btn,
+.event-right-arrow-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 39px;
+    width: 39px;
+    border: 1px solid #00000040;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px 0px #00000040;
+}
+
+
 /* socials */
 .socials-container {
-    padding-top: 175px;
+    padding-top: 100px;
     width: 100%;
     position: relative;
 }
@@ -200,14 +316,117 @@ a {
     border: none;
 }
 
-@media screen and (max-width: 580px) {
+/*********************************** Footer CSS ***************************/
+.join-now-btn-container {
+    padding: 5rem 0;
+}
+
+#join-now-btn {
+    padding: 1rem 2.5rem;
+    background-color: #4A90F4;
+    border-radius: 34px;
+    color: #ffffff;
+    font-weight: bold;
+    box-shadow: 0 2px 5px 2px #00000040;
+}
+
+.footer-chapter-name {
+    padding-left: 50px;
+}
+
+.footer-logo-container span {
+    font-family: "Google Sans", "Open Sans", sans-serif;
+    color: #5f6367;
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.footer-chapter-name img {
+    display: inline-block;
+}
+
+#main-footer-gdsc {
+    padding-left: 8px;
+}
+
+#main-footer-chapter-name {
+    padding-left: 78px;
+}
+
+.footer-color-strip {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.footer-color-strip div {
+    height: 30px;
+}
+
+.footer-color-strip div:nth-child(1) {
+    background-color: #F74037;
+}
+
+.footer-color-strip div:nth-child(2) {
+    background-color: #4A90F4;
+}
+
+.footer-color-strip div:nth-child(3) {
+    background-color: #14B25F;
+}
+
+.footer-color-strip div:nth-child(4) {
+    background-color: #FFB808;
+}
+
+
+@media screen and (max-width: 620px) {
+
+    /* Global */
+    .section-heading {
+        font-weight: 500;
+        font-size: 1.4rem;
+    }
+
     .Navbar-links {
         display: none;
+    }
+
+    .event-card{
+        height: 200px;
+        width: 200px;
+    }
+    .event-card-title{
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    .event-card-info{
+        font-size: .6rem;
     }
 
     .socials-grid-wrapper {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    .footer-logo-container,
+    .footer-chapter-name,
+    .gdsc-logo-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer-chapter-name img {
+        display: block;
+    }
+
+    .footer-logo-container,
+    .footer-chapter-name,
+    #main-footer-gdsc,
+    #main-footer-chapter-name {
+        padding: 0;
     }
 }
 

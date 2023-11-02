@@ -1,7 +1,7 @@
 export const socialLinks = [
   {
     text: 'Community',
-    icon: "/bracket.png",
+    icon: "/gdsc_logo.png",
     link: 'https://gdsc.community.dev/bengal-institute-of-technology/'
   },
   {

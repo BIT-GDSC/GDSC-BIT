@@ -1,6 +1,7 @@
-import React from 'react'
-
+import { useState } from 'react'
+import card1 from '/images/card1.jpg'
 export default function Events () {
+  const [active, setActive] = useState(0)
   return (
     <div className='section event-section'>
       <div className='events-title-container section-title-container'>
@@ -8,20 +9,61 @@ export default function Events () {
       </div>
       {/* Toogler */}
       <div className='events-toggler'>
-        <div>
+        <button
+          onClick={() => {
+            setActive(0)
+          }}
+          className={active === 0 ? 'active' : ''}
+        >
           <p>Upcoming</p>
-        </div>
-        <div>
+        </button>
+        <button
+          onClick={() => {
+            setActive(1)
+          }}
+          className={active === 1 ? 'active' : ''}
+        >
           <p>Live Now</p>
-        </div>
-        <div>
+        </button>
+        <button
+          onClick={() => {
+            setActive(2)
+          }}
+          className={active === 2 ? 'active' : ''}
+        >
           <p>Past</p>
+        </button>
+        <div className='toggle-activator'></div>
+      </div>
+
+      {/* event card */}
+      <div className='event-cards-container'>
+        <div
+          className='event-card'
+          style={{
+            backgroundImage: `url(${card1})`
+          }}
+        >
+          <div className='event-card-desc'>
+            <div className='event-card-title'>PokePrompt: Intro to AI & ML</div>
+            <div className='event-card-info'>
+              <span>17/09/23</span>
+              {' • '}
+              <span>11 AM</span>
+              {' • '}
+              <span>GMEET</span>
+            </div>
+          </div>
         </div>
       </div>
-      {/* events cards container */}
-      <div className='arrow-btn-container'>
-        <div className='left-arrow-btn'></div>
-        <div className='right-arrow-btn'></div>
+      {/* event card arrows */}
+      <div className='event-arrow-btn-container'>
+        <button className='event-left-arrow-btn'>
+          <ion-icon size='large' name='chevron-back-outline'></ion-icon>
+        </button>
+        <button className='event-right-arrow-btn'>
+          <ion-icon size='large' name='chevron-forward-outline'></ion-icon>
+        </button>
       </div>
     </div>
   )
