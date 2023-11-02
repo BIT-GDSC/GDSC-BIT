@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
 
 export const useAuthStore = create((set) => ({
     user: null,

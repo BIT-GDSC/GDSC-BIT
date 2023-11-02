@@ -190,14 +190,14 @@ exports.userLogin = async (req, res) => {
             }
         }
         else if (user.googleId) {
-            return res.status(200).json({
-                success: true,
+            return res.status(400).json({
+                success: false,
                 msg: "Credentials associated with your Google account! Sign in with Google to proceed!",
             });
         }
         else if (user.linkedinId) {
-            return res.status(200).json({
-                success: true,
+            return res.status(400).json({
+                success: false,
                 msg: "Credentials associated with your LinkedIn account! Sign in with LinkedIn to proceed!",
             });
         }

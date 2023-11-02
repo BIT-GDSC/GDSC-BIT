@@ -73,12 +73,12 @@ const Auth = () => {
               {authType === 'sign-in'
                 ? 'Sign in'
                 : authType === 'sign-up'
-                ? 'Create your account'
-                : authType === 'otp-verify'
-                ? 'Verify your account'
-                : authType === 'new-user'
-                ? 'Describe yourself'
-                : ''}
+                  ? 'Create your account'
+                  : authType === 'otp-verify'
+                    ? 'Verify your account'
+                    : authType === 'new-user'
+                      ? 'Describe yourself'
+                      : ''}
             </p>
             <p className='font-[400] text-[0.75rem] md:text-[1rem] text-[#000000a6] pt-[1px]'>
               to continue to GDSC Bengal Institute of Technology
@@ -208,11 +208,10 @@ const ManualAuth = () => {
       <button
         disabled={registerLoading || verifyLoading}
         type='submit'
-        className={`py-[0.625rem] px-[1.25rem] text-white ${
-          registerLoading || verifyLoading
-            ? 'bg-[#FFBC39] cursor-not-allowed'
-            : 'bg-[#103FEF] hover:bg-[#FFBC39]'
-        } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
+        className={`py-[0.625rem] px-[1.25rem] text-white ${registerLoading || verifyLoading
+          ? 'bg-[#FFBC39] cursor-not-allowed'
+          : 'bg-[#103FEF] hover:bg-[#FFBC39]'
+          } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
       >
         {registerLoading || verifyLoading ? 'VERIFYING' : 'CONTINUE'}
       </button>
@@ -287,11 +286,10 @@ const OTPVerify = () => {
       <button
         type='button'
         disabled={verifyOTP}
-        className={`py-[0.625rem] px-[1.25rem] text-white ${
-          verifyOTP
-            ? 'bg-[#FFBC39] cursor-not-allowed'
-            : 'bg-[#103FEF] hover:bg-[#FFBC39]'
-        } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
+        className={`py-[0.625rem] px-[1.25rem] text-white ${verifyOTP
+          ? 'bg-[#FFBC39] cursor-not-allowed'
+          : 'bg-[#103FEF] hover:bg-[#FFBC39]'
+          } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
         onClick={handleSubmitOTP}
       >
         {verifyOTP ? 'VERIFYING' : 'VERIFY'}
@@ -390,11 +388,10 @@ const NewUser = () => {
       </div>
       <button
         type='submit'
-        className={`py-[0.625rem] px-[1.25rem] text-white ${
-          registerDetail
-            ? 'bg-[#FFBC39] cursor-not-allowed'
-            : 'bg-[#103FEF] hover:bg-[#FFBC39]'
-        } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
+        className={`py-[0.625rem] px-[1.25rem] text-white ${registerDetail
+          ? 'bg-[#FFBC39] cursor-not-allowed'
+          : 'bg-[#103FEF] hover:bg-[#FFBC39]'
+          } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
       >
         CREATE
       </button>
