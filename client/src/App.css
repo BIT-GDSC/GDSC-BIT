@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: "Google Sans";
-    src: url('fonts/ProductSans-Regular.ttf');
+    src: url('/fonts/ProductSans-Regular.ttf');
     font-weight: 100;
     font-style: normal;
 }
@@ -17,6 +17,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
