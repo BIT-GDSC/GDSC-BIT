@@ -179,8 +179,8 @@ a {
     width: 110.3px;
     height: 40px;
     border-radius: 28px;
-    border: 1px solid #34a853;
-    background-color: #34a85361;
+    border: 1px solid #fbbc04;
+    background-color: #fbbc0461;
     transition: 400ms;
 }
 
@@ -194,7 +194,7 @@ a {
 }
 
 .events-toggler button.active {
-    color: #34a853;
+    color: #fbbc04;
 }
 
 .events-toggler button:nth-child(2).active~.toggle-activator {
