@@ -131,6 +131,12 @@ exports.userRegisterDetails = async (req, res) => {
         let user;
 
         if (file) {
+            if (req.user.avatar.public_id) {
+                await v2.api.delete_resources(
+                    [req.user.avatar.public_id],
+                    { type: 'upload', resource_type: 'image' }
+                );
+            }
             const fileURL = getDataUrl(file);
             const userImage = await v2.uploader.upload(fileURL.content, { folder: "BIT/Account" });
             user = await User.findByIdAndUpdate(req.user._id, {
