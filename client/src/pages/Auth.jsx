@@ -78,10 +78,20 @@ const Auth = () => {
                     ? 'Verify your account'
                     : authType === 'new-user'
                       ? 'Describe yourself'
-                      : ''}
+                      : authType === 'forgot-password-email'
+                        ? "Enter your email"
+                        : authType === 'forgot-password-otp'
+                          ? "Enter OTP"
+                          : authType === 'forgot-password-reset'
+                            ? "Create new password"
+                            : ""}
             </p>
             <p className='font-[400] text-[0.75rem] md:text-[1rem] text-[#000000a6] pt-[1px]'>
-              to continue to GDSC Bengal Institute of Technology
+              {authType === 'forgot-password-email' || authType === 'forgot-password-otp'
+                ? "to verify your GDSC BIT account"
+                : authType === 'forgot-password-reset'
+                  ? "to keep your GDSC BIT account safe"
+                  : "to continue to GDSC Bengal Institute of Technology"}
             </p>
           </div>
 
@@ -122,7 +132,7 @@ const Auth = () => {
                   <button
                     type='button'
                     className='flex items-center justify-end font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
-                    onClick={() => toast.error('Currently under maintainance!')}
+                    onClick={() => setAuthType("forgot-password-email")}
                   >
                     Forgot Password
                   </button>
@@ -133,6 +143,12 @@ const Auth = () => {
             <OTPVerify />
           ) : authType === 'new-user' ? (
             <NewUser />
+          ) : authType === 'forgot-password-email' ? (
+            <ForgotPasswordEmail />
+          ) : authType === 'forgot-password-otp' ? (
+            <ForgotPasswordOTP />
+          ) : authType === 'forgot-password-reset' ? (
+            <ForgotPasswordReset />
           ) : (
             <div>Invalid authentication type</div>
           )}
@@ -444,6 +460,167 @@ const SocialAuth = () => {
         </span>
       </button>
     </div>
+  )
+}
+
+// Forgot password email component
+const ForgotPasswordEmail = () => {
+  const [email, setEmail] = useState("");
+  const { setAuthType } = useAuthStore();
+
+  const handleForgotEmail = (e) => {
+    e.preventDefault();
+    if (!email) return toast.error("Enter your GDSC BIT's account email!")
+
+    setAuthType('forgot-password-otp')
+  }
+
+  return (
+    <>
+      <form className='flex flex-col gap-[1rem]' onSubmit={handleForgotEmail}>
+        <div className='flex flex-col gap-[0.5rem]'>
+          <div className='flex flex-col gap-[0.25rem]'>
+            <label htmlFor='email' className='font-[500] text-[0.8125rem]'>
+              Email Address
+            </label>
+            <InputBox id='email' type='email' value={email} setValue={setEmail} />
+          </div>
+        </div>
+        <button
+          disabled={false}
+          type='submit'
+          className={`py-[0.625rem] px-[1.25rem] text-white ${false
+            ? 'bg-[#FFBC39] cursor-not-allowed'
+            : 'bg-[#103FEF] hover:bg-[#FFBC39]'
+            } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
+        >
+          {false ? 'VERIFYING' : 'CONTINUE'}
+        </button>
+      </form>
+    </>
+  )
+}
+
+// Forgot password otp component
+const ForgotPasswordOTP = () => {
+  const { setAuthType } = useAuthStore();
+
+  const [otp, setOtp] = useState(Array(5).fill(''))
+
+  const handleChange = (target, idx) => {
+    setOtp([...otp.slice(0, idx), target.value, ...otp.slice(idx + 1)])
+    const nextSibling = target.nextElementSibling
+    if (nextSibling && target.value) {
+      nextSibling.focus()
+    }
+  }
+
+  const handleKeyDown = (e, idx) => {
+    if (e.key === 'Backspace' && !otp[idx]) {
+      const prevSibling = e.target.previousElementSibling
+      if (prevSibling) {
+        prevSibling.focus()
+      }
+    }
+  }
+
+  const handleSubmitOTP = () => {
+    const otpValue = otp.join('')
+    if (otpValue.length < 5) return toast.error('Enter OTP to proceed!')
+
+    setAuthType("forgot-password-reset");
+  }
+
+  const handleResendOTP = () => {
+
+  }
+
+  return (
+    <div className='flex flex-col gap-[1.5rem]'>
+      <div className='flex flex-col gap-[1rem]'>
+        <div className='flex justify-center space-x-4'>
+          {otp.map((num, idx) => (
+            <input
+              className='w-12 h-12 border-2 border-[#00000029] focus:outline-[#FFBC39] rounded-lg text-center text-lg'
+              type='text'
+              name={`otp${idx}`}
+              key={idx}
+              value={num}
+              onChange={e => handleChange(e.target, idx)}
+              onKeyDown={e => handleKeyDown(e, idx)}
+              maxLength={1}
+            />
+          ))}
+        </div>
+        <button
+          type='button'
+          className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+          onClick={handleResendOTP}
+        >
+          Resend OTP
+        </button>
+      </div>
+      <button
+        type='button'
+        disabled={false}
+        className={`py-[0.625rem] px-[1.25rem] text-white ${false
+          ? 'bg-[#FFBC39] cursor-not-allowed'
+          : 'bg-[#103FEF] hover:bg-[#FFBC39]'
+          } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
+        onClick={handleSubmitOTP}
+      >
+        {false ? 'VERIFYING' : 'VERIFY'}
+      </button>
+    </div>
+  )
+}
+
+// Forgot password reset component
+const ForgotPasswordReset = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    if (!password) return toast.error('Enter new password!')
+    if (!confirmPassword) return toast.error('Retype your password to proceed!')
+    if (password !== confirmPassword) return toast.error("Password doesn't match!")
+
+    toast.error("Currently under maintainance!");
+  }
+
+  return (
+    <form className='flex flex-col gap-[1rem]' onSubmit={handleResetPassword}>
+      <div className='flex flex-col gap-[0.5rem]'>
+        <div className='flex flex-col gap-[0.25rem]'>
+          <label htmlFor='new-password' className='font-[500] text-[0.8125rem]'>
+            New Password
+          </label>
+          <InputBox id='new-password' type='password' value={password} setValue={setPassword} />
+        </div>
+        <div className='flex flex-col gap-[0.25rem]'>
+          <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
+            Confirm Password
+          </label>
+          <InputBox
+            id='confirm-password'
+            type='password'
+            value={confirmPassword}
+            setValue={setConfirmPassword}
+          />
+        </div>
+      </div>
+      <button
+        disabled={false}
+        type='submit'
+        className={`py-[0.625rem] px-[1.25rem] text-white ${false
+          ? 'bg-[#FFBC39] cursor-not-allowed'
+          : 'bg-[#103FEF] hover:bg-[#FFBC39]'
+          } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
+      >
+        {false ? 'VERIFYING' : 'CONTINUE'}
+      </button>
+    </form>
   )
 }
 

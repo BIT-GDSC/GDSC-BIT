@@ -8,7 +8,7 @@ export const useAuthStore = create((set) => ({
     setVerifyLoading: (verifyLoading) => set({ verifyLoading: verifyLoading }),
     verifySuccess: false,
     setVerifySuccess: (verifySuccess) => set({ verifySuccess: verifySuccess }),
-    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user
+    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user, forgot-password-email, forgot-password-otp
     setAuthType: (authType) => set({ authType: authType }),
     registerLoading: false,
     setRegisterLoading: (registerLoading) => set({ registerLoading: registerLoading }),
