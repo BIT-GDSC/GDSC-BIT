@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - linkedin_issue
 jobs:
   build:
     runs-on: ubuntu-latest
