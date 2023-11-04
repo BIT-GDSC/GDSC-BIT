@@ -59,17 +59,18 @@ const Auth = () => {
       className='flex items-center justify-center'
     >
       <div className='h-full flex items-center justify-center py-4'>
-        <div className='w-[95%] md:w-[28rem] px-[2rem] pt-[1rem] pb-[2rem] flex flex-col gap-[1.5rem] bg-slate-50 border rounded-[1rem]'>
+        <div className='w-[95vw] sm:w-[28rem] px-[2rem] pt-[1rem] pb-[2rem] flex flex-col gap-[1.5rem] bg-slate-50 border rounded-[1rem]'>
           <div>
-            <div className='w-full flex justify-center md:pb-[1rem]'>
+            <div className='w-full flex justify-center sm:pb-[1rem]'>
               <Link to='/'>
                 <img
-                  src='/logo.png'
+                  src='/gdsc_logo_auth.png'
+                  // src='/logo.png'
                   className='w-[100px] h-[70px] object-contain'
                 />
               </Link>
             </div>
-            <p className='font-[600] text-[1.1rem] md:text-[1.25rem]'>
+            <p className='font-[600] text-[1.1rem] sm:text-[1.25rem]'>
               {authType === 'sign-in'
                 ? 'Sign in'
                 : authType === 'sign-up'
@@ -86,7 +87,7 @@ const Auth = () => {
                             ? "Create new password"
                             : ""}
             </p>
-            <p className='font-[400] text-[0.75rem] md:text-[1rem] text-[#000000a6] pt-[1px]'>
+            <p className='font-[400] text-[0.75rem] sm:text-[1rem] text-[#000000a6] pt-[1px]'>
               {authType === 'forgot-password-email' || authType === 'forgot-password-otp'
                 ? "to verify your GDSC BIT account"
                 : authType === 'forgot-password-reset'
