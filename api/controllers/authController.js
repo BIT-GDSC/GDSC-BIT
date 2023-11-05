@@ -98,6 +98,12 @@ exports.userRegisterVerifyOTP = async (req, res) => {
         const diffMinutes = (currentTime - otpCreatedAt) / 1000 / 60;
 
         if (diffMinutes > 30) {
+            await User.updateOne({ _id: req.user._id }, {
+                $unset: {
+                    registerOTP: 1,
+                    otpCreatedAt: 1
+                }
+            });
             return res.status(400).json({
                 success: false,
                 msg: "OTP has expired... Try again!",
@@ -223,6 +229,88 @@ exports.loadUser = async (req, res) => {
         res.status(200).json({
             success: true,
             user: req.user,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            msg: "Something went wrong... Try again later!"
+        });
+    }
+}
+
+exports.forgotEmailVerify = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email }).where({ isVerified: true });
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                msg: "User isn't registered yet!",
+            });
+        }
+
+        const randomOTP = generateOTP(5);
+        const otpCreatedAt = new Date();
+
+        await User.findByIdAndUpdate(user._id, {
+            forgotOTP: randomOTP,
+            otpCreatedAt
+        })
+        await sendOTP({
+            email,
+            subject: "Forgot Password | GDSC Bengal Institute of Technology",
+            message: `Here's your OTP: ${randomOTP}`
+        });
+
+        res.status(200).json({
+            success: true,
+            msg: "OTP sent to your mail!",
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            msg: "Something went wrong... Try again later!"
+        });
+    }
+}
+
+exports.forgotResendOTP = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            msg: ""
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            msg: "Something went wrong... Try again later!"
+        });
+    }
+}
+
+exports.forgotOTPVerify = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            msg: ""
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            msg: "Something went wrong... Try again later!"
+        });
+    }
+}
+
+exports.forgotResetPassword = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            msg: "",
         });
     }
     catch (error) {

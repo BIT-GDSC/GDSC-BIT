@@ -339,6 +339,14 @@ a {
     box-shadow: 0 2px 5px 2px #00000040;
 }
 
+.chapter p {
+    font-family: "Google Sans", "Open Sans", sans-serif;
+    color: #5f6367;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    padding: 0;
+}
+
 .footer-chapter-name {
     padding-left: 50px;
 }
@@ -369,7 +377,7 @@ a {
 }
 
 .footer-color-strip div {
-    height: 30px;
+    height: 10px;
 }
 
 .footer-color-strip div:nth-child(1) {

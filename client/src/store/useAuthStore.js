@@ -8,7 +8,7 @@ export const useAuthStore = create((set) => ({
     setVerifyLoading: (verifyLoading) => set({ verifyLoading: verifyLoading }),
     verifySuccess: false,
     setVerifySuccess: (verifySuccess) => set({ verifySuccess: verifySuccess }),
-    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user, forgot-password-email, forgot-password-otp
+    authType: "sign-in", // Available auth types => sign-in, sign-up, otp-verify, new-user, forgot-password-email, forgot-password-otp, forgot-password-reset
     setAuthType: (authType) => set({ authType: authType }),
     registerLoading: false,
     setRegisterLoading: (registerLoading) => set({ registerLoading: registerLoading }),
@@ -17,10 +17,12 @@ export const useAuthStore = create((set) => ({
     verifyOTP: false,
     setVerifyOTP: (verifyOTP) => set({ verifyOTP: verifyOTP }),
     registerDetail: false,
-    setRegisterDetail: (registerDetail) => set({ registerDetail: registerDetail })
+    setRegisterDetail: (registerDetail) => set({ registerDetail: registerDetail }),
+    emailVerifyLoading: false,
+    setEmailVerifyLoading: (emailVerifyLoading) => set({ emailVerifyLoading: emailVerifyLoading })
 }));
 
-export const useRegisterStore = create((set) => ({
+export const useRegisterStore = create(() => ({
     userRegisterCredential: async (email, password) => {
         try {
             useAuthStore.getState().setRegisterLoading(true);
@@ -138,7 +140,7 @@ export const useRegisterStore = create((set) => ({
     }
 }));
 
-export const useLoginStore = create((set) => ({
+export const useLoginStore = create(() => ({
     userLogin: async (email, password, navigate) => {
         try {
             useAuthStore.getState().setVerifyLoading(true);
@@ -205,6 +207,53 @@ export const useLoginStore = create((set) => ({
         }
         catch (error) {
             localStorage.removeItem("token");
+        }
+    }
+}));
+
+export const useForgotStore = create(() => ({
+    emailVerify: async (email) => {
+        try {
+            useAuthStore.getState().setEmailVerifyLoading(true);
+            const CustomHeader = new Headers();
+            CustomHeader.append('Content-Type', 'application/json')
+            const config = {
+                method: 'POST',
+                headers: CustomHeader,
+                body: JSON.stringify({ email })
+            }
+            await fetch(`/api/forgot-email-verify`, config)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
+                        useAuthStore.getState().setAuthType("forgot-password-otp");
+                    }
+
+                    if (result.success === false) {
+                        toast.error(result.msg, { duration: 7500 });
+                    }
+                })
+                .finally(() => useAuthStore.getState().setEmailVerifyLoading(false))
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
+        }
+    },
+    otpVerify: async (otp) => {
+        try {
+
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
+        }
+    },
+    resetPassword: async (password) => {
+        try {
+
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
         }
     }
 }));

@@ -5,7 +5,11 @@ const {
     userRegisterVerifyOTP,
     userRegisterDetails,
     userLogin,
-    loadUser
+    loadUser,
+    forgotEmailVerify,
+    forgotResendOTP,
+    forgotOTPVerify,
+    forgotResetPassword
 } = require("../controllers/authController.js");
 const { isRegisteredUser, isVerifiedUser } = require("../middleware/auth.js");
 const singleUpload = require("../middleware/multer.js");
@@ -16,7 +20,13 @@ router.post("/register-credential", userRegisterCredential);
 router.get("/register-resend-otp", isRegisteredUser, userRegisterResendOTP);
 router.get("/register-verify-otp", isRegisteredUser, userRegisterVerifyOTP);
 router.post("/register-details", isRegisteredUser, singleUpload, userRegisterDetails);
+
 router.post("/login", userLogin);
 router.get("/load-user", isVerifiedUser, loadUser);
+
+router.post("/forgot-email-verify", forgotEmailVerify);
+router.post("/forgot-resend-otp", forgotResendOTP);
+router.post("/forgot-otp-verify", forgotOTPVerify);
+router.post("/forgot-reset-password", isVerifiedUser, forgotResetPassword);
 
 module.exports = router;
