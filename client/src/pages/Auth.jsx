@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   useAuthStore,
   useRegisterStore,
-  useLoginStore
+  useLoginStore,
+  useForgotStore
 } from '../store/useAuthStore'
 import useWindowHeight from '../utils/useWindowHeight'
 import { toast } from 'sonner'
@@ -466,14 +467,15 @@ const SocialAuth = () => {
 
 // Forgot password email component
 const ForgotPasswordEmail = () => {
+  const { setAuthType, emailVerifyLoading } = useAuthStore();
+  const { emailVerify } = useForgotStore();
   const [email, setEmail] = useState("");
-  const { setAuthType } = useAuthStore();
 
   const handleForgotEmail = (e) => {
     e.preventDefault();
     if (!email) return toast.error("Enter your GDSC BIT's account email!")
 
-    setAuthType('forgot-password-otp')
+    emailVerify(email);
   }
 
   return (
@@ -488,14 +490,21 @@ const ForgotPasswordEmail = () => {
           </div>
         </div>
         <button
-          disabled={false}
+          disabled={emailVerifyLoading}
           type='submit'
-          className={`py-[0.625rem] px-[1.25rem] text-white ${false
+          className={`py-[0.625rem] px-[1.25rem] text-white ${emailVerifyLoading
             ? 'bg-[#FFBC39] cursor-not-allowed'
             : 'bg-[#103FEF] hover:bg-[#FFBC39]'
             } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
         >
-          {false ? 'VERIFYING' : 'CONTINUE'}
+          {emailVerifyLoading ? 'VERIFYING' : 'CONTINUE'}
+        </button>
+        <button
+          type='button'
+          className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+          onClick={() => setAuthType("sign-in")}
+        >
+          Back to Login
         </button>
       </form>
     </>
