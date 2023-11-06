@@ -62,6 +62,8 @@ export const useRegisterStore = create(() => ({
     },
     userRegisterResendOTP: async () => {
         try {
+            toast.loading('Sending OTP...');
+
             const CustomHeader = new Headers();
             CustomHeader.append("token", localStorage.getItem("token"));
             const config = {
@@ -73,8 +75,9 @@ export const useRegisterStore = create(() => ({
                 .then((response) => response.json())
                 .then((result) => {
                     if (result.success === true) toast.success(result.msg, { duration: 7500 });
-                    if (result.success === false) toast.error("Something went wrong... Try again later!", { duration: 7500 });
+                    if (result.success === false) toast.error(result.msg, { duration: 7500 });
                 })
+                .finally(() => toast.dismiss())
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");
@@ -211,9 +214,11 @@ export const useLoginStore = create(() => ({
     }
 }));
 
-export const useForgotStore = create(() => ({
+export const useForgotStore = create((set) => ({
+    email: "",
     emailVerify: async (email) => {
         try {
+            set({ email: email });
             useAuthStore.getState().setEmailVerifyLoading(true);
             const CustomHeader = new Headers();
             CustomHeader.append('Content-Type', 'application/json')
@@ -235,6 +240,32 @@ export const useForgotStore = create(() => ({
                     }
                 })
                 .finally(() => useAuthStore.getState().setEmailVerifyLoading(false))
+        }
+        catch (error) {
+            toast.error("Something went wrong... Try again later!");
+        }
+    },
+    resendOTP: async () => {
+        try {
+            const email = useForgotStore.getState().email;
+            if (!email) return toast.error("No email found... Try again!", { duration: 7500 });
+            toast.loading('Sending OTP...');
+
+            const CustomHeader = new Headers();
+            CustomHeader.append('Content-Type', 'application/json')
+            const config = {
+                method: 'POST',
+                headers: CustomHeader,
+                body: JSON.stringify({ email: email })
+            }
+
+            fetch(`/api/forgot-resend-otp`, config)
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.success === true) toast.success(result.msg, { duration: 7500 });
+                    if (result.success === false) toast.error(result.msg, { duration: 7500 });
+                })
+                .finally(() => toast.dismiss())
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");
