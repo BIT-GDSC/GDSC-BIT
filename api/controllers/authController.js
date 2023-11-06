@@ -45,7 +45,7 @@ exports.userRegisterCredential = async (req, res) => {
             message: `Here's your OTP: ${randomOTP}`
         });
 
-        await sendToken(false, user, 200, "An OTP has been sent to your email", res);
+        await sendToken(false, user, 200, "An OTP has been sent to your email!", res);
     }
     catch (error) {
         res.status(500).json({
@@ -58,21 +58,21 @@ exports.userRegisterCredential = async (req, res) => {
 exports.userRegisterResendOTP = async (req, res) => {
     try {
         const randomOTP = generateOTP(5);
+        const otpCreatedAt = new Date();
+
+        await User.findByIdAndUpdate(req.user._id, {
+            registerOTP: randomOTP,
+            otpCreatedAt
+        });
         await sendOTP({
             email: req.user.email,
             subject: "Verify Account | GDSC Bengal Institute of Technology",
             message: `Here's your OTP: ${randomOTP}`
         });
 
-        const otpCreatedAt = new Date();
-        await User.findByIdAndUpdate(req.user._id, {
-            registerOTP: randomOTP,
-            otpCreatedAt
-        });
-
         res.status(200).json({
             success: true,
-            msg: "OTP sent to your email!",
+            msg: "OTP resent to your email!",
         });
     }
     catch (error) {
@@ -86,12 +86,6 @@ exports.userRegisterResendOTP = async (req, res) => {
 exports.userRegisterVerifyOTP = async (req, res) => {
     try {
         const otp = req.headers["otp"];
-        if (req.user.registerOTP !== otp) {
-            return res.status(400).json({
-                success: false,
-                msg: "OTP doesn't match... Try again!",
-            });
-        }
 
         const otpCreatedAt = new Date(req.user.otpCreatedAt);
         const currentTime = new Date();
@@ -107,6 +101,13 @@ exports.userRegisterVerifyOTP = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 msg: "OTP has expired... Try again!",
+            });
+        }
+
+        if (req.user.registerOTP !== otp) {
+            return res.status(400).json({
+                success: false,
+                msg: "OTP doesn't match... Try again!",
             });
         }
 
@@ -242,7 +243,13 @@ exports.loadUser = async (req, res) => {
 exports.forgotEmailVerify = async (req, res) => {
     try {
         const { email } = req.body;
-        const user = await User.findOne({ email }).where({ isVerified: true });
+        const randomOTP = generateOTP(5);
+        const otpCreatedAt = new Date();
+
+        const user = await User.findOneAndUpdate({ email }, {
+            forgotOTP: randomOTP,
+            otpCreatedAt
+        }).where({ isVerified: true });
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -250,13 +257,6 @@ exports.forgotEmailVerify = async (req, res) => {
             });
         }
 
-        const randomOTP = generateOTP(5);
-        const otpCreatedAt = new Date();
-
-        await User.findByIdAndUpdate(user._id, {
-            forgotOTP: randomOTP,
-            otpCreatedAt
-        })
         await sendOTP({
             email,
             subject: "Forgot Password | GDSC Bengal Institute of Technology",
@@ -278,9 +278,30 @@ exports.forgotEmailVerify = async (req, res) => {
 
 exports.forgotResendOTP = async (req, res) => {
     try {
+        const { email } = req.body;
+        const randomOTP = generateOTP(5);
+        const otpCreatedAt = new Date();
+
+        const user = await User.findOneAndUpdate({ email }, {
+            forgotOTP: randomOTP,
+            otpCreatedAt
+        }).where({ isVerified: true });
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                msg: "User isn't registered yet!",
+            });
+        }
+
+        await sendOTP({
+            email: email,
+            subject: "Forgot Password | GDSC Bengal Institute of Technology",
+            message: `Here's your OTP: ${randomOTP}`
+        });
+
         res.status(200).json({
             success: true,
-            msg: ""
+            msg: "OTP resent to your email!",
         });
     }
     catch (error) {

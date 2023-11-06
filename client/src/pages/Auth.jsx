@@ -514,6 +514,7 @@ const ForgotPasswordEmail = () => {
 // Forgot password otp component
 const ForgotPasswordOTP = () => {
   const { setAuthType } = useAuthStore();
+  const { resendOTP } = useForgotStore();
 
   const [otp, setOtp] = useState(Array(5).fill(''))
 
@@ -542,7 +543,7 @@ const ForgotPasswordOTP = () => {
   }
 
   const handleResendOTP = () => {
-
+    resendOTP();
   }
 
   return (
