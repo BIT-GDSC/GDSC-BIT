@@ -45,7 +45,9 @@ export const Navbar = () => {
             className='Navbar-menu-toggler'
             onClick={() => setActiveNav(!activeNav)}
           >
-            <div className='Navbar-menu-bar-container'>
+            <div
+              className={`Navbar-menu-bar-container ${activeNav && 'active'}`}
+            >
               <div
                 className={`Navbar-menu-toggler-top arrow-bar ${
                   activeNav && 'active'
