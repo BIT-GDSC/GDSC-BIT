@@ -49,13 +49,6 @@ const GoogleCloudFacilitator = () => {
               Add to LinkedIn
             </a>
           </div>
-          {/*<a
-                        href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${certData.certificate}&organizationId=97886448&issueYear=2023&issueMonth=10&certId=${certData._id}&certUrl=${certData.verifyURL}`}
-                        className='rounded-2xl w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
-                    >
-                        Add to LinkedIn
-                    </a>
-                        */}
         </div>
         <PDFDownloadLink
           document={<GoogleCloudFacilitatorPDF certData={certData} />}
