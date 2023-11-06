@@ -3,7 +3,7 @@ import { navData } from '../utils/navbar'
 import { useAuthStore } from '../store/useAuthStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export const Navbar = () => {
   const { verifyLoading, verifySuccess, user } = useAuthStore()
