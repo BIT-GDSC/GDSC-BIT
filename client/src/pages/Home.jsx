@@ -1,4 +1,4 @@
-import { Main, Socials, Footer, Navbar, Events } from '../components'
+import { Main, Socials, Footer, Events } from '../components'
 
 const Home = () => {
   return (
@@ -6,7 +6,7 @@ const Home = () => {
       <Main />
       <Events />
       <Socials />
-      <Footer/>
+      <Footer />
     </>
   )
 }

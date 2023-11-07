@@ -12,6 +12,22 @@
 @tailwind utilities;
 
 
+:root {
+    --body-main-bg: #FFBC39;
+    --body-main-bg-25: #FFBC3941;
+    --gogle-red: #ea4335;
+    --gogle-red-fade-25: #ea433541;
+    --gogle-red-fade-50: #ea433561;
+    --gogle-green: #34a853;
+    --gogle-green-fade-25: #34a85341;
+    --gogle-green-fade-50: #34a85361;
+    --gogle-yellow: #fbbc04;
+    --gogle-yellow-fade-25: #fbbc0441;
+    --gogle-yellow-fade-50: #fbbc0461;
+    --gogle-blue: #4285f4;
+    --gogle-blue-fade-25: #4285f441;
+}
+
 * {
     font-family: Open Sans, sans-serif;
     margin: 0;
@@ -24,6 +40,10 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+body {
+    /* overflow: scroll; */
 }
 
 h1,
@@ -44,6 +64,10 @@ a {
 
 /***************************************** Global CSS ********************************/
 /* sectional titles globally */
+.global-container {
+    position: relative;
+}
+
 #main-join-btn {
     font-family: 'VT323', monospace;
 }
@@ -68,7 +92,7 @@ a {
 
 /* end */
 
-
+/*************************************** Navbar CSS ***************** */
 
 .Navbar-container {
     position: fixed;
@@ -117,10 +141,6 @@ a {
     box-shadow: 0 1px 5px 2px #00000040;
 }
 
-.Navbar-logo {
-    width: 20%;
-}
-
 .Navbar-logo img {
     height: 28px;
     width: 47px;
@@ -130,21 +150,115 @@ a {
     display: none;
 }
 
-.Navbar-auth {
-    width: 20%;
+.Navbar-menu-bar-container {
     display: flex;
+    position: relative;
+    transition: transform 1s cubic-bezier(0.86, 0, 0.07, 1);
+    transform: translateY(-5px);
+}
+
+.Navbar-menu-bar-container.active {
+    transform: translateY(5px);
+}
+
+.arrow-bar {
+    height: 3px;
+    position: relative;
+    border-radius: 1.5px;
+    width: 18px;
+    background-color: var(--body-main-bg);
+    transition: transform 1s cubic-bezier(0.86, 0, 0.07, 1), transform-origin 1s cubic-bezier(0.86, 0, 0.07, 1)
+}
+
+.Navbar-menu-toggler-top {
+    left: 1.5px;
+    transform-origin: 16.5px 1.5px;
+    transform: rotate(-40deg) scaleY(1.1);
+}
+
+.Navbar-menu-toggler-bottom {
+    right: 1.5px;
+    transform-origin: 1.5px 1.5px;
+    transform: rotate(40deg) scaleY(1.1);
+}
+
+.Navbar-menu-toggler-top.active {
+    transform-origin: 16.5px 1.5px;
+    transform: rotate(40deg) scaleY(1.1);
+}
+
+.Navbar-menu-toggler-bottom.active {
+    transform-origin: 1.5px 1.5px;
+    transform: rotate(-40deg) scaleY(1.1);
+}
+
+.Navbar-auth {
+    display: flex;
+    gap: 5px;
     justify-content: flex-end;
+    align-items: center;
+}
+
+/* Mobile Menu */
+.mobile-menu-container {
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    position: fixed;
+    background-color: transparent;
+    transition: 1s;
+}
+
+.mobile-menu-container.active {
+    background-color: #0000001A;
+}
+
+.mobile-menu-links {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #00000061;
+    border-radius: 1rem 1rem 0 0;
+    transition: transform 1s;
+    transform: translateY(-224px);
+}
+
+
+.mobile-menu-links.active{
+    /* bottom: 0; */
+    transform: translateY(0);
+}
+
+.mobile-menu-link {
+    width: 100%;
+    text-align: center;
+}
+
+.mobile-menu-link,
+.mobile-menu-close-btn {
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.mobile-menu-close-btn {
+    padding: .5rem 0;
+    width: 100%;
+    color: #ffffff;
+    background-color: #ff000080;
 }
 
 .Navbar-signin-button {
-    width: fit-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: .5rem 1rem;
     background-color: #4A90F4;
     border-radius: 24px;
     color: #ffffff;
+    white-space: nowrap;
 }
 
 /* Main content */
@@ -377,7 +491,7 @@ a {
 }
 
 .footer-color-strip div {
-    height: 10px;
+    height: 20px;
 }
 
 .footer-color-strip div:nth-child(1) {
@@ -396,12 +510,14 @@ a {
     background-color: #FFB808;
 }
 
+/******************************************** Media Queries ********* */
 
 @media screen and (max-width: 650px) {
 
     /* Global */
-    .Navbar-logo {
-        width: 50%;
+
+    .Navbar-container {
+        min-width: 250px;
     }
 
     .section-heading {
@@ -413,10 +529,21 @@ a {
         display: none;
     }
 
-    .Navbar-auth {
+    /* .Navbar-auth {
         width: 50%;
-    }
+    } */
 
+    /***************** Arrow bar */
+    .Navbar-menu-toggler {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        border: 1px solid var(--body-main-bg);
+        height: 40px;
+        min-width: 40px;
+        background-color: var(--body-main-bg-25);
+    }
     .event-card {
         height: 200px;
         width: 200px;

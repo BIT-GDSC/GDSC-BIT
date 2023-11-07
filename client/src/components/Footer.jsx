@@ -37,7 +37,7 @@ export default function Footer() {
           className="w-[66.67px] h-[32.27px] "
         />
         <div className="chapter">
-          <p>Google Developer Student Club</p>
+          <p>Google Developer Student Clubs</p>
           <p>Bengal Institute of Technology</p>
         </div>
       </div>

@@ -65,8 +65,7 @@ const Auth = () => {
             <div className='w-full flex justify-center sm:pb-[1rem]'>
               <Link to='/'>
                 <img
-                  src='/gdsc_logo_auth.png'
-                  // src='/logo.png'
+                  src='/logo.png'
                   className='w-[100px] h-[70px] object-contain'
                 />
               </Link>
