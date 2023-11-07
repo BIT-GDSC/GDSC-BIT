@@ -292,13 +292,15 @@ const OTPVerify = () => {
             />
           ))}
         </div>
-        <button
-          type='button'
-          className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
-          onClick={handleResendOTP}
-        >
-          Resend OTP
-        </button>
+        <div className='flex justify-center'>
+          <button
+            type='button'
+            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            onClick={handleResendOTP}
+          >
+            Resend OTP
+          </button>
+        </div>
       </div>
       <button
         type='button'
@@ -498,13 +500,15 @@ const ForgotPasswordEmail = () => {
         >
           {emailVerifyLoading ? 'VERIFYING' : 'CONTINUE'}
         </button>
-        <button
-          type='button'
-          className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
-          onClick={() => setAuthType("sign-in")}
-        >
-          Back to Login
-        </button>
+        <div className='flex justify-center'>
+          <button
+            type='button'
+            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            onClick={() => setAuthType("sign-in")}
+          >
+            Back to Login
+          </button>
+        </div>
       </form>
     </>
   )
@@ -562,13 +566,15 @@ const ForgotPasswordOTP = () => {
             />
           ))}
         </div>
-        <button
-          type='button'
-          className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
-          onClick={handleResendOTP}
-        >
-          Resend OTP
-        </button>
+        <div className='flex justify-center'>
+          <button
+            type='button'
+            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            onClick={handleResendOTP}
+          >
+            Resend OTP
+          </button>
+        </div>
       </div>
       <button
         type='button'
