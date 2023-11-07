@@ -64,6 +64,10 @@ a {
 
 /***************************************** Global CSS ********************************/
 /* sectional titles globally */
+.global-container {
+    position: relative;
+}
+
 #main-join-btn {
     font-family: 'VT323', monospace;
 }
@@ -192,6 +196,61 @@ a {
     display: flex;
     gap: 5px;
     justify-content: flex-end;
+    align-items: center;
+}
+
+/* Mobile Menu */
+.mobile-menu-container {
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    position: fixed;
+    background-color: transparent;
+    transition: 1s;
+}
+
+.mobile-menu-container.active {
+    background-color: #0000001A;
+}
+
+.mobile-menu-links {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #00000061;
+    border-radius: 1rem 1rem 0 0;
+    transition: transform 1s;
+    transform: translateY(-224px);
+}
+
+
+.mobile-menu-links.active{
+    /* bottom: 0; */
+    transform: translateY(0);
+}
+
+.mobile-menu-link {
+    width: 100%;
+    text-align: center;
+}
+
+.mobile-menu-link,
+.mobile-menu-close-btn {
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.mobile-menu-close-btn {
+    padding: .5rem 0;
+    width: 100%;
+    color: #ffffff;
+    background-color: #ff000080;
 }
 
 .Navbar-signin-button {
@@ -432,7 +491,7 @@ a {
 }
 
 .footer-color-strip div {
-    height: 10px;
+    height: 20px;
 }
 
 .footer-color-strip div:nth-child(1) {
@@ -470,9 +529,9 @@ a {
         display: none;
     }
 
-    .Navbar-auth {
+    /* .Navbar-auth {
         width: 50%;
-    }
+    } */
 
     /***************** Arrow bar */
     .Navbar-menu-toggler {
@@ -480,16 +539,11 @@ a {
         align-items: center;
         justify-content: center;
         border-radius: 20px;
-        /* border: 1px solid var(--gogle-red); */
-        /* border: 1px solid #ff0000; */
         border: 1px solid var(--body-main-bg);
         height: 40px;
         min-width: 40px;
-        /* background-color: #ff00001A; */
         background-color: var(--body-main-bg-25);
     }
-
-
     .event-card {
         height: 200px;
         width: 200px;
