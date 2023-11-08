@@ -24,13 +24,15 @@ export default function MobileMenu ({ menuLinks }) {
     <div
       style={{ display: 'none' }}
       ref={menuRef}
-      className={`mobile-menu-container`}
+      className={`mobile-menu-container ${mobileMenu ? 'active' : 'normal'}`}
     >
-      <div ref={linkRef} className='mobile-menu-links'>
+      <div
+        ref={linkRef}
+        className={`mobile-menu-links ${mobileMenu ? 'active' : 'normal'}`}
+      >
         {menuLinks.map(item => (
           <Link to={item.link} className='mobile-menu-link' key={item.id}>
             <span>{item.name}</span>
-            {/* <div className='mobile-menu-link-highlight' /> */}
             <hr />
           </Link>
         ))}

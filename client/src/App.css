@@ -205,8 +205,11 @@ a {
     width: 100%;
     top: 0;
     position: fixed;
-    background-color: transparent;
     transition: 1s;
+}
+
+.mobile-menu-container.normal {
+    background-color: transparent;
 }
 
 .mobile-menu-container.active {
@@ -226,11 +229,13 @@ a {
     border: 1px solid #00000061;
     border-radius: 1rem 1rem 0 0;
     transition: transform 1s;
+}
+
+.mobile-menu-links.normal {
     transform: translateY(-224px);
 }
 
-
-.mobile-menu-links.active{
+.mobile-menu-links.active {
     /* bottom: 0; */
     transform: translateY(0);
 }
@@ -247,6 +252,7 @@ a {
 }
 
 .mobile-menu-close-btn {
+    margin-top: .5rem;
     padding: .5rem 0;
     width: 100%;
     color: #ffffff;
@@ -544,6 +550,7 @@ a {
         min-width: 40px;
         background-color: var(--body-main-bg-25);
     }
+
     .event-card {
         height: 200px;
         width: 200px;
