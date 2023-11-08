@@ -292,7 +292,7 @@ export const useForgotStore = create((set) => ({
                 .then((result) => {
                     if (result.success === true) {
                         toast.success(result.msg, { duration: 7500 });
-                        localStorage.setItem("forgotToken", result.forgotToken);
+                        localStorage.setItem("forgot_token", result.forgotToken);
                         useAuthStore.getState().setAuthType("forgot-password-reset");
                     }
                     if (result.success === false) toast.error(result.msg, { duration: 7500 });
@@ -307,7 +307,8 @@ export const useForgotStore = create((set) => ({
         try {
             set({ resetPasswordLoading: true });
             const CustomHeader = new Headers();
-            CustomHeader.append("forgot_token", localStorage.getItem("forgotToken"));
+            CustomHeader.append('Content-Type', 'application/json');
+            CustomHeader.append("forgot_token", localStorage.getItem("forgot_token"));
             const config = {
                 method: 'POST',
                 headers: CustomHeader,
@@ -326,7 +327,7 @@ export const useForgotStore = create((set) => ({
                     }
                 })
                 .finally(() => {
-                    localStorage.removeItem("forgotToken");
+                    localStorage.removeItem("forgot_token");
                     set({ resetPasswordLoading: false });
                 })
         }

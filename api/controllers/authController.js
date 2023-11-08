@@ -384,26 +384,13 @@ exports.forgotOTPVerify = async (req, res) => {
 
 exports.forgotResetPassword = async (req, res) => {
     try {
-        const { password } = req.body;
+        const password = req.body.password;
         const encryptedPassword = await bcrypt.hash(password, 10);
 
-        // await User.findByIdAndUpdate(req.user._id, {
-        //     password: encryptedPassword,
-        //     $unset: { jwtForgotToken: 1 }
-        // });
-        // await User.findByIdAndUpdate(req.user._id, {
-        //     $unset: { jwtForgotToken: 1 }
-        // });
-
-        await Promise.all([
-            await User.findByIdAndUpdate(req.user._id, {
-                password: encryptedPassword,
-                $unset: { jwtForgotToken: 1 }
-            }),
-            await User.findByIdAndUpdate(req.user._id, {
-                $unset: { jwtForgotToken: 1 }
-            })
-        ]);
+        await User.findByIdAndUpdate(req.user._id, {
+            password: encryptedPassword,
+            $unset: { jwtForgotToken: 1 }
+        });
 
         res.status(200).json({
             success: true,
@@ -411,7 +398,6 @@ exports.forgotResetPassword = async (req, res) => {
         });
     }
     catch (error) {
-        console.log(error);
         res.status(500).json({
             success: false,
             msg: "Something went wrong... Try again later!"
