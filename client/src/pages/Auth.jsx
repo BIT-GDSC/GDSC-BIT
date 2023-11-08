@@ -516,8 +516,7 @@ const ForgotPasswordEmail = () => {
 
 // Forgot password otp component
 const ForgotPasswordOTP = () => {
-  const { setAuthType } = useAuthStore();
-  const { resendOTP } = useForgotStore();
+  const { verifyOTP, resendOTP, otpVerify } = useForgotStore();
 
   const [otp, setOtp] = useState(Array(5).fill(''))
 
@@ -542,7 +541,7 @@ const ForgotPasswordOTP = () => {
     const otpValue = otp.join('')
     if (otpValue.length < 5) return toast.error('Enter OTP to proceed!')
 
-    setAuthType("forgot-password-reset");
+    otpVerify(otpValue);
   }
 
   const handleResendOTP = () => {
@@ -578,14 +577,14 @@ const ForgotPasswordOTP = () => {
       </div>
       <button
         type='button'
-        disabled={false}
-        className={`py-[0.625rem] px-[1.25rem] text-white ${false
+        disabled={verifyOTP}
+        className={`py-[0.625rem] px-[1.25rem] text-white ${verifyOTP
           ? 'bg-[#FFBC39] cursor-not-allowed'
           : 'bg-[#103FEF] hover:bg-[#FFBC39]'
           } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
         onClick={handleSubmitOTP}
       >
-        {false ? 'VERIFYING' : 'VERIFY'}
+        {verifyOTP ? 'VERIFYING' : 'VERIFY'}
       </button>
     </div>
   )
@@ -593,6 +592,8 @@ const ForgotPasswordOTP = () => {
 
 // Forgot password reset component
 const ForgotPasswordReset = () => {
+  const { resetPasswordLoading, resetPassword } = useForgotStore();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -602,7 +603,7 @@ const ForgotPasswordReset = () => {
     if (!confirmPassword) return toast.error('Retype your password to proceed!')
     if (password !== confirmPassword) return toast.error("Password doesn't match!")
 
-    toast.error("Currently under maintainance!");
+    resetPassword(password);
   }
 
   return (
@@ -627,14 +628,14 @@ const ForgotPasswordReset = () => {
         </div>
       </div>
       <button
-        disabled={false}
+        disabled={resetPasswordLoading}
         type='submit'
-        className={`py-[0.625rem] px-[1.25rem] text-white ${false
+        className={`py-[0.625rem] px-[1.25rem] text-white ${resetPasswordLoading
           ? 'bg-[#FFBC39] cursor-not-allowed'
           : 'bg-[#103FEF] hover:bg-[#FFBC39]'
           } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
       >
-        {false ? 'VERIFYING' : 'CONTINUE'}
+        {resetPasswordLoading ? 'VERIFYING' : 'CONTINUE'}
       </button>
     </form>
   )

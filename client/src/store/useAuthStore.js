@@ -41,10 +41,10 @@ export const useRegisterStore = create(() => ({
                 .then(response => response.json())
                 .then(result => {
                     if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
                         localStorage.setItem("token", result.token);
                         useAuthStore.getState().setRegisterSuccess(true);
                         useAuthStore.getState().setAuthType("otp-verify");
-                        toast.success(result.msg, { duration: 7500 });
                     }
 
                     if (result.success === false) {
@@ -216,6 +216,8 @@ export const useLoginStore = create(() => ({
 
 export const useForgotStore = create((set) => ({
     email: "",
+    verifyOTP: false,
+    resetPasswordLoading: false,
     emailVerify: async (email) => {
         try {
             set({ email: email });
@@ -273,7 +275,29 @@ export const useForgotStore = create((set) => ({
     },
     otpVerify: async (otp) => {
         try {
+            const email = useForgotStore.getState().email;
+            if (!email) return toast.error("No email found... Try again!", { duration: 7500 });
 
+            set({ verifyOTP: true });
+            const CustomHeader = new Headers();
+            CustomHeader.append("otp", otp);
+            CustomHeader.append("email", email);
+            const config = {
+                method: 'GET',
+                headers: CustomHeader,
+            }
+
+            fetch(`/api/forgot-otp-verify`, config)
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
+                        localStorage.setItem("forgotToken", result.forgotToken);
+                        useAuthStore.getState().setAuthType("forgot-password-reset");
+                    }
+                    if (result.success === false) toast.error(result.msg, { duration: 7500 });
+                })
+                .finally(() => set({ verifyOTP: false }));
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");
@@ -281,10 +305,33 @@ export const useForgotStore = create((set) => ({
     },
     resetPassword: async (password) => {
         try {
+            set({ resetPasswordLoading: true });
+            const CustomHeader = new Headers();
+            CustomHeader.append("forgot_token", localStorage.getItem("forgotToken"));
+            const config = {
+                method: 'POST',
+                headers: CustomHeader,
+                body: JSON.stringify({ password })
+            }
+            await fetch(`/api/forgot-reset-password`, config)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success === true) {
+                        toast.success(result.msg, { duration: 7500 });
+                        useAuthStore.getState().setAuthType("sign-in");
+                    }
 
+                    if (result.success === false) {
+                        toast.success(result.msg, { duration: 7500 });
+                    }
+                })
+                .finally(() => {
+                    localStorage.removeItem("forgotToken");
+                    set({ resetPasswordLoading: false });
+                })
         }
         catch (error) {
-            toast.error("Something went wrong... Try again later!");
+            localStorage.removeItem("token");
         }
     }
 }));
