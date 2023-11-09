@@ -7,7 +7,7 @@ import { navData } from '../utils/navbar'
 
 const Container = ({ children }) => {
   const location = useLocation()
-  const { mobileMenu } = useAnimStore()
+  const { menuPopup } = useAnimStore()
 
   return (
     <>
@@ -16,7 +16,7 @@ const Container = ({ children }) => {
         {location.pathname !== '/auth' && <Navbar />}
         <div className='w-full h-full fixed -z-10 top-0 left-0 right-0 bg-gradient-to-b from-[#FFBC39] to-[#FFF]' />
         <div>{children}</div>
-        {mobileMenu && <MobileMenu menuLinks={navData} />}
+        {menuPopup && <MobileMenu menuLinks={navData} />}
       </div>
     </>
   )
