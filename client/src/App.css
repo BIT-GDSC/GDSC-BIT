@@ -14,18 +14,18 @@
 
 :root {
     --body-main-bg: #FFBC39;
-    --body-main-bg-25: #FFBC3941;
+    --body-main-bg-25: #FFBC3940;
     --gogle-red: #ea4335;
-    --gogle-red-fade-25: #ea433541;
+    --gogle-red-fade-25: #ea433540;
     --gogle-red-fade-50: #ea433561;
     --gogle-green: #34a853;
-    --gogle-green-fade-25: #34a85341;
+    --gogle-green-fade-25: #34a85340;
     --gogle-green-fade-50: #34a85361;
     --gogle-yellow: #fbbc04;
-    --gogle-yellow-fade-25: #fbbc0441;
+    --gogle-yellow-fade-25: #fbbc0440;
     --gogle-yellow-fade-50: #fbbc0461;
     --gogle-blue: #4285f4;
-    --gogle-blue-fade-25: #4285f441;
+    --gogle-blue-fade-25: #4285f440;
 }
 
 * {
@@ -213,7 +213,7 @@ a {
 }
 
 .mobile-menu-container.active {
-    background-color: #0000001A;
+    background-color: #00000026;
 }
 
 .mobile-menu-links {
@@ -226,7 +226,6 @@ a {
     gap: 5px;
     padding: 2rem 1rem;
     background-color: #ffffff;
-    border: 1px solid #00000061;
     border-radius: 1rem 1rem 0 0;
     transition: transform 1s cubic-bezier(0.86, 0, 0.07, 1)
 }
@@ -257,8 +256,9 @@ a {
     margin: 1rem 0;
     padding: .5rem 0;
     width: 100%;
-    color: #ffffff;
-    background-color: #ff000080;
+    color: #ff0000;
+    outline: 1px solid #ff0000;
+    background-color: #ff00001A;
 }
 
 .Navbar-signin-button {
@@ -302,7 +302,7 @@ a {
     height: 40px;
     border-radius: 28px;
     border: 1px solid #34a853;
-    background-color: #34a85361;
+    background-color: #34a85340;
     transition: 400ms;
 }
 
