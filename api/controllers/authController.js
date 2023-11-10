@@ -243,13 +243,8 @@ exports.loadUser = async (req, res) => {
 exports.forgotEmailVerify = async (req, res) => {
     try {
         const { email } = req.body;
-        const randomOTP = generateOTP(5);
-        const otpCreatedAt = new Date();
 
-        const user = await User.findOneAndUpdate({ email }, {
-            forgotOTP: randomOTP,
-            otpCreatedAt
-        }).where({ isVerified: true });
+        const user = await User.findOne({ email }).where({ isVerified: true });
         if (!user) {
             return res.status(400).json({
                 success: false,
@@ -257,16 +252,37 @@ exports.forgotEmailVerify = async (req, res) => {
             });
         }
 
-        await sendOTP({
-            email,
-            subject: "Forgot Password | GDSC Bengal Institute of Technology",
-            message: `Here's your OTP: ${randomOTP}`
-        });
+        if (user.password) {
+            const randomOTP = generateOTP(5);
+            const otpCreatedAt = new Date();
 
-        res.status(200).json({
-            success: true,
-            msg: "OTP sent to your mail!",
-        });
+            await User.findByIdAndUpdate({ _id: user._id }, {
+                forgotOTP: randomOTP,
+                otpCreatedAt
+            });
+            await sendOTP({
+                email,
+                subject: "Forgot Password | GDSC Bengal Institute of Technology",
+                message: `Here's your OTP: ${randomOTP}`
+            });
+
+            res.status(200).json({
+                success: true,
+                msg: "OTP sent to your mail!",
+            });
+        }
+        else if (user.googleId) {
+            return res.status(400).json({
+                success: false,
+                msg: "Sign in with Google to proceed!",
+            });
+        }
+        else if (user.linkedinId) {
+            return res.status(400).json({
+                success: false,
+                msg: "Sign in with LinkedIn to proceed!",
+            });
+        }
     }
     catch (error) {
         res.status(500).json({
@@ -314,9 +330,48 @@ exports.forgotResendOTP = async (req, res) => {
 
 exports.forgotOTPVerify = async (req, res) => {
     try {
+        const otp = req.headers["otp"];
+        const email = req.headers["email"];
+
+        const user = await User.findOne({ email }).where({ isVerified: true });
+
+        const otpCreatedAt = new Date(user.otpCreatedAt);
+        const currentTime = new Date();
+        const diffMinutes = (currentTime - otpCreatedAt) / 1000 / 60;
+
+        if (diffMinutes > 30) {
+            await User.updateOne({ _id: user._id }, {
+                $unset: {
+                    forgotOTP: 1,
+                    otpCreatedAt: 1
+                }
+            });
+            return res.status(400).json({
+                success: false,
+                msg: "OTP has expired... Try again!",
+            });
+        }
+
+        if (user.forgotOTP !== otp) {
+            return res.status(400).json({
+                success: false,
+                msg: "OTP doesn't match... Try again!",
+            });
+        }
+
+        await User.updateOne({ _id: user._id }, {
+            $unset: {
+                forgotOTP: 1,
+                otpCreatedAt: 1
+            }
+        });
+        const forgotToken = user.getForgotToken();
+        await user.save();
+
         res.status(200).json({
             success: true,
-            msg: ""
+            msg: "OTP verified!",
+            forgotToken
         });
     }
     catch (error) {
@@ -329,9 +384,17 @@ exports.forgotOTPVerify = async (req, res) => {
 
 exports.forgotResetPassword = async (req, res) => {
     try {
+        const password = req.body.password;
+        const encryptedPassword = await bcrypt.hash(password, 10);
+
+        await User.findByIdAndUpdate(req.user._id, {
+            password: encryptedPassword,
+            $unset: { jwtForgotToken: 1 }
+        });
+
         res.status(200).json({
             success: true,
-            msg: "",
+            msg: "Password successfully changed!",
         });
     }
     catch (error) {

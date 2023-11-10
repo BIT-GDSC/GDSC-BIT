@@ -11,7 +11,7 @@ const {
     forgotOTPVerify,
     forgotResetPassword
 } = require("../controllers/authController.js");
-const { isRegisteredUser, isVerifiedUser } = require("../middleware/auth.js");
+const { isRegisteredUser, isVerifiedUser, isForgotToken } = require("../middleware/auth.js");
 const singleUpload = require("../middleware/multer.js");
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.get("/load-user", isVerifiedUser, loadUser);
 
 router.post("/forgot-email-verify", forgotEmailVerify);
 router.post("/forgot-resend-otp", forgotResendOTP);
-router.post("/forgot-otp-verify", forgotOTPVerify);
-router.post("/forgot-reset-password", isVerifiedUser, forgotResetPassword);
+router.get("/forgot-otp-verify", forgotOTPVerify);
+router.post("/forgot-reset-password", isForgotToken, forgotResetPassword);
 
 module.exports = router;

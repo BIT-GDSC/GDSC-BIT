@@ -21,6 +21,7 @@ const UserSchema = mongoose.Schema({
     registerOTP: String,
     forgotOTP: String,
     otpCreatedAt: Date,
+    jwtForgotToken: String,
     jwtLoginToken: String,
     joinedOn: {
         type: Date,
@@ -30,6 +31,18 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.methods.comparePassword = async function (enteredPasssword) {
     return bcrypt.compare(enteredPasssword, this.password);
+};
+
+UserSchema.methods.getForgotToken = function () {
+    const forgotToken = JWT.sign(
+        { userId: this._id },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRE,
+        }
+    );
+    this.jwtForgotToken = forgotToken;
+    return forgotToken;
 };
 
 UserSchema.methods.getJWTToken = function () {
