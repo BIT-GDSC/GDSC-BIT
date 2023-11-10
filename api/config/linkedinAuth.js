@@ -3,30 +3,13 @@ const { Strategy: LinkedInStrategy } = require('passport-linkedin-oauth2');
 const User = require('../models/userModel.js');
 const cloudinary = require('cloudinary');
 
-passport.serializeUser((user, done) => {
-    const serializedUser = {
-        id: user.id,
-    };
-    done(null, serializedUser);
-});
-
-passport.deserializeUser(async (serializedUser, done) => {
-    try {
-        const user = await User.findById(serializedUser.id);
-        done(null, user);
-    } catch (error) {
-        done(error);
-    }
-});
-
 passport.use(
     new LinkedInStrategy(
         {
             clientID: process.env.LINKEDIN_CLIENT_ID,
             clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-            callbackURL: `${process.env.BACKEND_URL}/auth/linkedin/callback`,
+            callbackURL: `${process.env.BACKEND_URL}/api/auth/linkedin/callback`,
             scope: ["openid", "profile", "email"],
-            // scope: ["openid", "profile", "email", "r_emailaddress", "r_liteprofile"],
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -62,3 +45,21 @@ passport.use(
         }
     )
 );
+
+// scope: ["openid", "profile", "email", "r_emailaddress", "r_liteprofile"],
+            
+// passport.serializeUser((user, done) => {
+//     const serializedUser = {
+//         id: user.id,
+//     };
+//     done(null, serializedUser);
+// });
+
+// passport.deserializeUser(async (serializedUser, done) => {
+//     try {
+//         const user = await User.findById(serializedUser.id);
+//         done(null, user);
+//     } catch (error) {
+//         done(error);
+//     }
+// });

@@ -406,7 +406,7 @@ const SocialAuth = () => {
   const handleGoogleAuth = () => {
     localStorage.removeItem('login_token')
     const authUrl = isProduction
-      ? 'https://gdsc-bit.vercel.app/auth/google'
+      ? 'https://gdsc-bit.vercel.app/api/auth/google'
       : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
     window.location.href = authUrl
   }
@@ -417,7 +417,7 @@ const SocialAuth = () => {
       toast.error('Currently under maintainance!')
     } else {
       const authUrl = isProduction
-        ? 'https://gdsc-bit.vercel.app/auth/linkedin'
+        ? 'https://gdsc-bit.vercel.app/api/auth/linkedin'
         : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
       window.location.href = authUrl
     }
