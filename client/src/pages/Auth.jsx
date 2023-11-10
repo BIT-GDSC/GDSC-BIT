@@ -168,21 +168,20 @@ const ManualAuth = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
 
   const handleAuth = async e => {
     e.preventDefault()
 
     localStorage.removeItem('token')
     if (!email) return toast.error('Enter email to proceed!')
-    if (!password) return toast.error('Enter password to proceed!')
+
     if (authType === 'sign-up') {
-      if (!confirmPassword)
-        return toast.error('Retype your password to proceed!')
-      if (password !== confirmPassword)
-        return toast.error("Password doesn't match!")
       userRegisterCredential(email, password)
-    } else if (authType === 'sign-in') userLogin(email, password, navigate)
+    }
+    else if (authType === 'sign-in') {
+      if (!password) return toast.error('Enter password to proceed!')
+      userLogin(email, password, navigate)
+    }
   }
 
   return (
@@ -194,33 +193,18 @@ const ManualAuth = () => {
           </label>
           <InputBox id='email' type='email' value={email} setValue={setEmail} />
         </div>
-        <div className='flex flex-col gap-[0.25rem]'>
-          <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
-            Password
-          </label>
-          <InputBox
-            id='password'
-            type='password'
-            value={password}
-            setValue={setPassword}
-          />
-        </div>
-        {authType === 'sign-up' && (
+        {authType === 'sign-in' && (
           <div className='flex flex-col gap-[0.25rem]'>
-            <label
-              htmlFor='confirm-password'
-              className='font-[500] text-[0.8125rem]'
-            >
-              Confirm Password
+            <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
+              Password
             </label>
             <InputBox
-              id='confirm-password'
+              id='password'
               type='password'
-              value={confirmPassword}
-              setValue={setConfirmPassword}
+              value={password}
+              setValue={setPassword}
             />
-          </div>
-        )}
+          </div>)}
       </div>
       <button
         disabled={registerLoading || verifyLoading}

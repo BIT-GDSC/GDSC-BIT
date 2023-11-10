@@ -23,7 +23,7 @@ export const useAuthStore = create((set) => ({
 }));
 
 export const useRegisterStore = create(() => ({
-    userRegisterCredential: async (email, password) => {
+    userRegisterCredential: async (email) => {
         try {
             useAuthStore.getState().setRegisterLoading(true);
             useAuthStore.getState().setRegisterSuccess(false);
@@ -32,10 +32,7 @@ export const useRegisterStore = create(() => ({
             const config = {
                 method: 'POST',
                 headers: CustomHeader,
-                body: JSON.stringify({
-                    email,
-                    password
-                })
+                body: JSON.stringify({ email })
             }
             await fetch(`/api/register-credential`, config)
                 .then(response => response.json())

@@ -8,7 +8,7 @@ const { v2 } = require('cloudinary');
 
 exports.userRegisterCredential = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email } = req.body;
 
         let user = await User.findOne({ email });
         if (user && user.isVerified === true) {
@@ -18,14 +18,12 @@ exports.userRegisterCredential = async (req, res) => {
             });
         }
 
-        const encryptedPassword = await bcrypt.hash(password, 10);
         const randomOTP = generateOTP(5);
         const otpCreatedAt = new Date();
 
         if (user && user.isVerified === false) {
             user = await User.findByIdAndUpdate(user._id, {
                 email,
-                password: encryptedPassword,
                 registerOTP: randomOTP,
                 otpCreatedAt
             });
@@ -33,7 +31,6 @@ exports.userRegisterCredential = async (req, res) => {
         else {
             user = await User.create({
                 email,
-                password: encryptedPassword,
                 registerOTP: randomOTP,
                 otpCreatedAt
             });
