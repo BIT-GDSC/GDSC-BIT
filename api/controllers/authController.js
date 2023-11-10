@@ -133,7 +133,9 @@ exports.userRegisterVerifyOTP = async (req, res) => {
 
 exports.userRegisterDetails = async (req, res) => {
     try {
-        const { firstName, lastName } = req.body;
+        const { firstName, lastName, password } = req.body;
+        const encryptedPassword = await bcrypt.hash(password, 10);
+
         const file = req.file;
         let user;
 
@@ -150,6 +152,7 @@ exports.userRegisterDetails = async (req, res) => {
                 authType: "login",
                 firstName,
                 lastName,
+                password: encryptedPassword,
                 avatar: {
                     public_id: userImage.public_id,
                     url: userImage.secure_url,
@@ -162,7 +165,13 @@ exports.userRegisterDetails = async (req, res) => {
                 msg: "Your account is registered successfully!"
             });
         }
-        user = await User.findByIdAndUpdate(req.user._id, { authType: "login", firstName, lastName, isVerified: true });
+        user = await User.findByIdAndUpdate(req.user._id, {
+            authType: "login",
+            firstName,
+            lastName,
+            password: encryptedPassword,
+            isVerified: true
+        });
 
         res.status(200).json({
             success: true,
@@ -192,29 +201,13 @@ exports.userLogin = async (req, res) => {
             });
         }
 
-        if (user.password) {
-            const isPasswordMatched = await user.comparePassword(password);
-
-            if (!isPasswordMatched) {
-                return res.status(400).json({
-                    success: false,
-                    msg: "Invalid credential!",
-                });
-            }
-        }
-        else if (user.googleId) {
+        const isPasswordMatched = await user.comparePassword(password);
+        if (!isPasswordMatched) {
             return res.status(400).json({
                 success: false,
-                msg: "Credentials associated with your Google account! Sign in with Google to proceed!",
+                msg: "Invalid credential!",
             });
         }
-        else if (user.linkedinId) {
-            return res.status(400).json({
-                success: false,
-                msg: "Credentials associated with your LinkedIn account! Sign in with LinkedIn to proceed!",
-            });
-        }
-
         await sendToken(true, user, 201, "Login success!", res);
     }
     catch (error) {
@@ -252,37 +245,23 @@ exports.forgotEmailVerify = async (req, res) => {
             });
         }
 
-        if (user.password) {
-            const randomOTP = generateOTP(5);
-            const otpCreatedAt = new Date();
+        const randomOTP = generateOTP(5);
+        const otpCreatedAt = new Date();
 
-            await User.findByIdAndUpdate({ _id: user._id }, {
-                forgotOTP: randomOTP,
-                otpCreatedAt
-            });
-            await sendOTP({
-                email,
-                subject: "Forgot Password | GDSC Bengal Institute of Technology",
-                message: `Here's your OTP: ${randomOTP}`
-            });
+        await User.findByIdAndUpdate({ _id: user._id }, {
+            forgotOTP: randomOTP,
+            otpCreatedAt
+        });
+        await sendOTP({
+            email,
+            subject: "Forgot Password | GDSC Bengal Institute of Technology",
+            message: `Here's your OTP: ${randomOTP}`
+        });
 
-            res.status(200).json({
-                success: true,
-                msg: "OTP sent to your mail!",
-            });
-        }
-        else if (user.googleId) {
-            return res.status(400).json({
-                success: false,
-                msg: "Sign in with Google to proceed!",
-            });
-        }
-        else if (user.linkedinId) {
-            return res.status(400).json({
-                success: false,
-                msg: "Sign in with LinkedIn to proceed!",
-            });
-        }
+        res.status(200).json({
+            success: true,
+            msg: "OTP sent to your mail!",
+        });
     }
     catch (error) {
         res.status(500).json({

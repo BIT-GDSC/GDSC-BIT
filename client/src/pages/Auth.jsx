@@ -334,6 +334,8 @@ const NewUser = () => {
   const [lastName, setLastName] = useState(
     user && user?.lastName ? user.lastName : ''
   )
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleFileChange = e => {
     setImage(URL.createObjectURL(e.target.files[0]))
@@ -345,10 +347,14 @@ const NewUser = () => {
     e.preventDefault()
     if (!firstName) return toast.error('First name is mandatory!')
     if (!lastName) return toast.error('Last name is mandatory!')
+    if (!password) return toast.error('Password is mandatory!')
+    if (!confirmPassword) return toast.error('Retype your password to proceed!')
+    if (password !== confirmPassword) return toast.error("Password doesn't match!")
 
     userRegisterDetails({
       firstName,
       lastName,
+      password,
       ...(imageFile ? { imageFile: imageFile } : { imageFile: '' }),
       ...(verifySuccess && user ? { shallRedirect: true } : { shallRedirect: false }),
       navigate
@@ -402,6 +408,28 @@ const NewUser = () => {
             type='text'
             value={lastName}
             setValue={setLastName}
+          />
+        </div>
+        <div className='flex flex-col gap-[0.25rem]'>
+          <label htmlFor='set-password' className='font-[500] text-[0.8125rem]'>
+            Set Password
+          </label>
+          <InputBox
+            id='set-password'
+            type='password'
+            value={password}
+            setValue={setPassword}
+          />
+        </div>
+        <div className='flex flex-col gap-[0.25rem]'>
+          <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
+            Confirm Password
+          </label>
+          <InputBox
+            id='confirm-password'
+            type='password'
+            value={confirmPassword}
+            setValue={setConfirmPassword}
           />
         </div>
       </div>
@@ -613,7 +641,12 @@ const ForgotPasswordReset = () => {
           <label htmlFor='new-password' className='font-[500] text-[0.8125rem]'>
             New Password
           </label>
-          <InputBox id='new-password' type='password' value={password} setValue={setPassword} />
+          <InputBox
+            id='new-password'
+            type='password'
+            value={password}
+            setValue={setPassword}
+          />
         </div>
         <div className='flex flex-col gap-[0.25rem]'>
           <label htmlFor='password' className='font-[500] text-[0.8125rem]'>

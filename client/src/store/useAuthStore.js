@@ -109,12 +109,13 @@ export const useRegisterStore = create(() => ({
             toast.error("Something went wrong... Try again later!");
         }
     },
-    userRegisterDetails: async ({ firstName, lastName, imageFile, shallRedirect, navigate }) => {
+    userRegisterDetails: async ({ firstName, lastName, password, imageFile, shallRedirect, navigate }) => {
         try {
             useAuthStore.getState().setRegisterDetail(true);
             const formData = new FormData();
             formData.append('firstName', firstName);
             formData.append('lastName', lastName);
+            formData.append('password', password);
             if (imageFile) formData.append('file', imageFile);
 
             const CustomHeader = new Headers();
