@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   useAuthStore,
@@ -8,46 +8,14 @@ import {
 } from '../store/useAuthStore'
 import useWindowHeight from '../utils/useWindowHeight'
 import { toast } from 'sonner'
+import useSocialAuth from '../utils/useSocialAuth'
 
 // Auth page component
 const Auth = () => {
-  const navigate = useNavigate()
-  const { height, isReady } = useWindowHeight()
-  const { setUser, setVerifyLoading, verifySuccess, setVerifySuccess } = useAuthStore()
+  const { isReady } = useWindowHeight()
   const { authType, setAuthType } = useAuthStore()
 
-  const urlParams = new URLSearchParams(window.location.search)
-  const authenticationType = urlParams.get('type')
-  const userDataString = urlParams.get('response')
-  const token = urlParams.get('token')
-
-  useEffect(() => {
-    if (userDataString) {
-      const userData = JSON.parse(userDataString)
-      setUser(userData)
-      setVerifyLoading(false)
-      setVerifySuccess(true)
-    }
-  }, [userDataString])
-
-  useEffect(() => {
-    if (authenticationType !== '') {
-      if (authenticationType === 'login') {
-        const prevPath = localStorage.getItem('prevPath')
-        if (prevPath) {
-          navigate(prevPath)
-          localStorage.removeItem('prevPath')
-        } else navigate('/');
-      }
-      if (authenticationType === 'register') {
-        setAuthType('new-user')
-      }
-    }
-  }, [authenticationType])
-
-  useEffect(() => {
-    if (token) localStorage.setItem('token', token)
-  }, [token])
+  useSocialAuth();
 
   return (
     <div
@@ -172,7 +140,7 @@ const ManualAuth = () => {
   const handleAuth = async e => {
     e.preventDefault()
 
-    localStorage.removeItem('token')
+    localStorage.removeItem('login_token')
     if (!email) return toast.error('Enter email to proceed!')
 
     if (authType === 'sign-up') {
@@ -419,12 +387,13 @@ const NewUser = () => {
       </div>
       <button
         type='submit'
+        disabled={registerDetail}
         className={`py-[0.625rem] px-[1.25rem] text-white ${registerDetail
           ? 'bg-[#FFBC39] cursor-not-allowed'
           : 'bg-[#103FEF] hover:bg-[#FFBC39]'
           } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
       >
-        CREATE
+        {registerDetail ? 'CREATING...' : 'CREATE'}
       </button>
     </form>
   )
@@ -435,7 +404,7 @@ const SocialAuth = () => {
   const isProduction = import.meta.env.MODE === 'production'
 
   const handleGoogleAuth = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('login_token')
     const authUrl = isProduction
       ? 'https://gdsc-bit.vercel.app/auth/google'
       : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
@@ -443,7 +412,7 @@ const SocialAuth = () => {
   }
 
   const handleLinkedInAuth = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('login_token')
     if (isProduction) {
       toast.error('Currently under maintainance!')
     } else {

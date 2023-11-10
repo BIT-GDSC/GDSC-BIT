@@ -44,7 +44,7 @@ export const Navbar = () => {
               />
             </div>
           ) : (
-            <div className='relative w-[50px] h-[50px] rounded-full  overflow-hidden'>
+            <div className='relative w-[40px] h-[40px] rounded-full  overflow-hidden'>
               <Skeleton className='absolute -top-1 left-0 right-0 bottom-0 w-full h-full' />
             </div>
           )}

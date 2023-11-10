@@ -1,6 +1,5 @@
 const User = require('../models/userModel.js');
 const bcrypt = require('bcryptjs');
-const sendToken = require('../utils/sendToken.js');
 const generateOTP = require('../utils/generateOTP.js');
 const sendOTP = require('../mail/sendOTP.js');
 const getDataUrl = require('../middleware/dataURL.js');
@@ -42,7 +41,14 @@ exports.userRegisterCredential = async (req, res) => {
             message: `Here's your OTP: ${randomOTP}`
         });
 
-        await sendToken(false, user, 200, "An OTP has been sent to your email!", res);
+        const registerToken = user.getRegisterToken();
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            msg: "An OTP has been sent to your email!",
+            registerToken
+        });
     }
     catch (error) {
         res.status(500).json({
@@ -154,7 +160,8 @@ exports.userRegisterDetails = async (req, res) => {
                     public_id: userImage.public_id,
                     url: userImage.secure_url,
                 },
-                isVerified: true
+                isVerified: true,
+                $unset: { jwtRegisterToken: 1 }
             });
 
             return res.status(200).json({
@@ -167,7 +174,8 @@ exports.userRegisterDetails = async (req, res) => {
             firstName,
             lastName,
             password: encryptedPassword,
-            isVerified: true
+            isVerified: true,
+            $unset: { jwtRegisterToken: 1 }
         });
 
         res.status(200).json({
@@ -205,7 +213,16 @@ exports.userLogin = async (req, res) => {
                 msg: "Invalid credential!",
             });
         }
-        await sendToken(true, user, 201, "Login success!", res);
+
+        const loginToken = user.getLoginToken();
+        await user.save();
+
+        res.status(201).json({
+            success: true,
+            user,
+            msg: "Login success!",
+            loginToken,
+        });
     }
     catch (error) {
         res.status(500).json({

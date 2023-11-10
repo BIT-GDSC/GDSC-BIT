@@ -22,6 +22,7 @@ const UserSchema = mongoose.Schema({
     forgotOTP: String,
     otpCreatedAt: Date,
     jwtForgotToken: String,
+    jwtRegisterToken: String,
     jwtLoginToken: String,
     joinedOn: {
         type: Date,
@@ -31,6 +32,30 @@ const UserSchema = mongoose.Schema({
 
 UserSchema.methods.comparePassword = async function (enteredPasssword) {
     return bcrypt.compare(enteredPasssword, this.password);
+};
+
+UserSchema.methods.getLoginToken = function () {
+    const loginToken = JWT.sign(
+        { userId: this._id },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRE,
+        }
+    );
+    this.jwtLoginToken = loginToken;
+    return loginToken;
+};
+
+UserSchema.methods.getRegisterToken = function () {
+    const registerToken = JWT.sign(
+        { userId: this._id },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRE,
+        }
+    );
+    this.jwtRegisterToken = registerToken;
+    return registerToken;
 };
 
 UserSchema.methods.getForgotToken = function () {
@@ -43,18 +68,6 @@ UserSchema.methods.getForgotToken = function () {
     );
     this.jwtForgotToken = forgotToken;
     return forgotToken;
-};
-
-UserSchema.methods.getJWTToken = function () {
-    const loginToken = JWT.sign(
-        { userId: this._id },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_EXPIRE,
-        }
-    );
-    this.jwtLoginToken = loginToken;
-    return loginToken;
 };
 
 const User = mongoose.model('User', UserSchema)

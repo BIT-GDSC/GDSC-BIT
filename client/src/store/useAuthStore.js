@@ -39,7 +39,7 @@ export const useRegisterStore = create(() => ({
                 .then(result => {
                     if (result.success === true) {
                         toast.success(result.msg, { duration: 7500 });
-                        localStorage.setItem("token", result.token);
+                        localStorage.setItem("register_token", result.registerToken);
                         useAuthStore.getState().setRegisterSuccess(true);
                         useAuthStore.getState().setAuthType("otp-verify");
                     }
@@ -62,7 +62,7 @@ export const useRegisterStore = create(() => ({
             toast.loading('Sending OTP...');
 
             const CustomHeader = new Headers();
-            CustomHeader.append("token", localStorage.getItem("token"));
+            CustomHeader.append("register_token", localStorage.getItem("register_token"));
             const config = {
                 method: 'GET',
                 headers: CustomHeader,
@@ -84,7 +84,7 @@ export const useRegisterStore = create(() => ({
         try {
             useAuthStore.getState().setVerifyOTP(true);
             const CustomHeader = new Headers();
-            CustomHeader.append("token", localStorage.getItem("token"));
+            CustomHeader.append("register_token", localStorage.getItem("register_token"));
             CustomHeader.append("otp", otp);
             const config = {
                 method: 'GET',
@@ -116,7 +116,7 @@ export const useRegisterStore = create(() => ({
             if (imageFile) formData.append('file', imageFile);
 
             const CustomHeader = new Headers();
-            CustomHeader.append("token", localStorage.getItem("token"));
+            CustomHeader.append("register_token", localStorage.getItem("register_token"));
             const config = {
                 method: 'POST',
                 headers: CustomHeader,
@@ -133,7 +133,10 @@ export const useRegisterStore = create(() => ({
                     }
                     if (result.success === false) toast.error(result.msg, { duration: 7500 });
                 })
-                .finally(() => useAuthStore.getState().setRegisterDetail(false))
+                .finally(() => {
+                    localStorage.removeItem("register_token");
+                    useAuthStore.getState().setRegisterDetail(false);
+                })
         }
         catch (error) {
             toast.error("Something went wrong... Try again later!");
@@ -161,7 +164,7 @@ export const useLoginStore = create(() => ({
                 .then(result => {
                     if (result.success === true) {
                         toast.success(result.msg, { duration: 7500 });
-                        localStorage.setItem("token", result.token);
+                        localStorage.setItem("login_token", result.loginToken);
                         useAuthStore.getState().setUser(result.user);
                         useAuthStore.getState().setVerifyLoading(false);
                         useAuthStore.getState().setVerifySuccess(true);
@@ -180,12 +183,11 @@ export const useLoginStore = create(() => ({
         }
     },
     loadUser: async () => {
-        if (localStorage.getItem("token") === null || localStorage.getItem("token") === "") return;
+        if (localStorage.getItem("login_token") === null || localStorage.getItem("login_token") === "") return;
         try {
             useAuthStore.getState().setVerifyLoading(true);
-            useAuthStore.getState().setVerifySuccess(false);
             const CustomHeader = new Headers();
-            CustomHeader.append("token", localStorage.getItem("token"));
+            CustomHeader.append("login_token", localStorage.getItem("login_token"));
             const config = {
                 method: 'GET',
                 headers: CustomHeader
@@ -200,14 +202,16 @@ export const useLoginStore = create(() => ({
                     }
 
                     if (result.success === false) {
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("login_token");
                         useAuthStore.getState().setVerifyLoading(false);
                         useAuthStore.getState().setVerifySuccess(false);
                     }
                 })
         }
         catch (error) {
-            localStorage.removeItem("token");
+            localStorage.removeItem("login_token");
+            useAuthStore.getState().setVerifyLoading(false);
+            useAuthStore.getState().setVerifySuccess(false);
         }
     }
 }));
@@ -330,7 +334,7 @@ export const useForgotStore = create((set) => ({
                 })
         }
         catch (error) {
-            localStorage.removeItem("token");
+            toast.error("Something went wrong... Try again later!");
         }
     }
 }));
