@@ -7,8 +7,16 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 export const Navbar = () => {
   const { verifyLoading, verifySuccess, user } = useAuthStore()
-  const { mobileMenu, setMobileMenu } = useAnimStore()
-
+  const { mobileMenu, setMobileMenu, closeMenu, openMenu, toggleDisable } =
+    useAnimStore()
+  function handleToggle () {
+    if (mobileMenu) {
+      closeMenu()
+    } else {
+      openMenu()
+    }
+    setMobileMenu(!mobileMenu)
+  }
   return (
     <div className='Navbar-container'>
       <div className='Navbar-flex-container'>
@@ -41,9 +49,10 @@ export const Navbar = () => {
             </div>
           )}
           {/* Mobile Menu toggler */}
-          <div
+          <button
+            disabled={toggleDisable}
             className='Navbar-menu-toggler'
-            onClick={() => setMobileMenu(!mobileMenu)}
+            onClick={() => handleToggle()}
           >
             <div
               className={`Navbar-menu-bar-container ${mobileMenu && 'active'}`}
@@ -59,7 +68,7 @@ export const Navbar = () => {
                 } arrow-bar`}
               ></div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
     </div>
