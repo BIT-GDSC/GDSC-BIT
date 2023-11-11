@@ -136,15 +136,17 @@ a {
     height: 72px;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1rem;
+    padding: 1rem 2rem;
     background-color: #ffffff;
     border-radius: 1rem;
     box-shadow: 0 1px 5px 2px #00000040;
 }
 
 .Navbar-logo img {
-    height: 28px;
-    width: 47px;
+    width: 64.6px;
+    height: 60.8px;
+    /* height: 28px;
+    width: 47px; */
 }
 
 .Navbar-menu-toggler {
@@ -270,6 +272,11 @@ a {
     color: #ffffff;
     font-weight: bold;
     white-space: nowrap;
+    transition: 200ms;
+}
+
+.Navbar-signin-button:hover {
+    background-color: var(--body-main-bg);
 }
 
 /* Main content */

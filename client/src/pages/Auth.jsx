@@ -87,7 +87,7 @@ const Auth = () => {
                     ?
                   </p>
                   <button
-                    className='text-[#103fef] hover:underline'
+                    className='text-[#3c82f6] hover:underline'
                     onClick={() =>
                       setAuthType(
                         authType === 'sign-in' ? 'sign-up' : 'sign-in'
@@ -100,7 +100,7 @@ const Auth = () => {
                 {authType === 'sign-in' && (
                   <button
                     type='button'
-                    className='flex items-center justify-end font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+                    className='flex items-center justify-end font-[400] text-[0.8125rem] text-[#3c82f6] hover:underline'
                     onClick={() => setAuthType("forgot-password-email")}
                   >
                     Forgot Password
@@ -312,7 +312,7 @@ const OTPVerify = () => {
         <div className='flex justify-center'>
           <button
             type='button'
-            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            className='font-[400] text-[0.8125rem] text-[#3c82f6] hover:underline'
             onClick={handleResendOTP}
           >
             Resend OTP
@@ -501,7 +501,7 @@ const ForgotPasswordEmail = () => {
         <div className='flex justify-center'>
           <button
             type='button'
-            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            className='font-[400] text-[0.8125rem] text-[#3c82f6] hover:underline'
             onClick={() => setAuthType("sign-in")}
           >
             Back to Login

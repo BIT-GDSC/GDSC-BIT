@@ -151,16 +151,12 @@ export const useLoginStore = create(() => ({
     userLogin: async (email, password, navigate) => {
         try {
             useAuthStore.getState().setVerifyLoading(true);
-            useAuthStore.getState().setVerifySuccess(false);
             const CustomHeader = new Headers();
             CustomHeader.append('Content-Type', 'application/json')
             const config = {
                 method: 'POST',
                 headers: CustomHeader,
-                body: JSON.stringify({
-                    email,
-                    password
-                })
+                body: JSON.stringify({ email, password })
             }
             await fetch(`/api/login`, config)
                 .then(response => response.json())
@@ -173,10 +169,12 @@ export const useLoginStore = create(() => ({
 
                     if (result.success === false) {
                         toast.error(result.msg, { duration: 7500 });
+                        useAuthStore.getState().setVerifyLoading(false);
                     }
                 })
         }
         catch (error) {
+            useAuthStore.getState().setVerifyLoading(false);
             toast.error("Something went wrong... Try again later!");
         }
     },
