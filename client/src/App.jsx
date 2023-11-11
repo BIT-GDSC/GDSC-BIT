@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Container from './components/Container'
-import Protected from './pages/Protected'
 import Home from './pages/Home'
 import Redirect from './pages/Redirect'
 import VerifyCertificate from './pages/Certificate/VerifyCertificate'
@@ -25,9 +24,7 @@ function App () {
         <Routes>
           <Route path='/auth' element={<Auth />} />
 
-          <Route path='/test' element={<Protected />}>
-            <Route index element={<Test />} />
-          </Route>
+          <Route path='/test' element={<Test />} />
 
           <Route path='/' element={<Home />} />
 

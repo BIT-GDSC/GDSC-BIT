@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   useAuthStore,
@@ -8,46 +8,14 @@ import {
 } from '../store/useAuthStore'
 import useWindowHeight from '../utils/useWindowHeight'
 import { toast } from 'sonner'
+import useSocialAuth from '../utils/useSocialAuth'
 
 // Auth page component
 const Auth = () => {
-  const navigate = useNavigate()
-  const { height, isReady } = useWindowHeight()
-  const { setUser, setVerifyLoading, verifySuccess, setVerifySuccess } = useAuthStore()
+  const { isReady } = useWindowHeight()
   const { authType, setAuthType } = useAuthStore()
 
-  const urlParams = new URLSearchParams(window.location.search)
-  const authenticationType = urlParams.get('type')
-  const userDataString = urlParams.get('response')
-  const token = urlParams.get('token')
-
-  useEffect(() => {
-    if (userDataString) {
-      const userData = JSON.parse(userDataString)
-      setUser(userData)
-      setVerifyLoading(false)
-      setVerifySuccess(true)
-    }
-  }, [userDataString])
-
-  useEffect(() => {
-    if (authenticationType !== '') {
-      if (authenticationType === 'login') {
-        const prevPath = localStorage.getItem('prevPath')
-        if (prevPath) {
-          navigate(prevPath)
-          localStorage.removeItem('prevPath')
-        } else navigate('/');
-      }
-      if (authenticationType === 'register') {
-        setAuthType('new-user')
-      }
-    }
-  }, [authenticationType])
-
-  useEffect(() => {
-    if (token) localStorage.setItem('token', token)
-  }, [token])
+  useSocialAuth();
 
   return (
     <div
@@ -168,21 +136,20 @@ const ManualAuth = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
 
   const handleAuth = async e => {
     e.preventDefault()
 
-    localStorage.removeItem('token')
+    localStorage.removeItem('login_token')
     if (!email) return toast.error('Enter email to proceed!')
-    if (!password) return toast.error('Enter password to proceed!')
+
     if (authType === 'sign-up') {
-      if (!confirmPassword)
-        return toast.error('Retype your password to proceed!')
-      if (password !== confirmPassword)
-        return toast.error("Password doesn't match!")
       userRegisterCredential(email, password)
-    } else if (authType === 'sign-in') userLogin(email, password, navigate)
+    }
+    else if (authType === 'sign-in') {
+      if (!password) return toast.error('Enter password to proceed!')
+      userLogin(email, password, navigate)
+    }
   }
 
   return (
@@ -194,33 +161,18 @@ const ManualAuth = () => {
           </label>
           <InputBox id='email' type='email' value={email} setValue={setEmail} />
         </div>
-        <div className='flex flex-col gap-[0.25rem]'>
-          <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
-            Password
-          </label>
-          <InputBox
-            id='password'
-            type='password'
-            value={password}
-            setValue={setPassword}
-          />
-        </div>
-        {authType === 'sign-up' && (
+        {authType === 'sign-in' && (
           <div className='flex flex-col gap-[0.25rem]'>
-            <label
-              htmlFor='confirm-password'
-              className='font-[500] text-[0.8125rem]'
-            >
-              Confirm Password
+            <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
+              Password
             </label>
             <InputBox
-              id='confirm-password'
+              id='password'
               type='password'
-              value={confirmPassword}
-              setValue={setConfirmPassword}
+              value={password}
+              setValue={setPassword}
             />
-          </div>
-        )}
+          </div>)}
       </div>
       <button
         disabled={registerLoading || verifyLoading}
@@ -334,6 +286,8 @@ const NewUser = () => {
   const [lastName, setLastName] = useState(
     user && user?.lastName ? user.lastName : ''
   )
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleFileChange = e => {
     setImage(URL.createObjectURL(e.target.files[0]))
@@ -345,10 +299,14 @@ const NewUser = () => {
     e.preventDefault()
     if (!firstName) return toast.error('First name is mandatory!')
     if (!lastName) return toast.error('Last name is mandatory!')
+    if (!password) return toast.error('Password is mandatory!')
+    if (!confirmPassword) return toast.error('Retype your password to proceed!')
+    if (password !== confirmPassword) return toast.error("Password doesn't match!")
 
     userRegisterDetails({
       firstName,
       lastName,
+      password,
       ...(imageFile ? { imageFile: imageFile } : { imageFile: '' }),
       ...(verifySuccess && user ? { shallRedirect: true } : { shallRedirect: false }),
       navigate
@@ -404,15 +362,38 @@ const NewUser = () => {
             setValue={setLastName}
           />
         </div>
+        <div className='flex flex-col gap-[0.25rem]'>
+          <label htmlFor='set-password' className='font-[500] text-[0.8125rem]'>
+            Set Password
+          </label>
+          <InputBox
+            id='set-password'
+            type='password'
+            value={password}
+            setValue={setPassword}
+          />
+        </div>
+        <div className='flex flex-col gap-[0.25rem]'>
+          <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
+            Confirm Password
+          </label>
+          <InputBox
+            id='confirm-password'
+            type='password'
+            value={confirmPassword}
+            setValue={setConfirmPassword}
+          />
+        </div>
       </div>
       <button
         type='submit'
+        disabled={registerDetail}
         className={`py-[0.625rem] px-[1.25rem] text-white ${registerDetail
           ? 'bg-[#FFBC39] cursor-not-allowed'
           : 'bg-[#103FEF] hover:bg-[#FFBC39]'
           } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
       >
-        CREATE
+        {registerDetail ? 'CREATING...' : 'CREATE'}
       </button>
     </form>
   )
@@ -423,7 +404,7 @@ const SocialAuth = () => {
   const isProduction = import.meta.env.MODE === 'production'
 
   const handleGoogleAuth = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('login_token')
     const authUrl = isProduction
       ? 'https://gdsc-bit.vercel.app/auth/google'
       : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
@@ -431,7 +412,7 @@ const SocialAuth = () => {
   }
 
   const handleLinkedInAuth = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('login_token')
     if (isProduction) {
       toast.error('Currently under maintainance!')
     } else {
@@ -516,8 +497,7 @@ const ForgotPasswordEmail = () => {
 
 // Forgot password otp component
 const ForgotPasswordOTP = () => {
-  const { setAuthType } = useAuthStore();
-  const { resendOTP } = useForgotStore();
+  const { verifyOTP, resendOTP, otpVerify } = useForgotStore();
 
   const [otp, setOtp] = useState(Array(5).fill(''))
 
@@ -542,7 +522,7 @@ const ForgotPasswordOTP = () => {
     const otpValue = otp.join('')
     if (otpValue.length < 5) return toast.error('Enter OTP to proceed!')
 
-    setAuthType("forgot-password-reset");
+    otpVerify(otpValue);
   }
 
   const handleResendOTP = () => {
@@ -578,14 +558,14 @@ const ForgotPasswordOTP = () => {
       </div>
       <button
         type='button'
-        disabled={false}
-        className={`py-[0.625rem] px-[1.25rem] text-white ${false
+        disabled={verifyOTP}
+        className={`py-[0.625rem] px-[1.25rem] text-white ${verifyOTP
           ? 'bg-[#FFBC39] cursor-not-allowed'
           : 'bg-[#103FEF] hover:bg-[#FFBC39]'
           } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
         onClick={handleSubmitOTP}
       >
-        {false ? 'VERIFYING' : 'VERIFY'}
+        {verifyOTP ? 'VERIFYING' : 'VERIFY'}
       </button>
     </div>
   )
@@ -593,6 +573,8 @@ const ForgotPasswordOTP = () => {
 
 // Forgot password reset component
 const ForgotPasswordReset = () => {
+  const { resetPasswordLoading, resetPassword } = useForgotStore();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -602,7 +584,7 @@ const ForgotPasswordReset = () => {
     if (!confirmPassword) return toast.error('Retype your password to proceed!')
     if (password !== confirmPassword) return toast.error("Password doesn't match!")
 
-    toast.error("Currently under maintainance!");
+    resetPassword(password);
   }
 
   return (
@@ -612,7 +594,12 @@ const ForgotPasswordReset = () => {
           <label htmlFor='new-password' className='font-[500] text-[0.8125rem]'>
             New Password
           </label>
-          <InputBox id='new-password' type='password' value={password} setValue={setPassword} />
+          <InputBox
+            id='new-password'
+            type='password'
+            value={password}
+            setValue={setPassword}
+          />
         </div>
         <div className='flex flex-col gap-[0.25rem]'>
           <label htmlFor='password' className='font-[500] text-[0.8125rem]'>
@@ -627,14 +614,14 @@ const ForgotPasswordReset = () => {
         </div>
       </div>
       <button
-        disabled={false}
+        disabled={resetPasswordLoading}
         type='submit'
-        className={`py-[0.625rem] px-[1.25rem] text-white ${false
+        className={`py-[0.625rem] px-[1.25rem] text-white ${resetPasswordLoading
           ? 'bg-[#FFBC39] cursor-not-allowed'
           : 'bg-[#103FEF] hover:bg-[#FFBC39]'
           } duration-200 font-[600] text-[0.6875rem] rounded-[0.375rem]`}
       >
-        {false ? 'VERIFYING' : 'CONTINUE'}
+        {resetPasswordLoading ? 'VERIFYING' : 'CONTINUE'}
       </button>
     </form>
   )

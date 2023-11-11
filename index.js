@@ -8,9 +8,12 @@ const session = require('express-session')
 const passport = require('passport');
 require('./api/config/googleAuth.js');
 require('./api/config/linkedinAuth.js');
+const {
+    googleCallbackController,
+    linkedinCallbackController
+} = require('./api/controllers/socialController.js');
 const { v2 } = require("cloudinary");
 const connectDatabase = require('./api/config/connectDatabase.js');
-const socialToken = require('./api/utils/socialToken.js');
 
 const app = express();
 
@@ -34,7 +37,7 @@ v2.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Backend Routes
+// API Routes
 readdirSync("./api/routes").map((r) => app.use("/api/", require('./api/routes/' + r)));
 app.get('/api/status', (req, res) => {
     res.status(201).json({
@@ -43,48 +46,11 @@ app.get('/api/status', (req, res) => {
     });
 });
 
-// Google authentication route
+// Authentication API routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-// Google authentication callback route
-app.get('/auth/google/callback', async function (req, res, next) {
-    await passport.authenticate('google', { session: false }, async function (err, user, info) {
-        if (err) {
-            console.error(err);
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${encodeURIComponent(err.message)}`);
-        }
-        if (!user) {
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?error=User not found`);
-        }
-        const token = socialToken(user);
-        await token.then(generatedToken => {
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}&token=${generatedToken}`);
-        })
-    })(req, res, next);
-});
-
-// LinkedIn authentication route
-app.get('/auth/linkedin', passport.authenticate('linkedin', {
-    scope: ['openid', 'profile', 'email'],
-    // scope: ['openid', 'profile', 'email', 'r_emailaddress', 'r_liteprofile'],
-}));
-
-// LinkedIn authentication callback route
-app.get('/auth/linkedin/callback', async function (req, res, next) {
-    await passport.authenticate('linkedin', { session: false }, async function (err, user, info) {
-        if (err) {
-            console.error(err);
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${encodeURIComponent(err.message)}`);
-        }
-        if (!user) {
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?error=User not found`);
-        }
-        const token = socialToken(user);
-        await token.then(generatedToken => {
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(user))}&token=${generatedToken}`);
-        });
-    })(req, res, next);
-});
+app.get('/auth/google/callback', googleCallbackController);
+app.get('/auth/linkedin', passport.authenticate('linkedin', { scope: ['openid', 'profile', 'email'] }));
+app.get('/auth/linkedin/callback', linkedinCallbackController);
 
 // Frontend Routes
 app.use(express.static(path.resolve(__dirname, 'client', 'dist')))
