@@ -37,7 +37,7 @@ export const Navbar = () => {
               Sign in
             </Link>
           ) : !verifyLoading && verifySuccess ? (
-            <div className='w-[40px] h-[40px] rounded-full border border-[#FFBC39] bg-white overflow-hidden'>
+            <div className='w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden'>
               <img
                 src={user?.avatar?.url ? user.avatar.url : '/user.svg'}
                 className='w-full h-full object-contain'
