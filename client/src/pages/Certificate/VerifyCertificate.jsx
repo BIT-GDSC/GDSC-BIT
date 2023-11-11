@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useWindowHeight from '../../utils/useWindowHeight'
 import { useCertStore } from '../../store/useCertStore'
@@ -12,55 +12,11 @@ const VerifyCertificate = () => {
   const { certificateID } = useParams()
   const { height, isReady } = useWindowHeight()
 
-  const [certLoading, setCertLoading] = useState(true)
-  const { certData, setCertData } = useCertStore()
+  const { certLoading, certData, fetchCertData } = useCertStore()
 
   useEffect(() => {
-    const fetchCertData = async () => {
-      try {
-        setCertLoading(true)
-
-        const CustomHeader = new Headers()
-        CustomHeader.append('Content-Type', 'application/json')
-        const config = {
-          method: 'GET',
-          headers: CustomHeader
-        }
-
-        fetch(`/api/cert/verify/${certificateID}`, config)
-          .then(response => response.json())
-          .then(result => {
-            if (result.success === true) {
-              setCertData({
-                _id: result.data._id,
-                fullName: result.data.fullName,
-                verifyURL: result.data.verifyURL,
-                verifyQR: result.data.verifyQR,
-                skillBoostQR: result.data.skillBoostQR,
-                certificate: result.data.certificate,
-                message: ''
-              })
-              // setTimeout(() => {
-              setCertLoading(false)
-              // }, 2000)
-            }
-
-            if (result.success === false) {
-              setCertData({
-                message: result.msg
-              })
-              setCertLoading(false)
-            }
-          })
-      } catch (error) {
-        setCertData({
-          message: 'Error. Try again after some time!'
-        })
-      }
-    }
-
-    if (certificateID) fetchCertData()
-  }, [certificateID])
+    if (certificateID) fetchCertData(certificateID);
+  }, [certificateID]);
 
   return (
     <div
@@ -72,6 +28,7 @@ const VerifyCertificate = () => {
     >
       <div className='h-full pt-[120px] flex flex-col gap-5 items-center justify-center'>
         {certLoading ? (
+          // Fetching Certificate
           <>
             <div className='relative w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border rounded'>
               <Skeleton className='absolute -z-10 -top-[4px] left-0 w-full h-full' />
@@ -95,6 +52,7 @@ const VerifyCertificate = () => {
             </div>
           </>
         ) : certData.message ? (
+          // Error fetching Certificate
           <div className='relative bg-white w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border rounded text-xl font-extrabold'>
             <p className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 text-[#4A90F4] text-xl font-extrabold'>
               {certData.message}

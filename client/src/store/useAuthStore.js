@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 import { toast } from 'sonner';
+import crypto from "crypto-js";
+
+const SECRET_KEY = "THIS_IS_THE_SECRET_KEY_FOR_GDSC_BIT";
 
 export const useAuthStore = create((set) => ({
     user: null,
@@ -165,16 +168,11 @@ export const useLoginStore = create(() => ({
                     if (result.success === true) {
                         toast.success(result.msg, { duration: 7500 });
                         localStorage.setItem("login_token", result.loginToken);
-                        useAuthStore.getState().setUser(result.user);
-                        useAuthStore.getState().setVerifyLoading(false);
-                        useAuthStore.getState().setVerifySuccess(true);
                         navigate("/");
                     }
 
                     if (result.success === false) {
                         toast.error(result.msg, { duration: 7500 });
-                        useAuthStore.getState().setVerifyLoading(false);
-                        useAuthStore.getState().setVerifySuccess(false);
                     }
                 })
         }
@@ -196,7 +194,12 @@ export const useLoginStore = create(() => ({
                 .then(response => response.json())
                 .then(result => {
                     if (result.success === true) {
-                        useAuthStore.getState().setUser(result.user);
+                        const decryptedData = JSON.parse(
+                            crypto.AES.decrypt(result.data, SECRET_KEY).toString(
+                                crypto.enc.Utf8
+                            )
+                        );
+                        useAuthStore.getState().setUser(decryptedData.user);
                         useAuthStore.getState().setVerifyLoading(false);
                         useAuthStore.getState().setVerifySuccess(true);
                     }

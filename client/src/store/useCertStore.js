@@ -1,6 +1,11 @@
 import { create } from 'zustand';
+import crypto from "crypto-js";
+
+const SECRET_KEY = "THIS_IS_THE_SECRET_KEY_FOR_GDSC_BIT";
 
 export const useCertStore = create((set) => ({
+    certLoading: true,
+    setCertLoading: (certLoading) => set({ certLoading: certLoading }),
     certData: {
         _id: "",
         fullName: "",
@@ -11,4 +16,48 @@ export const useCertStore = create((set) => ({
         message: ""
     },
     setCertData: (certData) => set({ certData: certData }),
+    fetchCertData: async (certificateID) => {
+        try {
+            useCertStore.getState().setCertLoading(true)
+
+            const CustomHeader = new Headers()
+            CustomHeader.append('Content-Type', 'application/json')
+            const config = {
+                method: 'GET',
+                headers: CustomHeader
+            }
+
+            await fetch(`/api/cert/verify/${certificateID}`, config)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success === true) {
+                        const decryptedData = JSON.parse(
+                            crypto.AES.decrypt(result.data, SECRET_KEY).toString(
+                                crypto.enc.Utf8
+                            )
+                        );
+                        useCertStore.getState().setCertData({
+                            _id: decryptedData._id,
+                            fullName: decryptedData.fullName,
+                            verifyURL: decryptedData.verifyURL,
+                            verifyQR: decryptedData.verifyQR,
+                            skillBoostQR: decryptedData.skillBoostQR,
+                            certificate: decryptedData.certificate,
+                            message: ''
+                        })
+                    }
+
+                    if (result.success === false) {
+                        useCertStore.getState().setCertData({
+                            message: result.msg
+                        })
+                    }
+                })
+                .finally(() => useCertStore.getState().setCertLoading(false))
+        } catch (error) {
+            useCertStore.getState().setCertData({
+                message: 'Error. Try again after some time!'
+            })
+        }
+    }
 }));

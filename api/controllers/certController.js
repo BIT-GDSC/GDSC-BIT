@@ -1,4 +1,5 @@
 const Certificate = require('../models/certModel.js');
+const CryptoJS = require('crypto-js');
 
 exports.verifyCertificate = async (req, res) => {
     try {
@@ -10,9 +11,14 @@ exports.verifyCertificate = async (req, res) => {
             });
         }
 
+        const encryptedData = CryptoJS.AES.encrypt(
+            JSON.stringify(certData),
+            process.env.DATA_ENCRYPTION_SECRET_KEY
+        ).toString();
+
         res.status(200).json({
             success: true,
-            data: certData,
+            data: encryptedData,
         });
     }
     catch (error) {

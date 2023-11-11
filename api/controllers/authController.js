@@ -4,6 +4,7 @@ const generateOTP = require('../utils/generateOTP.js');
 const sendOTP = require('../mail/sendOTP.js');
 const getDataUrl = require('../middleware/dataURL.js');
 const { v2 } = require('cloudinary');
+const CryptoJS = require('crypto-js');
 
 exports.userRegisterCredential = async (req, res) => {
     try {
@@ -219,9 +220,8 @@ exports.userLogin = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            user,
             msg: "Login success!",
-            loginToken,
+            loginToken
         });
     }
     catch (error) {
@@ -234,9 +234,14 @@ exports.userLogin = async (req, res) => {
 
 exports.loadUser = async (req, res) => {
     try {
+        const encryptedData = CryptoJS.AES.encrypt(
+            JSON.stringify({ user: req.user }),
+            process.env.DATA_ENCRYPTION_SECRET_KEY
+        ).toString();
+
         res.status(200).json({
             success: true,
-            user: req.user,
+            data: encryptedData,
         });
     }
     catch (error) {
