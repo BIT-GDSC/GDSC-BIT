@@ -1,18 +1,12 @@
 const express = require('express');
 require('dotenv').config();
-const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
-const { readdirSync } = require('fs');
-const session = require('express-session')
+const cors = require('cors');
+const session = require('express-session');
 const passport = require('passport');
-require('./api/config/googleAuth.js');
-require('./api/config/linkedinAuth.js');
-const {
-    googleCallbackController,
-    linkedinCallbackController
-} = require('./api/controllers/socialController.js');
 const { v2 } = require("cloudinary");
+const { readdirSync } = require('fs');
+const path = require('path');
 const connectDatabase = require('./api/config/connectDatabase.js');
 
 const app = express();
@@ -37,20 +31,14 @@ v2.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// API Routes
+// Backend Routes
 readdirSync("./api/routes").map((r) => app.use("/api/", require('./api/routes/' + r)));
-app.get('/api/status', (req, res) => {
+app.get('/api', (req, res) => {
     res.status(201).json({
         success: true,
         msg: "Server Running",
     });
 });
-
-// Authentication API routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback', googleCallbackController);
-app.get('/auth/linkedin', passport.authenticate('linkedin', { scope: ['openid', 'profile', 'email'] }));
-app.get('/auth/linkedin/callback', linkedinCallbackController);
 
 // Frontend Routes
 app.use(express.static(path.resolve(__dirname, 'client', 'dist')))

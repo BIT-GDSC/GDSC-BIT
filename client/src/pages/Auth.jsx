@@ -127,6 +127,71 @@ const Auth = () => {
   )
 }
 
+// Socials authentication component
+const SocialAuth = () => {
+  const isProduction = import.meta.env.MODE === 'production'
+
+  const handleGoogleAuth = () => {
+    localStorage.removeItem('login_token')
+    const authUrl = isProduction
+      ? 'https://gdsc-bit.vercel.app/api/auth/google'
+      : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
+    window.location.href = authUrl
+  }
+
+  const handleTwitterAuth = () => {
+    localStorage.removeItem('login_token')
+    const authUrl = isProduction
+      ? 'https://gdsc-bit.vercel.app/api/auth/twitter'
+      : import.meta.env.VITE_DEV_TWITTER_AUTH_URL
+    window.location.href = authUrl
+  }
+
+  const handleLinkedInAuth = () => {
+    localStorage.removeItem('login_token')
+    if (isProduction) {
+      toast.error('Currently under maintainance!')
+    } else {
+      const authUrl = isProduction
+        ? 'https://gdsc-bit.vercel.app/api/auth/linkedin'
+        : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
+      window.location.href = authUrl
+    }
+  }
+
+  return (
+    <div className='flex flex-col gap-[0.5rem]'>
+      <button
+        onClick={handleGoogleAuth}
+        className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
+      >
+        <img src='/google-small.svg' className='w-[1.25rem] h-auto' />
+        <span className='font-[400] text-[0.8125rem]'>
+          Continue with Google
+        </span>
+      </button>
+      <button
+        onClick={handleTwitterAuth}
+        className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
+      >
+        <img src='/twitter-small.svg' className='w-[1.25rem] h-auto' />
+        <span className='font-[400] text-[0.8125rem]'>
+          Continue with Twitter
+        </span>
+      </button>
+      {/* <button
+        onClick={handleLinkedInAuth}
+        className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
+      >
+        <img src='/linkedin-small.svg' className='w-[1.25rem] h-auto' />
+        <span className='font-[400] text-[0.8125rem]'>
+          Continue with LinkedIn
+        </span>
+      </button> */}
+    </div>
+  )
+}
+
 // Email, Password & Reset Password component
 const ManualAuth = () => {
   const navigate = useNavigate();
@@ -396,54 +461,6 @@ const NewUser = () => {
         {registerDetail ? 'CREATING...' : 'CREATE'}
       </button>
     </form>
-  )
-}
-
-// Socials authentication component
-const SocialAuth = () => {
-  const isProduction = import.meta.env.MODE === 'production'
-
-  const handleGoogleAuth = () => {
-    localStorage.removeItem('login_token')
-    const authUrl = isProduction
-      ? 'https://gdsc-bit.vercel.app/auth/google'
-      : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
-    window.location.href = authUrl
-  }
-
-  const handleLinkedInAuth = () => {
-    localStorage.removeItem('login_token')
-    if (isProduction) {
-      toast.error('Currently under maintainance!')
-    } else {
-      const authUrl = isProduction
-        ? 'https://gdsc-bit.vercel.app/auth/linkedin'
-        : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
-      window.location.href = authUrl
-    }
-  }
-
-  return (
-    <div className='flex flex-col gap-[0.5rem]'>
-      <button
-        onClick={handleGoogleAuth}
-        className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
-      >
-        <img src='/google-small.svg' className='w-[1.25rem] h-auto' />
-        <span className='font-[400] text-[0.8125rem]'>
-          Continue with Google
-        </span>
-      </button>
-      <button
-        onClick={handleLinkedInAuth}
-        className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
-      >
-        <img src='/linkedin-small.svg' className='w-[1.25rem] h-auto' />
-        <span className='font-[400] text-[0.8125rem]'>
-          Continue with LinkedIn
-        </span>
-      </button>
-    </div>
   )
 }
 

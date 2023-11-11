@@ -4,6 +4,7 @@ const JWT = require('jsonwebtoken');
 
 const UserSchema = mongoose.Schema({
     googleId: String,
+    twitterId: String,
     linkedinId: String,
     authType: String,
     firstName: String,

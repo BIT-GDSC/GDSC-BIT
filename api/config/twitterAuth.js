@@ -1,19 +1,20 @@
 const passport = require('passport');
-const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
+const { Strategy: TwitterStrategy } = require('passport-twitter');
 const User = require('../models/userModel.js');
 const cloudinary = require('cloudinary');
 
 passport.use(
-    new GoogleStrategy(
+    new TwitterStrategy(
         {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: `${process.env.BACKEND_URL}/api/auth/google/callback`,
+            consumerKey: process.env.TWITTER_CONSUMER_KEY,
+            consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+            callbackURL: `${process.env.BACKEND_URL}/api/auth/twitter/callback`,
+            includeEmail: true
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (token, tokenSecret, profile, done) => {
             try {
                 let user = await User.findOne({
-                    $or: [{ email: profile.emails[0].value }, { googleId: profile.id }]
+                    $or: [{ email: profile.emails[0].value }, { twitterId: profile.id }]
                 });
 
                 if (!user) {
@@ -21,8 +22,8 @@ passport.use(
                     user = await User.create({
                         googleId: profile.id,
                         authType: "register",
-                        firstName: profile.name.givenName,
-                        lastName: profile.name.familyName,
+                        firstName: profile.displayName,
+                        lastName: "",
                         email: profile.emails[0].value,
                         avatar: {
                             public_id: imageUpload.public_id,
