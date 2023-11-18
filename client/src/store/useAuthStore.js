@@ -204,14 +204,14 @@ export const useLoginStore = create(() => ({
                     }
 
                     if (result.success === false) {
-                        // localStorage.removeItem("login_token");
+                        localStorage.removeItem("login_token");
                         useAuthStore.getState().setVerifyLoading(false);
                         useAuthStore.getState().setVerifySuccess(false);
                     }
                 })
         }
         catch (error) {
-            // localStorage.removeItem("login_token");
+            localStorage.removeItem("login_token");
             useAuthStore.getState().setVerifyLoading(false);
             useAuthStore.getState().setVerifySuccess(false);
         }

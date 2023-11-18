@@ -247,8 +247,7 @@ exports.loadUser = async (req, res) => {
     catch (error) {
         res.status(500).json({
             success: false,
-            msg: "Something went wrong... Try again later!",
-            error
+            msg: "Something went wrong... Try again later!"
         });
     }
 }
