@@ -183,6 +183,7 @@ export const useLoginStore = create(() => ({
         try {
             useAuthStore.getState().setVerifyLoading(true);
             const CustomHeader = new Headers();
+            CustomHeader.append('Content-Type', 'application/json');
             CustomHeader.append("login_token", localStorage.getItem("login_token"));
             const config = {
                 method: 'GET',
