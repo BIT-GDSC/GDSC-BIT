@@ -136,7 +136,7 @@ const SocialAuth = () => {
     const authUrl = isProduction
       ? 'https://gdsc-bit.vercel.app/api/auth/google'
       : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
-    window.location.href = authUrl
+    window.open(authUrl, "_self")
   }
 
   const handleTwitterAuth = () => {
@@ -144,19 +144,15 @@ const SocialAuth = () => {
     const authUrl = isProduction
       ? 'https://gdsc-bit.vercel.app/api/auth/twitter'
       : import.meta.env.VITE_DEV_TWITTER_AUTH_URL
-    window.location.href = authUrl
+    window.open(authUrl, "_self")
   }
 
   const handleLinkedInAuth = () => {
     localStorage.removeItem('login_token')
-    if (isProduction) {
-      toast.error('Currently under maintainance!')
-    } else {
-      const authUrl = isProduction
-        ? 'https://gdsc-bit.vercel.app/api/auth/linkedin'
-        : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
-      window.location.href = authUrl
-    }
+    const authUrl = isProduction
+      ? 'https://gdsc-bit.vercel.app/api/auth/linkedin'
+      : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
+    window.open(authUrl, "_self")
   }
 
   return (
@@ -179,7 +175,7 @@ const SocialAuth = () => {
           Continue with Twitter
         </span>
       </button>
-      {/* <button
+      <button
         onClick={handleLinkedInAuth}
         className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
       >
@@ -187,7 +183,7 @@ const SocialAuth = () => {
         <span className='font-[400] text-[0.8125rem]'>
           Continue with LinkedIn
         </span>
-      </button> */}
+      </button>
     </div>
   )
 }
