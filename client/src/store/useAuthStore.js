@@ -131,7 +131,7 @@ export const useRegisterStore = create(() => ({
                 .then((result) => {
                     if (result.success === true) {
                         toast.success(result.msg, { duration: 7500 });
-                        useAuthStore.getState().setAuthType("sign-in");
+                        localStorage.setItem("login_token", result.loginToken);
                         if (shallRedirect) navigate("/");
                     }
                     if (result.success === false) toast.error(result.msg, { duration: 7500 });

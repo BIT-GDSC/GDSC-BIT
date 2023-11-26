@@ -333,7 +333,7 @@ const OTPVerify = () => {
 // User detail component
 const NewUser = () => {
   const navigate = useNavigate();
-  const { verifySuccess, user, registerDetail } = useAuthStore()
+  const { user, registerDetail } = useAuthStore()
   const { userRegisterDetails } = useRegisterStore()
 
   const fileRef = useRef()
@@ -369,7 +369,7 @@ const NewUser = () => {
       lastName,
       password,
       ...(imageFile ? { imageFile: imageFile } : { imageFile: '' }),
-      ...(verifySuccess && user ? { shallRedirect: true } : { shallRedirect: false }),
+      shallRedirect: true,
       navigate
     })
   }

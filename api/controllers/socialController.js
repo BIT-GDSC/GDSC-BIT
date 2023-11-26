@@ -25,10 +25,9 @@ exports.googleCallbackController = async function (req, res, next) {
 
         if (user.authType === 'register') {
             const registerToken = user.getRegisterToken();
-            const loginToken = user.getLoginToken();
             await user.save();
 
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(userData))}&registerToken=${registerToken}&loginToken=${loginToken}`);
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(userData))}&registerToken=${registerToken}`);
         }
         else if (user.authType === 'login') {
             const loginToken = user.getLoginToken();
@@ -60,10 +59,9 @@ exports.twitterCallbackController = async function (req, res, next) {
 
         if (user.authType === 'register') {
             const registerToken = user.getRegisterToken();
-            const loginToken = user.getLoginToken();
             await user.save();
 
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(userData))}&registerToken=${registerToken}&loginToken=${loginToken}`);
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(userData))}&registerToken=${registerToken}`);
         }
         else if (user.authType === 'login') {
             const loginToken = user.getLoginToken();
@@ -128,9 +126,8 @@ exports.linkedinCallbackController = async function (req, res) {
             }
 
             const registerToken = user.getRegisterToken();
-            const loginToken = user.getLoginToken();
             await user.save();
-            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(userData))}&registerToken=${registerToken}&loginToken=${loginToken}`);
+            return res.redirect(`${process.env.FRONTEND_URL}/auth?type=${user.authType}&response=${encodeURIComponent(JSON.stringify(userData))}&registerToken=${registerToken}`);
         }
 
         user = await User.findByIdAndUpdate(user._id, {

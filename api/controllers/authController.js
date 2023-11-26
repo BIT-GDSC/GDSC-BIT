@@ -165,9 +165,13 @@ exports.userRegisterDetails = async (req, res) => {
                 $unset: { jwtRegisterToken: 1 }
             });
 
+            const loginToken = user.getLoginToken();
+            await user.save();
+
             return res.status(200).json({
                 success: true,
-                msg: "Your account is registered successfully!"
+                msg: "Your account is registered successfully!",
+                loginToken
             });
         }
         user = await User.findByIdAndUpdate(req.user._id, {
@@ -179,9 +183,13 @@ exports.userRegisterDetails = async (req, res) => {
             $unset: { jwtRegisterToken: 1 }
         });
 
+        const loginToken = user.getLoginToken();
+        await user.save();
+
         res.status(200).json({
             success: true,
-            msg: "Your account is registered successfully!"
+            msg: "Your account is registered successfully!",
+            loginToken
         });
     }
     catch (error) {
