@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { toast } from 'sonner';
-import crypto from "crypto-js";
+import crypto from 'crypto-js';
 
-const SECRET_KEY = "THIS_IS_THE_SECRET_KEY_FOR_GDSC_BIT";
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
 
 export const useAuthStore = create((set) => ({
     user: null,
