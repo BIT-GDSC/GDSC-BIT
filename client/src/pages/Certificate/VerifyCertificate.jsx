@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import useWindowHeight from '../../utils/useWindowHeight'
 import { useCertStore } from '../../store/useCertStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -10,7 +9,6 @@ import GoogleCloudFacilitator from './Template/GoogleCloudFacilitator'
 // Main Component
 const VerifyCertificate = () => {
   const { certificateID } = useParams()
-  const { height, isReady } = useWindowHeight()
 
   const { certLoading, certData, fetchCertData } = useCertStore()
 
@@ -20,13 +18,10 @@ const VerifyCertificate = () => {
 
   return (
     <div
-      className='overflow-hidden md:overflow-auto pb-8'
-      style={{
-        opacity: isReady ? 1 : 0,
-        transition: 'opacity 0.5s linear'
-      }}
+      className='flex items-center justify-center overflow-hidden md:overflow-auto'
+      style={{ minHeight: '100svh' }}
     >
-      <div className='h-full pt-[120px] flex flex-col gap-5 items-center justify-center'>
+      <div className='h-full md:pt-[100px] flex flex-col gap-5 items-center justify-center'>
         {certLoading ? (
           // Fetching Certificate
           <>

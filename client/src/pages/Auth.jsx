@@ -6,13 +6,11 @@ import {
   useLoginStore,
   useForgotStore
 } from '../store/useAuthStore'
-import useWindowHeight from '../utils/useWindowHeight'
 import { toast } from 'sonner'
 import useSocialAuth from '../utils/useSocialAuth'
 
 // Auth page component
 const Auth = () => {
-  const { isReady } = useWindowHeight()
   const { authType, setAuthType } = useAuthStore()
 
   useSocialAuth();
@@ -21,9 +19,7 @@ const Auth = () => {
     <div
       style={{
         overflow: 'auto',
-        minHeight: '100vh',
-        opacity: isReady ? 1 : 0,
-        transition: 'opacity 0.5s linear'
+        minHeight: '100svh'
       }}
       className='flex items-center justify-center'
     >
