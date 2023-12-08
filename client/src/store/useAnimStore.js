@@ -1,10 +1,8 @@
 import { create } from 'zustand'
-import { toast } from 'sonner'
 
 export const useAnimStore = create(set => ({
-  mobileMenu: false,
-  menuPopup: false,
   toggleDisable: false,
+  mobileMenu: false,
   setMobileMenu: verifyState => {
     set({ mobileMenu: verifyState })
     set({ toggleDisable: true })
@@ -12,6 +10,7 @@ export const useAnimStore = create(set => ({
       set({ toggleDisable: false })
     }, 1000)
   },
+  menuPopup: false,
   openMenu: () => {
     set({ menuPopup: true })
     set({ mobileMenu: true })

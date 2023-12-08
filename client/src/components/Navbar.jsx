@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import useWindowDimension from '../utils/useWindowDimension'
 import { navData } from '../utils/navbar'
 import { useAuthStore } from '../store/useAuthStore'
 import { useAnimStore } from '../store/useAnimStore'
@@ -6,9 +8,10 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export const Navbar = () => {
+  const { width } = useWindowDimension();
   const { verifyLoading, verifySuccess, user } = useAuthStore()
-  const { mobileMenu, setMobileMenu, closeMenu, openMenu, toggleDisable } =
-    useAnimStore()
+  const { menuPopup, mobileMenu, setMobileMenu, closeMenu, openMenu, toggleDisable } = useAnimStore()
+
   function handleToggle() {
     if (mobileMenu) {
       closeMenu()
@@ -17,6 +20,18 @@ export const Navbar = () => {
     }
     setMobileMenu(!mobileMenu)
   }
+
+  useEffect(() => {
+    if (width <= 640) {
+      if (menuPopup) document.body.style.overflow = "hidden";
+      else document.body.style.overflow = "";
+    }
+    else {
+      document.body.style.overflow = "";
+      closeMenu();
+    }
+  }, [width, menuPopup]);
+
   return (
     <div className='Navbar-container'>
       <div className='Navbar-flex-container'>
