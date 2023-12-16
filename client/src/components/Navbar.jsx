@@ -10,9 +10,17 @@ import 'react-loading-skeleton/dist/skeleton.css'
 export const Navbar = () => {
   const { width } = useWindowDimension();
   const { verifyLoading, verifySuccess, user } = useAuthStore()
-  const { menuPopup, mobileMenu, setMobileMenu, closeMenu, openMenu, toggleDisable } = useAnimStore()
+  const {
+    menuPopup,
+    mobileMenu, setMobileMenu,
+    openMenu, closeMenu,
+    toggleDisable,
+    avatarPopup,
+    avatarMenu, setAvatarMenu,
+    openAvatar, closeAvatar
+  } = useAnimStore()
 
-  function handleToggle() {
+  function handleMenuToggle() {
     if (mobileMenu) {
       closeMenu()
     } else {
@@ -21,16 +29,25 @@ export const Navbar = () => {
     setMobileMenu(!mobileMenu)
   }
 
+  function handleAvatarToggle() {
+    if (avatarMenu) {
+      closeAvatar()
+    } else {
+      openAvatar()
+    }
+    setAvatarMenu(!avatarMenu)
+  }
+
   useEffect(() => {
-    if (width <= 640) {
-      if (menuPopup) document.body.style.overflow = "hidden";
-      else document.body.style.overflow = "";
+    if (width <= 640 && (menuPopup || avatarPopup)) {
+      document.body.style.overflow = "hidden";
     }
     else {
       document.body.style.overflow = "";
       closeMenu();
+      closeAvatar();
     }
-  }, [width, menuPopup]);
+  }, [width, menuPopup, avatarPopup])
 
   return (
     <div className='Navbar-container'>
@@ -56,7 +73,10 @@ export const Navbar = () => {
               Sign in
             </Link>
           ) : (!verifyLoading && verifySuccess) && (
-            <div className='w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden'>
+            <div
+              className='w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden cursor-pointer'
+              onClick={() => handleAvatarToggle()}
+            >
               <img
                 src={user?.avatar?.url ? user.avatar.url : '/user.svg'}
                 className='w-full h-full object-contain'
@@ -67,7 +87,7 @@ export const Navbar = () => {
           <button
             disabled={toggleDisable}
             className='Navbar-menu-toggler'
-            onClick={() => handleToggle()}
+            onClick={() => handleMenuToggle()}
           >
             <div
               className={`Navbar-menu-bar-container ${mobileMenu && 'active'}`}
