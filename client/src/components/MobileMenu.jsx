@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom'
 import { useAnimStore } from '../store/useAnimStore'
 import { useEffect, useRef, useState } from 'react'
 
-export default function MobileMenu ({ menuLinks }) {
+export default function MobileMenu({ menuLinks }) {
   const { mobileMenu, setMobileMenu, closeMenu } = useAnimStore()
   const [animClass, setAnimClass] = useState('')
   const [width, setWidth] = useState(null)
   const menuRef = useRef(null)
   const linkRef = useRef(null)
 
-  function handleButtonClick () {
+  function handleCloseButton() {
     setAnimClass('normal')
     closeMenu()
     setMobileMenu(false)
@@ -18,7 +18,7 @@ export default function MobileMenu ({ menuLinks }) {
     const updateDimensions = () => {
       setWidth(window.innerWidth)
       if (width > 650) {
-        handleButtonClick()
+        handleCloseButton()
       }
     }
     window.addEventListener('resize', updateDimensions)
@@ -37,7 +37,6 @@ export default function MobileMenu ({ menuLinks }) {
       <div ref={linkRef} className={`mobile-menu-links ${animClass}`}>
         {menuLinks.map(item => (
           <Link
-            onClick={() => handleButtonClick()}
             to={item.link}
             className='mobile-menu-link'
             key={item.id}
@@ -47,7 +46,7 @@ export default function MobileMenu ({ menuLinks }) {
         ))}
         <button
           onClick={() => {
-            handleButtonClick()
+            handleCloseButton()
           }}
           className='mobile-menu-close-btn'
         >
