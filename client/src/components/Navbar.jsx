@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import useWindowDimension from '../utils/useWindowDimension'
 import { navData } from '../utils/navbar'
 import { useAuthStore } from '../store/useAuthStore'
 import { useAnimStore } from '../store/useAnimStore'
@@ -6,10 +8,19 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 export const Navbar = () => {
+  const { width } = useWindowDimension();
   const { verifyLoading, verifySuccess, user } = useAuthStore()
-  const { mobileMenu, setMobileMenu, closeMenu, openMenu, toggleDisable } =
-    useAnimStore()
-  function handleToggle() {
+  const {
+    menuPopup,
+    mobileMenu, setMobileMenu,
+    openMenu, closeMenu,
+    toggleDisable,
+    avatarPopup,
+    avatarMenu, setAvatarMenu,
+    openAvatar, closeAvatar
+  } = useAnimStore()
+
+  function handleMenuToggle() {
     if (mobileMenu) {
       closeMenu()
     } else {
@@ -17,6 +28,27 @@ export const Navbar = () => {
     }
     setMobileMenu(!mobileMenu)
   }
+
+  function handleAvatarToggle() {
+    if (avatarMenu) {
+      closeAvatar()
+    } else {
+      openAvatar()
+    }
+    setAvatarMenu(!avatarMenu)
+  }
+
+  useEffect(() => {
+    if (width <= 640 && (menuPopup || avatarPopup)) {
+      document.body.style.overflow = "hidden";
+    }
+    else {
+      document.body.style.overflow = "";
+      closeMenu();
+      closeAvatar();
+    }
+  }, [width, menuPopup, avatarPopup])
+
   return (
     <div className='Navbar-container'>
       <div className='Navbar-flex-container'>
@@ -41,7 +73,10 @@ export const Navbar = () => {
               Sign in
             </Link>
           ) : (!verifyLoading && verifySuccess) && (
-            <div className='w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden'>
+            <div
+              className='w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden cursor-pointer'
+              onClick={() => handleAvatarToggle()}
+            >
               <img
                 src={user?.avatar?.url ? user.avatar.url : '/user.svg'}
                 className='w-full h-full object-contain'
@@ -52,7 +87,7 @@ export const Navbar = () => {
           <button
             disabled={toggleDisable}
             className='Navbar-menu-toggler'
-            onClick={() => handleToggle()}
+            onClick={() => handleMenuToggle()}
           >
             <div
               className={`Navbar-menu-bar-container ${mobileMenu && 'active'}`}

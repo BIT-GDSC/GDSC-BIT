@@ -1,24 +1,29 @@
 import { Link } from 'react-router-dom'
 import { useAnimStore } from '../store/useAnimStore'
 import { useEffect, useRef, useState } from 'react'
+import { useAuthStore } from '../store/useAuthStore'
 
-export default function MobileMenu({ menuLinks }) {
-  const { mobileMenu, setMobileMenu, closeMenu } = useAnimStore()
+export default function AvatarMenu() {
+  const { avatarMenu, setAvatarMenu, closeAvatar } = useAnimStore()
+  const { setUser, setVerifySuccess } = useAuthStore();
   const [animClass, setAnimClass] = useState('')
   const [width, setWidth] = useState(null)
   const menuRef = useRef(null)
   const linkRef = useRef(null)
 
-  function handleCloseButton() {
+  function handleLogoutButton() {
+    setUser(null);
+    setVerifySuccess(false);
+    localStorage.removeItem('login_token');
     setAnimClass('normal')
-    closeMenu()
-    setMobileMenu(false)
+    closeAvatar()
+    setAvatarMenu(false)
   }
   useEffect(() => {
     const updateDimensions = () => {
       setWidth(window.innerWidth)
       if (width > 650) {
-        handleCloseButton()
+        handleLogoutButton()
       }
     }
     window.addEventListener('resize', updateDimensions)
@@ -28,29 +33,23 @@ export default function MobileMenu({ menuLinks }) {
   }, [width])
 
   useEffect(() => {
-    if (mobileMenu) setAnimClass('active')
+    if (avatarMenu) setAnimClass('active')
     else setAnimClass('normal')
-  }, [mobileMenu])
+  }, [avatarMenu])
 
   return (
     <div ref={menuRef} className={`mobile-menu-container ${animClass}`}>
       <div ref={linkRef} className={`mobile-menu-links ${animClass}`}>
-        {menuLinks.map(item => (
-          <Link
-            to={item.link}
-            className='mobile-menu-link'
-            key={item.id}
-          >
-            <span>{item.name}</span>
-          </Link>
-        ))}
+        <Link className='mobile-menu-link'>
+          Profile
+        </Link>
         <button
           onClick={() => {
-            handleCloseButton()
+            handleLogoutButton()
           }}
           className='mobile-menu-close-btn'
         >
-          Close
+          Logout
         </button>
       </div>
     </div>

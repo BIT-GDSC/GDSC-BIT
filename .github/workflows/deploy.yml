@@ -19,6 +19,8 @@ jobs:
         cd ./client
         npm ci
         npm run build
+      env:
+        VITE_SECRET_KEY: ${{ secrets.VITE_SECRET_KEY }}
     - name: Deploy to Vercel
       uses: amondnet/vercel-action@v20
       with:

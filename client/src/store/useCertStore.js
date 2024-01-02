@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import crypto from "crypto-js";
+import crypto from 'crypto-js';
 
-const SECRET_KEY = "THIS_IS_THE_SECRET_KEY_FOR_GDSC_BIT";
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
 
 export const useCertStore = create((set) => ({
     certLoading: true,
