@@ -43,9 +43,9 @@
     user-select: none;
 }
 
-body {
-    /* overflow: scroll; */
-}
+/* body {
+    overflow: scroll;
+} */
 
 h1,
 h2,
@@ -136,16 +136,15 @@ a {
     height: 72px;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1rem;
     background-color: #ffffff;
     border-radius: 40px;
     box-shadow: 0 1px 5px 2px #00000040;
 }
 
-.Navbar-logo img {
+/* .Navbar-logo img {
     height: 28px;
     width: 47px;
-}
+} */
 
 .Navbar-menu-toggler {
     display: none;
@@ -270,6 +269,11 @@ a {
     color: #ffffff;
     font-weight: bold;
     white-space: nowrap;
+    transition: 200ms;
+}
+
+.Navbar-signin-button:hover {
+    background-color: var(--body-main-bg);
 }
 
 /* Main content */
@@ -331,18 +335,39 @@ a {
 }
 
 .event-cards-container {
-    padding: 1rem 0;
-}
-
-.event-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50vw;
+    padding: 2rem 1rem 1rem;
     position: relative;
+    width: 500px;
+}
+.event-center-container{
+    height: 300px;
+    width: 300px;
+}
+.event-card {
+    position: absolute;
     height: 300px;
     width: 300px;
     background: no-repeat center/100%;
-    border: 1px solid #00000040;
+    /* border: 2px solid #00000040; */
+    border: 2px solid #4f4f4f;
     border-radius: 22px;
 }
-
+.event-card:last-child{
+    z-index: 2;
+    box-shadow: 0 2px 10px 2px #4f4f4f;
+}
+.event-card:nth-child(1){
+    transform-origin: center bottom;
+    transform: translateX(100px) rotate(15deg)
+}
+.event-card:nth-child(2){
+    transform-origin: center bottom;
+    transform: translateX(-100px) rotate(-15deg)
+}
 .event-card-desc {
     position: absolute;
     display: flex;
@@ -523,12 +548,21 @@ a {
 
 /******************************************** Media Queries ********* */
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 640px) {
 
     /* Global */
 
     .Navbar-container {
         min-width: 250px;
+    }
+
+    .Navbar-flex-container {
+        padding: 1rem 1rem;
+    }
+
+    .Navbar-logo img {
+        width: 51.58px;
+        height: 48.64px;
     }
 
     .section-heading {
@@ -594,6 +628,17 @@ a {
     #main-footer-gdsc,
     #main-footer-chapter-name {
         padding: 0;
+    }
+}
+
+@media screen and (min-width: 640px) {
+    .Navbar-flex-container {
+        padding: 1rem 2rem;
+    }
+
+    .Navbar-logo img {
+        width: 64.6px;
+        height: 60.8px;
     }
 }
 

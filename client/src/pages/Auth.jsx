@@ -87,7 +87,7 @@ const Auth = () => {
                     ?
                   </p>
                   <button
-                    className='text-[#103fef] hover:underline'
+                    className='text-[#3c82f6] hover:underline'
                     onClick={() =>
                       setAuthType(
                         authType === 'sign-in' ? 'sign-up' : 'sign-in'
@@ -100,7 +100,7 @@ const Auth = () => {
                 {authType === 'sign-in' && (
                   <button
                     type='button'
-                    className='flex items-center justify-end font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+                    className='flex items-center justify-end font-[400] text-[0.8125rem] text-[#3c82f6] hover:underline'
                     onClick={() => setAuthType("forgot-password-email")}
                   >
                     Forgot Password
@@ -136,7 +136,7 @@ const SocialAuth = () => {
     const authUrl = isProduction
       ? 'https://gdsc-bit.vercel.app/api/auth/google'
       : import.meta.env.VITE_DEV_GOOGLE_AUTH_URL
-    window.location.href = authUrl
+    window.open(authUrl, "_self")
   }
 
   const handleTwitterAuth = () => {
@@ -144,19 +144,15 @@ const SocialAuth = () => {
     const authUrl = isProduction
       ? 'https://gdsc-bit.vercel.app/api/auth/twitter'
       : import.meta.env.VITE_DEV_TWITTER_AUTH_URL
-    window.location.href = authUrl
+    window.open(authUrl, "_self")
   }
 
   const handleLinkedInAuth = () => {
     localStorage.removeItem('login_token')
-    if (isProduction) {
-      toast.error('Currently under maintainance!')
-    } else {
-      const authUrl = isProduction
-        ? 'https://gdsc-bit.vercel.app/api/auth/linkedin'
-        : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
-      window.location.href = authUrl
-    }
+    const authUrl = isProduction
+      ? 'https://gdsc-bit.vercel.app/api/auth/linkedin'
+      : import.meta.env.VITE_DEV_LINKEDIN_AUTH_URL
+    window.open(authUrl, "_self")
   }
 
   return (
@@ -179,7 +175,7 @@ const SocialAuth = () => {
           Continue with Twitter
         </span>
       </button>
-      {/* <button
+      <button
         onClick={handleLinkedInAuth}
         className='hover:bg-slate-100 duration-200 border border-[#00000014] py-[0.625rem] px-[1.25rem] flex gap-[1rem] rounded-[0.375rem]'
       >
@@ -187,7 +183,7 @@ const SocialAuth = () => {
         <span className='font-[400] text-[0.8125rem]'>
           Continue with LinkedIn
         </span>
-      </button> */}
+      </button>
     </div>
   )
 }
@@ -312,7 +308,7 @@ const OTPVerify = () => {
         <div className='flex justify-center'>
           <button
             type='button'
-            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            className='font-[400] text-[0.8125rem] text-[#3c82f6] hover:underline'
             onClick={handleResendOTP}
           >
             Resend OTP
@@ -337,7 +333,7 @@ const OTPVerify = () => {
 // User detail component
 const NewUser = () => {
   const navigate = useNavigate();
-  const { verifySuccess, user, registerDetail } = useAuthStore()
+  const { user, registerDetail } = useAuthStore()
   const { userRegisterDetails } = useRegisterStore()
 
   const fileRef = useRef()
@@ -373,7 +369,7 @@ const NewUser = () => {
       lastName,
       password,
       ...(imageFile ? { imageFile: imageFile } : { imageFile: '' }),
-      ...(verifySuccess && user ? { shallRedirect: true } : { shallRedirect: false }),
+      shallRedirect: true,
       navigate
     })
   }
@@ -501,7 +497,7 @@ const ForgotPasswordEmail = () => {
         <div className='flex justify-center'>
           <button
             type='button'
-            className='font-[400] text-[0.8125rem] text-[#103fef] hover:underline'
+            className='font-[400] text-[0.8125rem] text-[#3c82f6] hover:underline'
             onClick={() => setAuthType("sign-in")}
           >
             Back to Login

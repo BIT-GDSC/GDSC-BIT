@@ -10,7 +10,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 router.get('/auth/google/callback', googleCallbackController);
 router.get('/auth/twitter', passport.authenticate('twitter'));
 router.get('/auth/twitter/callback', twitterCallbackController);
-// router.get('/auth/linkedin', passport.authenticate('linkedin', { scope: ['openid', 'profile', 'email'] }));
-// router.get('/auth/linkedin/callback', linkedinCallbackController);
+router.get('/auth/linkedin', passport.authenticate('linkedin'));
+router.get('/auth/linkedin/callback', linkedinCallbackController);
 
 module.exports = router;
