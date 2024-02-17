@@ -7,7 +7,6 @@ export default function AvatarMenu() {
   const { avatarMenu, setAvatarMenu, closeAvatar } = useAnimStore()
   const { setUser, setVerifySuccess } = useAuthStore();
   const [animClass, setAnimClass] = useState('')
-  const [width, setWidth] = useState(null)
   const menuRef = useRef(null)
   const linkRef = useRef(null)
 
@@ -19,18 +18,6 @@ export default function AvatarMenu() {
     closeAvatar()
     setAvatarMenu(false)
   }
-  useEffect(() => {
-    const updateDimensions = () => {
-      setWidth(window.innerWidth)
-      if (width > 650) {
-        handleLogoutButton()
-      }
-    }
-    window.addEventListener('resize', updateDimensions)
-    return () => {
-      window.removeEventListener('resize', updateDimensions)
-    }
-  }, [width])
 
   useEffect(() => {
     if (avatarMenu) setAnimClass('active')
@@ -44,9 +31,7 @@ export default function AvatarMenu() {
           Profile
         </Link>
         <button
-          onClick={() => {
-            handleLogoutButton()
-          }}
+          onClick={handleLogoutButton}
           className='mobile-menu-close-btn'
         >
           Logout

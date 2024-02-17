@@ -21,33 +21,29 @@ export const Navbar = () => {
   } = useAnimStore()
 
   function handleMenuToggle() {
-    if (mobileMenu) {
-      closeMenu()
-    } else {
-      openMenu()
-    }
+    if (mobileMenu) closeMenu()
+    else openMenu()
     setMobileMenu(!mobileMenu)
   }
 
   function handleAvatarToggle() {
-    if (avatarMenu) {
-      closeAvatar()
-    } else {
-      openAvatar()
-    }
+    if (avatarMenu) closeAvatar()
+    else openAvatar()
     setAvatarMenu(!avatarMenu)
   }
 
   useEffect(() => {
-    if (width <= 640 && (menuPopup || avatarPopup)) {
-      document.body.style.overflow = "hidden";
-    }
+    if (width <= 640 && menuPopup) document.body.style.overflow = "hidden";
     else {
       document.body.style.overflow = "";
       closeMenu();
-      closeAvatar();
     }
-  }, [width, menuPopup, avatarPopup])
+  }, [width, menuPopup])
+
+  useEffect(() => {
+    if (avatarMenu) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+  }, [avatarMenu])
 
   return (
     <div className='Navbar-container'>
