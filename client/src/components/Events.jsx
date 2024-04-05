@@ -1,35 +1,38 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import card1 from '/images/card1.jpg'
 export default function Events () {
   const [active, setActive] = useState(0)
+  const btnRef = useRef(null)
+  async function handleToggler (selected) {
+    console.log(selected)
+    setActive(selected)
+  }
   return (
     <div className='section event-section'>
       <div className='events-title-container section-title-container'>
         <h2 className='section-heading'>Events</h2>
       </div>
-      {/* Toogler */}
+      {/* Toggler */}
       <div className='events-toggler'>
         <button
-          onClick={() => {
-            setActive(0)
-          }}
+          onClick={() => handleToggler(0)}
           className={active === 0 ? 'active' : ''}
         >
           <p>Upcoming</p>
         </button>
         <button
-          onClick={() => {
-            setActive(1)
-          }}
+          name='live'
+          value={1}
+          onClick={() => handleToggler(1)}
           className={active === 1 ? 'active' : ''}
         >
           <p>Live Now</p>
         </button>
         <button
-          onClick={() => {
-            setActive(2)
-          }}
-          className={active === 2 ? 'active' : ''}
+          name='past'
+          value={2}
+          onClick={() => handleToggler(2)}
+          className={`${active === 2 ? 'active' : ''}`}
         >
           <p>Past</p>
         </button>
@@ -38,186 +41,211 @@ export default function Events () {
 
       {/* event card */}
       <div className='event-cards-container'>
-        <div className='event-center-container' id='upcoming'>
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
-              </div>
-            </div>
-          </div>
-          {/* Trying out other cards */}
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
+        {/* {active === 0 && ( */}
+        <div
+          className={`event-center-container ${active !== 0 ? 'hide' : ''}`}
+          id='upcoming'
+        >
+          <div className='event-origin-container'>
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <p>Upcoming</p>
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='event-center-container' id='live'>
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
+            {/* Trying out other cards */}
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Trying out other cards */}
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
-              </div>
-            </div>
-          </div>
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className='event-center-container' id='past'>
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
-              </div>
-            </div>
-          </div>
-          {/* Trying out other cards */}
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
-              </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
+        {/* )} */}
+
+        {/* {active === 1 && ( */}
+        <div
+          className={`event-center-container ${active !== 1 ? 'hide' : ''}`}
+          id='live'
+        >
+          <div className='event-origin-container'>
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <p>Live</p>
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            className='event-card'
-            style={{
-              backgroundImage: `url(${card1})`
-            }}
-          >
-            <div className='event-card-desc'>
-              <div className='event-card-title'>
-                PokePrompt: Intro to AI & ML
+            {/* Trying out other cards */}
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
               </div>
-              <div className='event-card-info'>
-                <span>17/09/23</span>
-                {' • '}
-                <span>11 AM</span>
-                {' • '}
-                <span>GMEET</span>
+            </div>
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        {/* )} */}
+        {/* {active === 2 && ( */}
+        <div
+          className={`event-center-container ${active !== 2 ? 'hide' : ''}`}
+          id='past'
+        >
+          <div className='event-origin-container'>
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <p>past</p>
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
+              </div>
+            </div>
+            {/* Trying out other cards */}
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
+              </div>
+            </div>
+            <div
+              className='event-card'
+              style={{
+                backgroundImage: `url(${card1})`
+              }}
+            >
+              <div className='event-card-desc'>
+                <div className='event-card-title'>
+                  PokePrompt: Intro to AI & ML
+                </div>
+                <div className='event-card-info'>
+                  <span>17/09/23</span>
+                  {' • '}
+                  <span>11 AM</span>
+                  {' • '}
+                  <span>GMEET</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* )} */}
       </div>
       {/* event card arrows */}
       <div className='event-arrow-btn-container'>
