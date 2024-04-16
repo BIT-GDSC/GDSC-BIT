@@ -43,7 +43,7 @@ export default function Events () {
       <div className='event-cards-container'>
         {/* {active === 0 && ( */}
         <div
-          className={`event-center-container ${active !== 0 ? 'hide' : ''}`}
+          className={`event-center-container card-container-0 ${active == 0 && 'active'}`}
           id='upcoming'
         >
           <div className='event-origin-container'>
@@ -112,7 +112,7 @@ export default function Events () {
 
         {/* {active === 1 && ( */}
         <div
-          className={`event-center-container ${active !== 1 ? 'hide' : ''}`}
+          className={`event-center-container card-container-1 ${active == 1 && 'active'}`}
           id='live'
         >
           <div className='event-origin-container'>
@@ -180,7 +180,7 @@ export default function Events () {
         {/* )} */}
         {/* {active === 2 && ( */}
         <div
-          className={`event-center-container ${active !== 2 ? 'hide' : ''}`}
+          className={`event-center-container card-container-2 ${active == 2 && 'active'}`}
           id='past'
         >
           <div className='event-origin-container'>
