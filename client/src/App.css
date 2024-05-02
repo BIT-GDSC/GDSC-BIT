@@ -351,14 +351,15 @@ a {
 
 .event-cards-container .event-center-container:nth-child(1){
     transform: translateX(calc(50vw * 1));
+    position: absolute;
 }
 
 .event-cards-container::-webkit-scrollbar {
     display: none;
 }
-.event-center-container:nth-child(2){
+/* .event-center-container:nth-child(2){
     margin: 0 1px;
-}
+} */
 
 .event-center-container {
     height: 400px;
