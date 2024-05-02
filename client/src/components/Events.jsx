@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react'
 import card1 from '/images/card1.jpg'
-export default function Events () {
+export default function Events() {
   const [active, setActive] = useState(0)
   const btnRef = useRef(null)
-  async function handleToggler (selected) {
-    console.log(selected)
+  async function handleToggler(selected) {
     setActive(selected)
   }
   return (
@@ -40,20 +39,21 @@ export default function Events () {
       </div>
 
       {/* event card */}
-      <div className='event-cards-container'>
+      <div className={`event-cards-container active-${active}`}>
         {/* {active === 0 && ( */}
         <div
-          className={`event-center-container card-container-0 ${active == 0 && 'active'}`}
+          className={`event-center-container card-container-0 ${
+            active == 0 ? 'active' : ''
+          }`}
           id='upcoming'
         >
           <div className='event-origin-container'>
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
-              <p>Upcoming</p>
               <div className='event-card-desc'>
                 <div className='event-card-title'>
                   PokePrompt: Intro to AI & ML
@@ -71,7 +71,7 @@ export default function Events () {
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
               <div className='event-card-desc'>
@@ -90,7 +90,7 @@ export default function Events () {
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
               <div className='event-card-desc'>
@@ -112,17 +112,18 @@ export default function Events () {
 
         {/* {active === 1 && ( */}
         <div
-          className={`event-center-container card-container-1 ${active == 1 && 'active'}`}
+          className={`event-center-container card-container-1 ${
+            active == 1 ? 'active' : ''
+          }`}
           id='live'
         >
           <div className='event-origin-container'>
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
-              <p>Live</p>
               <div className='event-card-desc'>
                 <div className='event-card-title'>
                   PokePrompt: Intro to AI & ML
@@ -140,7 +141,7 @@ export default function Events () {
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
               <div className='event-card-desc'>
@@ -159,7 +160,7 @@ export default function Events () {
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
               <div className='event-card-desc'>
@@ -180,17 +181,18 @@ export default function Events () {
         {/* )} */}
         {/* {active === 2 && ( */}
         <div
-          className={`event-center-container card-container-2 ${active == 2 && 'active'}`}
+          className={`event-center-container card-container-2 ${
+            active == 2 ? 'active' : ''
+          }`}
           id='past'
         >
           <div className='event-origin-container'>
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
-              <p>past</p>
               <div className='event-card-desc'>
                 <div className='event-card-title'>
                   PokePrompt: Intro to AI & ML
@@ -208,7 +210,7 @@ export default function Events () {
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
               <div className='event-card-desc'>
@@ -227,7 +229,7 @@ export default function Events () {
             <div
               className='event-card'
               style={{
-                backgroundImage: `url(${card1})`
+                backgroundImage: `url(${card1})`,
               }}
             >
               <div className='event-card-desc'>
