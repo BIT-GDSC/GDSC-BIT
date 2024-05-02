@@ -15,7 +15,6 @@ export const Navbar = () => {
     mobileMenu, setMobileMenu,
     openMenu, closeMenu,
     toggleDisable,
-    avatarPopup,
     avatarMenu, setAvatarMenu,
     openAvatar, closeAvatar
   } = useAnimStore()

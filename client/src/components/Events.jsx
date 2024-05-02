@@ -1,16 +1,23 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import card1 from '/images/card1.jpg'
 export default function Events() {
   const [active, setActive] = useState(0)
-  const btnRef = useRef(null)
+  const [revolutionDir, setRevolutionDir] = useState('')
   async function handleToggler(selected) {
+    setRevolutionDir('')
     setActive(selected)
   }
+  function handleRevolution(dir) {
+    setRevolutionDir(dir)
+  }
+  console.log()
+
   return (
     <div className='section event-section'>
       <div className='events-title-container section-title-container'>
         <h2 className='section-heading'>Events</h2>
       </div>
+
       {/* Toggler */}
       <div className='events-toggler'>
         <button
@@ -40,14 +47,17 @@ export default function Events() {
 
       {/* event card */}
       <div className={`event-cards-container active-${active}`}>
-        {/* {active === 0 && ( */}
         <div
           className={`event-center-container card-container-0 ${
             active == 0 ? 'active' : ''
           }`}
           id='upcoming'
         >
-          <div className='event-origin-container'>
+          <div
+            className={`event-origin-container ${
+              active == 0 ? `active ${revolutionDir}` : ''
+            }`}
+          >
             <div
               className='event-card'
               style={{
@@ -108,16 +118,17 @@ export default function Events() {
             </div>
           </div>
         </div>
-        {/* )} */}
-
-        {/* {active === 1 && ( */}
         <div
           className={`event-center-container card-container-1 ${
             active == 1 ? 'active' : ''
           }`}
           id='live'
         >
-          <div className='event-origin-container'>
+          <div
+            className={`event-origin-container ${
+              active == 1 ? `active ${revolutionDir}` : ''
+            }`}
+          >
             <div
               className='event-card'
               style={{
@@ -178,15 +189,17 @@ export default function Events() {
             </div>
           </div>
         </div>
-        {/* )} */}
-        {/* {active === 2 && ( */}
         <div
           className={`event-center-container card-container-2 ${
             active == 2 ? 'active' : ''
           }`}
           id='past'
         >
-          <div className='event-origin-container'>
+          <div
+            className={`event-origin-container ${
+              active == 2 ? `active ${revolutionDir}` : ''
+            }`}
+          >
             <div
               className='event-card'
               style={{
@@ -247,14 +260,20 @@ export default function Events() {
             </div>
           </div>
         </div>
-        {/* )} */}
       </div>
+
       {/* event card arrows */}
       <div className='event-arrow-btn-container'>
-        <button className='event-left-arrow-btn'>
+        <button
+          onClick={() => handleRevolution('right')}
+          className='event-left-arrow-btn'
+        >
           <ion-icon size='large' name='chevron-back-outline'></ion-icon>
         </button>
-        <button className='event-right-arrow-btn'>
+        <button
+          onClick={() => handleRevolution('left')}
+          className='event-right-arrow-btn'
+        >
           <ion-icon size='large' name='chevron-forward-outline'></ion-icon>
         </button>
       </div>
