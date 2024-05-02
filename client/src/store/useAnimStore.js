@@ -10,7 +10,7 @@ export const useAnimStore = create(set => ({
     set({ toggleDisable: true })
     setTimeout(() => {
       set({ toggleDisable: false })
-    }, 1000)
+    }, 400)
   },
 
   menuPopup: false,
@@ -28,7 +28,7 @@ export const useAnimStore = create(set => ({
       set({ avatarPopup: false })
       set({ avatarMenu: false })
       set({ toggleDisable: false })
-    }, 1000)
+    }, 400)
   },
 
   avatarMenu: false,
@@ -50,6 +50,6 @@ export const useAnimStore = create(set => ({
       set({ mobileMenu: false })
       set({ avatarPopup: false })
       set({ avatarMenu: false })
-    }, 1000)
+    }, 400)
   },
 }))
