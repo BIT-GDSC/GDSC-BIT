@@ -5,9 +5,11 @@ A complete solution for handling everything about our **GDSC** for its members a
 ## Have a look...
 
 ![home page](client/public/readme_img/home.png)
+
 **_view of home page_**
 
 ![socials section](client/public//readme_img/socials.png)
+
 **_socials section_**
 
 ## Features
@@ -21,6 +23,7 @@ A complete solution for handling everything about our **GDSC** for its members a
 The most useful feature which help us a lot to verify certificates shared to individuals appreciating effort.
 
 ![certificate verification page](client/public/readme_img/cert_template.png)
+
 ***view of a verified certificate***
 - View your certificate on our site.
 - Share your achievement on socials.
@@ -29,6 +32,7 @@ The most useful feature which help us a lot to verify certificates shared to ind
 ### Sign in to personalize
 
 ![sing in page image](client/public/readme_img/user_auth.png)
+
 ***user sign up and login page***
 - View your events related data, scoreboard, and contributions.
 - Look and change your information saved with us.
