@@ -105,6 +105,39 @@ a {
   z-index: 5;
   padding: 0 1rem;
 }
+/* Experiment with nav */
+.navbar-inner-cont {
+  position: relative;
+  height: 72px;
+  border-radius: 18px;
+  background-color: #fff;
+  border: 1px solid #4b4b4b;
+}
+.mobile-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% - 35px);
+  left: -1px;
+  width: calc(100% + 2px);
+  height: 36px;
+  border-radius: 0 0 18px 18px;
+  border: 1px solid;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 90%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-color: transparent #4b4b4b #4b4b4b #4b4b4b;
+  transition: all 400ms ease-in-out;
+  overflow: hidden;
+}
+.mobile-dropdown.active {
+  height: 175px;
+}
+.mobile-links-container {
+  display: none;
+  padding: 30px 1rem 10px;
+}
 
 .Navbar-links {
   width: 80%;
@@ -136,13 +169,12 @@ a {
 
 .Navbar-flex-container {
   display: flex;
-  height: 72px;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
-  border-radius: 40px;
-  box-shadow: 0 1px 5px 2px #00000040;
-  padding: 1rem 1rem;
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 0 1rem;
 }
 
 .Navbar-menu-toggler {
@@ -390,27 +422,15 @@ a {
     transform: translateX(100%);
   }
 }
-/* .event-origin-container.active.right .event-card:nth-child(1) {
-  z-index: 2;
-  transform: translate(-5px);
-  transform: rotate(-15deg);
-} */
+
 .event-origin-container.active.left .event-card:nth-child(2) {
   transform: translate(100px, 0) rotate(15deg);
 }
-/* .event-origin-container.active.right .event-card:nth-child(2) {
-  transform: translate(-5px);
-  transform: rotate(15deg);
-} */
+
 .event-origin-container.active.left .event-card:nth-child(3) {
   z-index: 2;
   transform: translate(0, 0) rotate(0);
 }
-/* .event-origin-container.active.right .event-card:nth-child(3) {
-  z-index: 0;
-  transform: translate(-5px);
-  transform: rotate(0);
-} */
 
 .event-card {
   position: absolute;
@@ -616,6 +636,23 @@ a {
 
 @media screen and (max-width: 640px) {
   /* Global */
+
+  /* Experiment with nav */
+  .mobile-dropdown {
+    display: block;
+  }
+  .menu-link-container {
+    display: block;
+    background-color: #10dada;
+    padding: 5px 10px;
+    border-radius: 0.5em;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  .mobile-links-container {
+    display: block;
+  }
 
   .Navbar-container {
     min-width: 250px;
