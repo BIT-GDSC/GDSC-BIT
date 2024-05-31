@@ -17,7 +17,6 @@ export const Navbar = () => {
     setMobileMenu,
     openMenu,
     closeMenu,
-    toggleDisable,
     avatarMenu,
     setAvatarMenu,
     openAvatar,
@@ -37,16 +36,23 @@ export const Navbar = () => {
   }
 
   function handleAvatarToggle() {
-    if (avatarMenu) closeAvatar()
-    else openAvatar()
+    if (avatarMenu) {
+      closeAvatar()
+      setDropdown(true)
+    } else {
+      setDropdown(false)
+      openAvatar()
+    }
     setAvatarMenu(!avatarMenu)
   }
+  console.log(verifySuccess)
 
   useEffect(() => {
     if (width <= 640 && menuPopup) document.body.style.overflow = 'hidden'
     else {
       document.body.style.overflow = ''
       closeMenu()
+      setDropdown(false)
     }
   }, [width, menuPopup])
 
@@ -57,7 +63,7 @@ export const Navbar = () => {
 
   return (
     <div className='Navbar-container'>
-      <div className='navbar-inner-cont'>
+      <div className={`navbar-inner-cont ${dropdown ? 'expanded' : ''}`}>
         <div className='Navbar-flex-container'>
           <Link to='/' className='Navbar-logo'>
             <img src='/logo-crop.png' alt='logo' />
@@ -95,9 +101,10 @@ export const Navbar = () => {
             )}
             {/* Mobile Menu toggler */}
             <button
-              disabled={toggleDisable}
               className='Navbar-menu-toggler'
               onClick={() => handleMenuToggle()}
+              j
+              title='Click to open menu'
             >
               <div
                 className={`Navbar-menu-bar-container ${
@@ -120,18 +127,16 @@ export const Navbar = () => {
         </div>
 
         {/* Experimet with nav */}
-        <div className={`mobile-dropdown ${dropdown ? 'active' : ''}`}>
-          <ul className='mobile-links-container'>
-            {navData.map((item, index) => (
-              <li key={index}>
-                <Link to={item.link} className='Navbar-link' key={item.id}>
-                  <span>{item.name}</span>
-                  <div className='Navbar-link-highlight' />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className='mobile-links-container'>
+          {navData.map((item, index) => (
+            <li key={index}>
+              <Link to={item.link} className='Navbar-link' key={item.id}>
+                <span>{item.name}</span>
+                <div className='Navbar-link-highlight' />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   )

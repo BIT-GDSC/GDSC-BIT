@@ -1,16 +1,11 @@
 import { create } from 'zustand'
 
-export const useAnimStore = create(set => ({
-  toggleDisable: false,
+export const useAnimStore = create((set) => ({
 
   mobileMenu: false,
-  setMobileMenu: verifyState => {
+  setMobileMenu: (verifyState) => {
     set({ mobileMenu: verifyState })
     set({ avatarMenu: false })
-    set({ toggleDisable: true })
-    setTimeout(() => {
-      set({ toggleDisable: false })
-    }, 400)
   },
 
   menuPopup: false,
@@ -21,18 +16,14 @@ export const useAnimStore = create(set => ({
     set({ mobileMenu: true })
   },
   closeMenu: () => {
-    set({ toggleDisable: true })
-    setTimeout(() => {
-      set({ menuPopup: false })
-      set({ mobileMenu: false })
-      set({ avatarPopup: false })
-      set({ avatarMenu: false })
-      set({ toggleDisable: false })
-    }, 400)
+    set({ menuPopup: false })
+    set({ mobileMenu: false })
+    set({ avatarPopup: false })
+    set({ avatarMenu: false })
   },
 
   avatarMenu: false,
-  setAvatarMenu: verifyState => {
+  setAvatarMenu: (verifyState) => {
     set({ avatarMenu: verifyState })
     set({ mobileMenu: false })
   },
@@ -45,11 +36,9 @@ export const useAnimStore = create(set => ({
     set({ avatarMenu: true })
   },
   closeAvatar: () => {
-    setTimeout(() => {
-      set({ menuPopup: false })
-      set({ mobileMenu: false })
-      set({ avatarPopup: false })
-      set({ avatarMenu: false })
-    }, 400)
+    set({ menuPopup: false })
+    set({ mobileMenu: false })
+    set({ avatarPopup: false })
+    set({ avatarMenu: false })
   },
 }))

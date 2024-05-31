@@ -267,14 +267,26 @@ export default function Events() {
         <button
           onClick={() => handleRevolution('right')}
           className='event-left-arrow-btn'
+          title='click to rotate right'
         >
-          <ion-icon size='large' name='chevron-back-outline'></ion-icon>
+          <ion-icon
+            size='large'
+            name='chevron-back-outline'
+            alt='arrow-left'
+            title='arrow-left'
+          ></ion-icon>
         </button>
         <button
           onClick={() => handleRevolution('left')}
           className='event-right-arrow-btn'
+          title='Click to rotate left'
         >
-          <ion-icon size='large' name='chevron-forward-outline'></ion-icon>
+          <ion-icon
+            size='large'
+            name='chevron-forward-outline'
+            alt='arrow-right'
+            title='arrow-right'
+          ></ion-icon>
         </button>
       </div>
     </div>

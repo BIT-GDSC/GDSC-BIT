@@ -1,4 +1,3 @@
-import './App.css'
 import { useEffect } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { Routes, Route, useLocation } from 'react-router-dom'
