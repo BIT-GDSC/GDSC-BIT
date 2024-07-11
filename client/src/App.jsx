@@ -9,7 +9,7 @@ import Auth from './pages/Auth'
 import Test from './pages/Test'
 import { useLoginStore } from './store/useAuthStore'
 
-function App () {
+function App() {
   const location = useLocation()
   const { loadUser } = useLoginStore()
 

@@ -7,18 +7,18 @@ import {
   Image,
   StyleSheet,
   Font,
-  PDFDownloadLink,
+  PDFDownloadLink
 } from '@react-pdf/renderer'
 
 // IMAGE Template
-const GoogleCloudFacilitator = () => {
+const  GenAI24 = () => {
   const { certData } = useCertStore()
 
   return (
     <>
       <div className='relative w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border shadow flex flex-col items-center justify-center'>
         <img
-          src='/cloudCertificateFacilitator.png'
+          src='/cloudCertificate.png'
           className='w-full h-full'
           alt='Certificate Template'
         />
@@ -27,8 +27,13 @@ const GoogleCloudFacilitator = () => {
         </p>
         <img
           src={certData.verifyQR}
-          className='absolute bottom-[0.55px] py-[1px] px-1 md:p-1 lg:p-2 right-[3.01525px] w-[34px] h-[50px] md:bottom-[11px] md:right-[6px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[4px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 right-[47.05px] w-[34px] h-[50px] md:bottom-[11px] md:right-[76px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[110px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
           alt='Verify QR'
+        />
+        <img
+          src={certData.skillBoostQR}
+          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 right-[6px] w-[34px] h-[50px] md:bottom-[11px] md:right-[11px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[11px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+          alt='Skill Boost QR'
         />
       </div>
       <div className='flex flex-col gap-3 items-center'>
@@ -51,7 +56,7 @@ const GoogleCloudFacilitator = () => {
           </div>
         </div>
         <PDFDownloadLink
-          document={<GoogleCloudFacilitatorPDF certData={certData} />}
+          document={<GenAI24PDF certData={certData} />}
           fileName='certificate.pdf'
         >
           {({ blob, url, loading, error }) => (
@@ -69,16 +74,14 @@ const GoogleCloudFacilitator = () => {
 }
 
 // PDF Template
-const GoogleCloudFacilitatorPDF = ({ certData }) => (
+const GenAI24PDF = ({ certData }) => (
   <Document>
     <Page size={[2500, 1704]} style={styles.page}>
       <View style={styles.section}>
-        <Image
-          source='/cloudCertificateFacilitator.png'
-          style={styles.certImage}
-        />
+        <Image source='/genai_24_cert_tmp.png' style={styles.certImage} />
         <Text style={styles.name}>{certData.fullName}</Text>
         <Image source={certData.verifyQR} style={styles.verify} />
+        <Image source={certData.skillBoostQR} style={styles.skill} />
       </View>
     </Page>
   </Document>
@@ -89,9 +92,9 @@ Font.register({
   family: 'Island Moments',
   fonts: [
     {
-      src: '/fonts/IslandMoments-Regular.ttf',
-    },
-  ],
+      src: '/fonts/IslandMoments-Regular.ttf'
+    }
+  ]
 })
 
 // Styles for PDF
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
   page: {
     width: 2500,
     height: 1704,
-    position: 'relative',
+    position: 'relative'
   },
   section: {
     width: '100%',
@@ -107,11 +110,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   certImage: {
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   name: {
     position: 'absolute',
@@ -122,17 +125,26 @@ const styles = StyleSheet.create({
     color: 'rgb(75 85 99 / 1)',
     textAlign: 'center',
     margin: 'auto',
-    fontFamily: 'Island Moments',
+    fontFamily: 'Island Moments'
   },
   verify: {
     position: 'absolute',
-    right: '21px',
+    right: '301px',
     bottom: '43px',
     width: '210px',
     height: '210px',
     objectFit: 'contain',
-    padding: '16px',
+    padding: '16px'
   },
+  skill: {
+    position: 'absolute',
+    right: '41px',
+    bottom: '43px',
+    width: '210px',
+    height: '210px',
+    objectFit: 'contain',
+    padding: '16px'
+  }
 })
 
-export default GoogleCloudFacilitator
+export default GenAI24

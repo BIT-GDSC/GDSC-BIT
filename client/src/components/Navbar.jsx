@@ -45,7 +45,7 @@ export const Navbar = () => {
     }
     setAvatarMenu(!avatarMenu)
   }
-  console.log(verifySuccess)
+  // console.log(verifySuccess)
 
   useEffect(() => {
     if (width <= 640 && menuPopup) document.body.style.overflow = 'hidden'
@@ -103,7 +103,6 @@ export const Navbar = () => {
             <button
               className='Navbar-menu-toggler'
               onClick={() => handleMenuToggle()}
-              j
               title='Click to open menu'
             >
               <div

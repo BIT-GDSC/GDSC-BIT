@@ -1,21 +1,19 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useCertStore } from '../../store/useCertStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import GoogleCloud from './Template/GoogleCloud'
+import GenAI24 from './Template/GenAI24'
 import GoogleCloudFacilitator from './Template/GoogleCloudFacilitator'
 
 // Main Component
 const VerifyCertificate = () => {
   const { certificateID } = useParams()
-
   const { certLoading, certData, fetchCertData } = useCertStore()
-
   useEffect(() => {
-    if (certificateID) fetchCertData(certificateID);
-  }, [certificateID]);
-
+    if (certificateID) fetchCertData(certificateID)
+  }, [certificateID])
   return (
     <div
       className='flex items-center justify-center overflow-hidden md:overflow-auto'
@@ -53,10 +51,14 @@ const VerifyCertificate = () => {
               {certData.message}
             </p>
           </div>
-        ) : certData.certificate === "Google Cloud Study Jam" ? (
+        ) : certData.certificate === 'Google Cloud Study Jam' ? (
           <GoogleCloud />
-        ) : certData.certificate === "Google Cloud Study Jam Facilitator" && (
-          <GoogleCloudFacilitator />
+        ) : certData.certificate === 'Google Gen AI Study Jam 2024' ? (
+          <GenAI24 />
+        ) : (
+          certData.certificate === 'Google Cloud Study Jam Facilitator' && (
+            <GoogleCloudFacilitator />
+          )
         )}
       </div>
     </div>
