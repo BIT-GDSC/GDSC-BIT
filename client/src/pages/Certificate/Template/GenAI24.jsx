@@ -13,26 +13,26 @@ import {
 // IMAGE Template
 const  GenAI24 = () => {
   const { certData } = useCertStore()
-
+  console.log("request arrived at component.")
   return (
     <>
-      <div className='relative w-[400px] h-[300px] md:w-[625px] md:h-[426px] lg:w-[950px] lg:h-[652px] border shadow flex flex-col items-center justify-center'>
+      <div className='relative w-[512px] h-[288px] md:w-[720px] md:h-[405px] lg:w-[1080px] lg:h-[607px] drop-shadow-md flex flex-col items-center justify-center'>
         <img
-          src='/cloudCertificate.png'
+          src='/genai_24_cert_tmp.png'
           className='w-full h-full'
           alt='Certificate Template'
         />
-        <p className='candidate-name absolute left-1/2 -translate-x-1/2 text-xl md:text-3xl lg:text-5xl text-gray-600 mt-5 md:mt-6 lg:mt-10'>
+        <p className='candidate-name-gen-ai-24 absolute left-1/2 -translate-x-1/2 text-xl md:text-3xl lg:text-5xl mb-5 md:mb-5 lg:mb-8'>
           {certData.fullName}
         </p>
         <img
           src={certData.verifyQR}
-          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 right-[47.05px] w-[34px] h-[50px] md:bottom-[11px] md:right-[76px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[110px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 left-[339px] w-[40px] h-[50px] md:bottom-[11px] md:left-[479px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:left-[713px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
           alt='Verify QR'
         />
         <img
           src={certData.skillBoostQR}
-          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 right-[6px] w-[34px] h-[50px] md:bottom-[11px] md:right-[11px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:right-[11px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 left-[454px] w-[40px] h-[50px] md:bottom-[11px] md:left-[642px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:left-[957px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
           alt='Skill Boost QR'
         />
       </div>
@@ -40,7 +40,7 @@ const  GenAI24 = () => {
         <div className='flex items-center gap-3 flex-row sm:gap-5'>
           <a
             href={`https://twitter.com/intent/tweet?text=I%20just%20earned%20the%20${certData.certificate}%20Certificate!%20Check%20it%20out%20here:%20${certData.verifyURL}`}
-            className='rounded-2xl w-[150px] h-[35px] bg-black hover:bg-white text-white hover:text-black duration-200 font-extrabold flex items-center justify-center'
+            className='rounded-2xl w-[150px] h-[35px] bg-black hover:bg-white hover:border-gray-300 hover:border-2 text-white hover:text-black duration-200 font-extrabold flex items-center justify-center'
           >
             Share on X
           </a>
@@ -49,7 +49,7 @@ const  GenAI24 = () => {
               rel='noreferrer'
               target='_blank'
               href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${certData.certificate}&organizationId=97886448&issueYear=2023&issueMonth=10&certUrl=${certData.verifyURL}&certId=${certData._id}`}
-              className='rounded-2xl w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
+              className='rounded-2xl hover:border-gray-300 hover:border-2 w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
             >
               Add to LinkedIn
             </a>
@@ -62,7 +62,7 @@ const  GenAI24 = () => {
           {({ blob, url, loading, error }) => (
             <button
               disabled={loading}
-              className='rounded-2xl w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'
+              className='rounded-2xl hover:border-gray-300 hover:border-2 w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'
             >
               {loading ? 'Wait...' : 'Download'}
             </button>
@@ -76,7 +76,7 @@ const  GenAI24 = () => {
 // PDF Template
 const GenAI24PDF = ({ certData }) => (
   <Document>
-    <Page size={[2500, 1704]} style={styles.page}>
+    <Page size={[2500, 1406.25]} style={styles.page}>
       <View style={styles.section}>
         <Image source='/genai_24_cert_tmp.png' style={styles.certImage} />
         <Text style={styles.name}>{certData.fullName}</Text>
@@ -96,12 +96,20 @@ Font.register({
     }
   ]
 })
+Font.register({
+  family: 'Caveat',
+  fonts: [
+    {
+      src: '/fonts/Caveat-VariableFont_wght.ttf'
+    }
+  ]
+})
 
 // Styles for PDF
 const styles = StyleSheet.create({
   page: {
-    width: 2500,
-    height: 1704,
+    width: 2160,
+    height: 1215,
     position: 'relative'
   },
   section: {
@@ -120,16 +128,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: '830px',
+    top: '570px',
     fontSize: '130px',
-    color: 'rgb(75 85 99 / 1)',
+    color: '#D9D9D9',
     textAlign: 'center',
     margin: 'auto',
-    fontFamily: 'Island Moments'
+    fontFamily: 'Caveat'
   },
   verify: {
     position: 'absolute',
-    right: '301px',
+    right: '640px',
     bottom: '43px',
     width: '210px',
     height: '210px',
@@ -138,7 +146,7 @@ const styles = StyleSheet.create({
   },
   skill: {
     position: 'absolute',
-    right: '41px',
+    right: '75px',
     bottom: '43px',
     width: '210px',
     height: '210px',

@@ -14,12 +14,13 @@ const VerifyCertificate = () => {
   useEffect(() => {
     if (certificateID) fetchCertData(certificateID)
   }, [certificateID])
+  console.log(certData)
   return (
     <div
       className='flex items-center justify-center overflow-hidden md:overflow-auto'
       style={{ minHeight: '100svh' }}
     >
-      <div className='h-full md:pt-[100px] flex flex-col gap-5 items-center justify-center'>
+      <div className='h-full pb-12 md:pt-[100px] flex flex-col gap-5 items-center justify-center'>
         {certLoading ? (
           // Fetching Certificate
           <>
