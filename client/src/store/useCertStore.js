@@ -28,7 +28,7 @@ export const useCertStore = create((set) => ({
       }
 
       await fetch(
-        `http://localhost:5000/api/cert/verify/${certificateID}`,
+        `/api/cert/verify/${certificateID}`,
         config
       )
         .then((response) => response.json())
