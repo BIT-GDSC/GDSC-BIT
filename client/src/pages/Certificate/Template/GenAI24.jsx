@@ -7,36 +7,33 @@ import {
   Image,
   StyleSheet,
   Font,
-  PDFDownloadLink
+  PDFDownloadLink,
 } from '@react-pdf/renderer'
 
 // IMAGE Template
-const  GenAI24 = () => {
+const GenAI24 = () => {
   const { certData } = useCertStore()
-  console.log("request arrived at component.")
   return (
     <>
-      <div className='relative w-[512px] h-[288px] md:w-[720px] md:h-[405px] lg:w-[1080px] lg:h-[607px] drop-shadow-md flex flex-col items-center justify-center'>
+      <div className='certificate-main-cont'>
         <img
           src='/genai_24_cert_tmp.png'
           className='w-full h-full'
           alt='Certificate Template'
         />
-        <p className='candidate-name-gen-ai-24 absolute left-1/2 -translate-x-1/2 text-xl md:text-3xl lg:text-5xl mb-5 md:mb-5 lg:mb-8'>
-          {certData.fullName}
-        </p>
+        <p className='candidate-name-gen-ai-24 '>{certData.fullName}</p>
         <img
           src={certData.verifyQR}
-          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 left-[339px] w-[40px] h-[50px] md:bottom-[11px] md:left-[479px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:left-[713px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+          className='cert-verify-qr'
           alt='Verify QR'
         />
         <img
           src={certData.skillBoostQR}
-          className='absolute bottom-[1px] py-[1px] px-1 md:p-1 lg:p-2 left-[454px] w-[40px] h-[50px] md:bottom-[11px] md:left-[642px] md:w-[51px] md:h-[52px] lg:bottom-[16px] lg:left-[957px] lg:w-[88px] lg:h-[80.8px] lg:rounded-[13px] object-contain'
+          className='cert-skillboost-qr'
           alt='Skill Boost QR'
         />
       </div>
-      <div className='flex flex-col gap-3 items-center'>
+      <div className='flex flex-col py-12 gap-3 items-center'>
         <div className='flex items-center gap-3 flex-row sm:gap-5'>
           <a
             href={`https://twitter.com/intent/tweet?text=I%20just%20earned%20the%20${certData.certificate}%20Certificate!%20Check%20it%20out%20here:%20${certData.verifyURL}`}
@@ -92,17 +89,17 @@ Font.register({
   family: 'Island Moments',
   fonts: [
     {
-      src: '/fonts/IslandMoments-Regular.ttf'
-    }
-  ]
+      src: '/fonts/IslandMoments-Regular.ttf',
+    },
+  ],
 })
 Font.register({
   family: 'Caveat',
   fonts: [
     {
-      src: '/fonts/Caveat-VariableFont_wght.ttf'
-    }
-  ]
+      src: '/fonts/Caveat-VariableFont_wght.ttf',
+    },
+  ],
 })
 
 // Styles for PDF
@@ -110,7 +107,7 @@ const styles = StyleSheet.create({
   page: {
     width: 2160,
     height: 1215,
-    position: 'relative'
+    position: 'relative',
   },
   section: {
     width: '100%',
@@ -118,11 +115,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   certImage: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   name: {
     position: 'absolute',
@@ -133,7 +130,7 @@ const styles = StyleSheet.create({
     color: '#D9D9D9',
     textAlign: 'center',
     margin: 'auto',
-    fontFamily: 'Caveat'
+    fontFamily: 'Caveat',
   },
   verify: {
     position: 'absolute',
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
     width: '210px',
     height: '210px',
     objectFit: 'contain',
-    padding: '16px'
+    padding: '16px',
   },
   skill: {
     position: 'absolute',
@@ -151,8 +148,8 @@ const styles = StyleSheet.create({
     width: '210px',
     height: '210px',
     objectFit: 'contain',
-    padding: '16px'
-  }
+    padding: '16px',
+  },
 })
 
 export default GenAI24

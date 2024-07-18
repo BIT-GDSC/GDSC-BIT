@@ -54,7 +54,7 @@ const GoogleCloudFacilitator = () => {
           document={<GoogleCloudFacilitatorPDF certData={certData} />}
           fileName='certificate.pdf'
         >
-          {({ blob, url, loading, error }) => (
+          {({ loading}) => (
             <button
               disabled={loading}
               className='rounded-2xl w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'

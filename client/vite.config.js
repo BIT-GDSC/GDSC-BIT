@@ -12,6 +12,13 @@ export default defineConfig({
       "X-Content-Type-Options": "nosniff", // Protects from improper scripts runnings
       "X-XSS-Protection": "1; mode=block", // Gives XSS protection to legacy browsers
     },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   build: {
     rollupOptions: {
@@ -21,12 +28,5 @@ export default defineConfig({
         assetFileNames: `[name].${version}.[ext]`
       }
     }
-  },
-  proxy: {
-    '/api': {
-      target: 'http://localhost:5000',
-      changeOrigin: true,
-      secure: false,
-    },
   },
 })

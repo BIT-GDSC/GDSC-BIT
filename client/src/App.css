@@ -791,13 +791,55 @@ a {
   }
 }
 
-/* Certificate Verification Styles */
+/*************************  Certificate Verification Styles */
+.cert-main-container {
+  min-height: 100vh;
+  padding: 100px 25px 0;
+}
+.cert-aspect-box {
+  position: relative;
+  padding-top: 56.25%;
+}
+.cert-aspect-centering {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.certificate-main-cont {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .candidate-name {
   font-family: 'Island Moments';
 }
 .candidate-name-gen-ai-24 {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 41%;
+  font-size: 4vw;
   font-family: 'Caveat', cursive, 'Open Sans', sans-serif;
   color: #d9d9d9;
+}
+.cert-verify-qr {
+  position: absolute;
+  right: 26%;
+}
+.cert-skillboost-qr,
+.cert-verify-qr {
+  bottom: 5%;
+  width: 8%;
+}
+.cert-skillboost-qr {
+  position: absolute;
+  right: 3%;
 }
 
 .loader-dot:after {
