@@ -205,12 +205,10 @@ a {
 }
 
 .Navbar-menu-toggler-top.active {
-  /* transform-origin: 16.5px 1.5px; */
   transform: rotate(40deg) scaleY(1.1);
 }
 
 .Navbar-menu-toggler-bottom.active {
-  /* transform-origin: 1.5px 1.5px; */
   transform: rotate(-40deg) scaleY(1.1);
 }
 
