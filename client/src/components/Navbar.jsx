@@ -125,16 +125,27 @@ export const Navbar = () => {
           </div>
         </div>
 
-        {/* Experimet with nav */}
+        {/* Experiment with nav */}
         <ul className='mobile-links-container'>
-          {navData.map((item, index) => (
-            <li key={index}>
-              <Link to={item.link} className='Navbar-link' key={item.id}>
-                <span>{item.name}</span>
-                <div className='Navbar-link-highlight' />
-              </Link>
-            </li>
-          ))}
+          <div className='mobile-view-control'>
+            {navData.map((item, index) => (
+              <li key={index}>
+                <Link to={item.link} className='Navbar-link' key={item.id}>
+                  <span>{item.name}</span>
+                  <div className='Navbar-link-highlight' />
+                </Link>
+              </li>
+            ))}
+          </div>
+
+          <div className='mobile-profile-control'>
+            <span className='mobile-profile-vr'></span>
+            <div>
+              <button>Sign out</button>
+              <span>{'|'}</span>
+              <button>Go to Profile</button>
+            </div>
+          </div>
         </ul>
       </div>
     </div>
