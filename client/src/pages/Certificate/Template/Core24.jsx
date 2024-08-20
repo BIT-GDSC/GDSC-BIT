@@ -11,7 +11,7 @@ import {
 } from '@react-pdf/renderer'
 
 // IMAGE Template
-const GenAI24 = () => {
+const Core24 = () => {
   const { certData } = useCertStore()
   return (
     <>
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default GenAI24
+export default Core24
