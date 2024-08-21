@@ -12,7 +12,6 @@ exports.verifyCertificate = async (req, res) => {
         msg: 'Certificate not found',
       })
     }
-    console.log(certData)
     const encryptedData = CryptoJS.AES.encrypt(
       JSON.stringify(certData),
       process.env.DATA_ENCRYPTION_SECRET_KEY

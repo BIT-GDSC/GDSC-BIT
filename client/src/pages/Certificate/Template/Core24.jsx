@@ -32,15 +32,10 @@ const Core24 = () => {
         {certData.appreciation && (
           <p className='candidate-appreciation'>
             is hereby awarded this Certificate of Completion for successfully
-            serving as Google Developer Student Clubs core team member,
+            serving as Google Developer Student Clubs core team member,{' '}
             {certData.appreciation}
           </p>
         )}
-        {/* <img
-          src={certData.skillBoostQR}
-          className='cert-skillboost-qr'
-          alt='Skill Boost QR'
-        /> */}
       </div>
       <div className='flex flex-col py-12 gap-3 items-center'>
         <div className='flex items-center flex-wrap justify-center gap-3 flex-row sm:gap-5'>
@@ -87,7 +82,7 @@ const GenAI24PDF = ({ certData }) => (
         <Image source='/genai_24_cert_tmp.png' style={styles.certImage} />
         <Text style={styles.name}>{certData.fullName}</Text>
         <Image source={certData.verifyQR} style={styles.verify} />
-        <Image source={certData.skillBoostQR} style={styles.skill} />
+        {/* <Image source={certData.skillBoostQR} style={styles.skill} /> */}
       </View>
     </Page>
   </Document>
