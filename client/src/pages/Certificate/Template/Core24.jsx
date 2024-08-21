@@ -93,7 +93,7 @@ Font.register({
   family: 'Roboto',
   fonts: [
     {
-      src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf'
+      src: 'https://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf'
     }
   ]
 })
@@ -101,7 +101,7 @@ Font.register({
   family: 'Open sans',
   fonts: [
     {
-      src: 'http://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf'
+      src: 'https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf'
     }
   ]
 })
