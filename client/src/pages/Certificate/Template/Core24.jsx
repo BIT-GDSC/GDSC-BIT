@@ -22,7 +22,7 @@ const Core24 = () => {
           className='w-full h-full'
           alt='Certificate Template'
         />
-        <p className='candidate-name-p core-member-24'>{certData.fullName}</p>
+        <p className='candidate-name-p name-core-member-24'>{certData.fullName}</p>
         <img
           src={certData.verifyQR}
           className='qr-core-member-24'
@@ -40,6 +40,7 @@ const Core24 = () => {
       <div className='flex flex-col py-12 gap-3 items-center'>
         <div className='flex items-center flex-wrap justify-center gap-3 flex-row sm:gap-5'>
           <a
+            target='_blank'
             href={`https://twitter.com/intent/tweet?text=I%20just%20earned%20the%20${certData.certificate}%20Certificate!%20Check%20it%20out%20here:%20${certData.verifyURL}`}
             className='rounded-2xl w-[150px] h-[35px] bg-black hover:bg-white hover:border-gray-300 hover:border-2 text-white hover:text-black duration-200 font-extrabold flex items-center justify-center'
           >
