@@ -7,31 +7,40 @@ import {
   Image,
   StyleSheet,
   Font,
-  PDFDownloadLink,
+  PDFDownloadLink
 } from '@react-pdf/renderer'
 
 // IMAGE Template
-const GenAI24 = () => {
+const Core24 = () => {
   const { certData } = useCertStore()
+  console.log(certData)
   return (
     <>
       <div className='certificate-main-cont'>
         <img
-          src='/genai_24_cert_tmp.png'
+          src='/certificates/core_24.svg'
           className='w-full h-full'
           alt='Certificate Template'
         />
-        <p className='candidate-name-gen-ai-24 '>{certData.fullName}</p>
+        <p className='candidate-name-p core-member-24'>{certData.fullName}</p>
         <img
           src={certData.verifyQR}
-          className='cert-verify-qr'
+          className='qr-core-member-24'
           alt='Verify QR'
         />
-        <img
+        {/* Appreciation */}
+        {certData.appreciation && (
+          <p className='candidate-appreciation'>
+            is hereby awarded this Certificate of Completion for successfully
+            serving as Google Developer Student Clubs core team member,
+            {certData.appreciation}
+          </p>
+        )}
+        {/* <img
           src={certData.skillBoostQR}
           className='cert-skillboost-qr'
           alt='Skill Boost QR'
-        />
+        /> */}
       </div>
       <div className='flex flex-col py-12 gap-3 items-center'>
         <div className='flex items-center flex-wrap justify-center gap-3 flex-row sm:gap-5'>
@@ -89,17 +98,17 @@ Font.register({
   family: 'Island Moments',
   fonts: [
     {
-      src: '/fonts/IslandMoments-Regular.ttf',
-    },
-  ],
+      src: '/fonts/IslandMoments-Regular.ttf'
+    }
+  ]
 })
 Font.register({
   family: 'Caveat',
   fonts: [
     {
-      src: '/fonts/Caveat-VariableFont_wght.ttf',
-    },
-  ],
+      src: '/fonts/Caveat-VariableFont_wght.ttf'
+    }
+  ]
 })
 
 // Styles for PDF
@@ -107,7 +116,7 @@ const styles = StyleSheet.create({
   page: {
     width: 2160,
     height: 1215,
-    position: 'relative',
+    position: 'relative'
   },
   section: {
     width: '100%',
@@ -115,11 +124,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   certImage: {
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   name: {
     position: 'absolute',
@@ -130,7 +139,7 @@ const styles = StyleSheet.create({
     color: '#D9D9D9',
     textAlign: 'center',
     margin: 'auto',
-    fontFamily: 'Caveat',
+    fontFamily: 'Caveat'
   },
   verify: {
     position: 'absolute',
@@ -139,7 +148,7 @@ const styles = StyleSheet.create({
     width: '210px',
     height: '210px',
     objectFit: 'contain',
-    padding: '16px',
+    padding: '16px'
   },
   skill: {
     position: 'absolute',
@@ -148,8 +157,8 @@ const styles = StyleSheet.create({
     width: '210px',
     height: '210px',
     objectFit: 'contain',
-    padding: '16px',
-  },
+    padding: '16px'
+  }
 })
 
-export default GenAI24
+export default Core24
