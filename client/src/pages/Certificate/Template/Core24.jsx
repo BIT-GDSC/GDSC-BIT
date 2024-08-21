@@ -13,7 +13,8 @@ import {
 // IMAGE Template
 const Core24 = () => {
   const { certData } = useCertStore()
-  console.log(certData)
+  const appreciation = `is hereby awarded this Certificate of Completion for successfully serving as Google Developer Student Clubs core team member, ${certData.appreciation}.`
+  const qrString = certData.verifyQR.replace('&format=png', '&format=svg')
   return (
     <>
       <div className='certificate-main-cont'>
@@ -22,19 +23,13 @@ const Core24 = () => {
           className='w-full h-full'
           alt='Certificate Template'
         />
-        <p className='candidate-name-p name-core-member-24'>{certData.fullName}</p>
-        <img
-          src={certData.verifyQR}
-          className='qr-core-member-24'
-          alt='Verify QR'
-        />
+        <p className='candidate-name-p name-core-member-24'>
+          {certData.fullName}
+        </p>
+        <img src={qrString} className='qr-core-member-24' alt='Verify QR' />
         {/* Appreciation */}
         {certData.appreciation && (
-          <p className='candidate-appreciation'>
-            is hereby awarded this Certificate of Completion for successfully
-            serving as Google Developer Student Clubs core team member,{' '}
-            {certData.appreciation}
-          </p>
+          <p className='candidate-appreciation'>{appreciation}</p>
         )}
       </div>
       <div className='flex flex-col py-12 gap-3 items-center'>
@@ -58,8 +53,10 @@ const Core24 = () => {
           </div>
         </div>
         <PDFDownloadLink
-          document={<GenAI24PDF certData={certData} />}
-          fileName='certificate.pdf'
+          document={
+            <Core24PDF certData={certData} appreciation={appreciation} />
+          }
+          fileName={`${certData.fullName}.pdf`}
         >
           {({ blob, url, loading, error }) => (
             <button
@@ -76,33 +73,35 @@ const Core24 = () => {
 }
 
 // PDF Template
-const GenAI24PDF = ({ certData }) => (
-  <Document>
-    <Page size={[2500, 1406.25]} style={styles.page}>
-      <View style={styles.section}>
-        <Image source='/genai_24_cert_tmp.png' style={styles.certImage} />
-        <Text style={styles.name}>{certData.fullName}</Text>
-        <Image source={certData.verifyQR} style={styles.verify} />
-        {/* <Image source={certData.skillBoostQR} style={styles.skill} /> */}
-      </View>
-    </Page>
-  </Document>
-)
+const Core24PDF = ({ certData, appreciation }) => {
+  return (
+    <Document>
+      <Page size={[2500, 1406.25]} style={styles.page}>
+        <View style={styles.section}>
+          <Image source='/certificates/core_24.png' style={styles.certImage} />
+          <Text style={styles.name}>{certData.fullName}</Text>
+          <Text style={styles.appreciation}>{appreciation}</Text>
+          <Image source={certData.verifyQR} style={styles.verify} />
+        </View>
+      </Page>
+    </Document>
+  )
+}
 
 // Font register for PDF
 Font.register({
-  family: 'Island Moments',
+  family: 'Roboto',
   fonts: [
     {
-      src: '/fonts/IslandMoments-Regular.ttf'
+      src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf'
     }
   ]
 })
 Font.register({
-  family: 'Caveat',
+  family: 'Open sans',
   fonts: [
     {
-      src: '/fonts/Caveat-VariableFont_wght.ttf'
+      src: 'http://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf'
     }
   ]
 })
@@ -127,31 +126,29 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   name: {
+    fontSize: '96px',
     position: 'absolute',
-    left: 0,
-    right: 0,
-    top: '570px',
-    fontSize: '130px',
-    color: '#D9D9D9',
-    textAlign: 'center',
-    margin: 'auto',
-    fontFamily: 'Caveat'
+    width: '100%',
+    left: '10%',
+    top: '38%',
+    fontFamily: 'Roboto',
+    color: '#f29900'
+  },
+  appreciation: {
+    fontSize: '32px',
+    position: 'absolute',
+    fontFamily: 'Open sans',
+    color: '#5f6367',
+    width: '60%',
+    left: '10%',
+    top: '47%'
   },
   verify: {
     position: 'absolute',
-    right: '640px',
-    bottom: '43px',
-    width: '210px',
-    height: '210px',
-    objectFit: 'contain',
-    padding: '16px'
-  },
-  skill: {
-    position: 'absolute',
-    right: '75px',
-    bottom: '43px',
-    width: '210px',
-    height: '210px',
+    right: '221px',
+    bottom: '200px',
+    width: '284px',
+    height: '284px',
     objectFit: 'contain',
     padding: '16px'
   }
