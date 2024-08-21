@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Island+Moments&family=VT323&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Island+Moments&family=VT323&family=Roboto:wght@100;300;400;500;700&?family=Open+Sans:wght@300..800&display=swap');
 
 @font-face {
   font-family: 'Google Sans';
@@ -806,7 +806,7 @@ a {
   }
 }
 
-/*************************  Certificate Verification Styles */
+/*************************  Certificate Verification Styles  **********************/
 .cert-main-container {
   min-height: 100vh;
   padding: 100px 25px 0;
@@ -835,18 +835,7 @@ a {
   font-family: 'Island Moments';
 }
 
-/* Media for candidate name */
-@media screen and (max-width:1650px) {
-  .candidate-name-gen-ai-24 {
-    font-size: 4vw;
-  }
-}
 
-@media screen and (min-width: 1651px) {
-  .candidate-name-gen-ai-24 {
-    font-size: 4.125rem;
-  }
-}
 
 .candidate-name-gen-ai-24 {
   position: absolute;
@@ -858,20 +847,68 @@ a {
   color: #d9d9d9;
 }
 
-.cert-verify-qr {
+/************** Core member candidate name */
+.core-member-24 {
   position: absolute;
-  right: 26%;
+  width: 100%;
+  left: 10%;
+  top: 35%;
+  font-family: 'Roboto', 'Open Sans', sans-serif;
+  color: #f29900;
 }
 
-.cert-skillboost-qr,
-.cert-verify-qr {
-  bottom: 5%;
-  width: 8%;
+.candidate-appreciation {
+  position: absolute;
+  font-family: 'Open Sans', sans-serif;
+  color: #5f6367;
+  width: 100%;
+  height: 50px;
+  /* font-weight: 300; */
+  left: 43%;
+  top: 50.5%;
+}
+
+/* Media for candidate name */
+@media screen and (max-width:1650px) {
+  .candidate-name-gen-ai-24 {
+    font-size: 4vw;
+  }
+
+  .core-member-24 {
+    font-size: 4vw;
+  }
+
+  .candidate-appreciation {
+    font-size: 1.3vw;
+  }
+}
+
+@media screen and (min-width: 1651px) {
+  .candidate-name-gen-ai-24 {
+    font-size: 4.125rem;
+  }
+}
+
+.qr-core-member-24 {
+  position: absolute;
+  right: 9.6%;
+  bottom: 15.5%;
+  width: 9.75%;
 }
 
 .cert-skillboost-qr {
   position: absolute;
   right: 3%;
+}
+
+.cert-verify-qr {
+  position: absolute;
+  right: 26%;
+}
+.cert-skillboost-qr,
+.cert-verify-qr {
+  bottom: 5%;
+  width: 8%;
 }
 
 .loader-dot:after {
