@@ -20,12 +20,11 @@ export const Navbar = () => {
     avatarMenu,
     setAvatarMenu,
     openAvatar,
-    closeAvatar,
+    closeAvatar
   } = useAnimStore()
 
-  function handleMenuToggle() {
+  function handleMenuToggle () {
     setDropdown(!dropdown)
-    console.log('clicked on menu')
     if (mobileMenu) {
       closeMenu()
       setMobileMenu(false)
@@ -35,7 +34,7 @@ export const Navbar = () => {
     }
   }
 
-  function handleAvatarToggle() {
+  function handleAvatarToggle () {
     if (avatarMenu) {
       closeAvatar()
       setDropdown(true)
@@ -69,7 +68,7 @@ export const Navbar = () => {
             <img src='/logo-crop.png' alt='logo' />
           </Link>
           <div className='Navbar-links'>
-            {navData.map((item) => (
+            {navData.map(item => (
               <Link to={item.link} className='Navbar-link' key={item.id}>
                 <span>{item.name}</span>
                 <div className='Navbar-link-highlight' />

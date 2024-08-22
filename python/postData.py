@@ -5,7 +5,7 @@ load_dotenv()
 from pymongo import MongoClient
 
 
-data = pd.read_csv('core_member_test.csv')
+data = pd.read_csv('core_members.csv')
 
 json_data = data.to_dict(orient='records')
 db_uri = os.getenv('MONGO_URI')
