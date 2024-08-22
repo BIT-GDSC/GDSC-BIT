@@ -19,6 +19,7 @@
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.16.0",
     "sonner": "^1.0.3",
+    "svg-parser": "^2.0.4",
     "zustand": "^4.4.3"
   },
   "devDependencies": {

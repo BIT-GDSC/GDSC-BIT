@@ -5,7 +5,7 @@ exports.verifyCertificate = async (req, res) => {
   try {
     const certData = await Certificate.findById(
       req.params.certificateID
-    ).select('fullName verifyURL verifyQR skillBoostQR certificate')
+    ).select('fullName verifyURL verifyQR skillBoostQR certificate appreciation')
     if (!certData) {
       return res.status(400).json({
         success: false,
