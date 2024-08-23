@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useWindowDimension from '../utils/useWindowDimension'
 import { navData } from '../utils/navbar'
-import { useAuthStore } from '../store/useAuthStore'
+import { useAuthStore, useLoginStore } from '../store/useAuthStore'
 import { useAnimStore } from '../store/useAnimStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -12,6 +12,7 @@ import MobileMenu from './MobileMenu'
 export const Navbar = () => {
   const { width } = useWindowDimension()
   const { verifyLoading, verifySuccess, user } = useAuthStore()
+  const { userLogout } = useLoginStore()
   const [timeoutID, setTimeoutId] = useState(null)
   const [menuAnimation, setMenuAnimation] = useState('')
   const [avatarAnimation, setAvatarAnimation] = useState('')
@@ -33,10 +34,16 @@ export const Navbar = () => {
   }
 
   function handleAuthAction (e) {
-    toast.info('we are working on it.')
+    const { name } = e.target
+    if (name === 'signout') {
+      userLogout()
+      handleAvatarToggle()
+    } else {
+      toast.info('we are working on it.')
+    }
   }
   function handleAvatarToggle (e) {
-    if (width > 640) {
+    if (width > 640 && user) {
       console.log('called avatar menu')
       if (timeoutID) clearTimeout(timeoutID)
       if (avatarAnimation === 'active') {
@@ -88,13 +95,12 @@ export const Navbar = () => {
               <div className='relative w-[40px] h-[40px] rounded-full  overflow-hidden'>
                 <Skeleton className='absolute -top-1 left-0 right-0 bottom-0 w-full h-full' />
               </div>
-            ) : !verifyLoading && !verifySuccess ? (
+            ) : !user ? (
               <Link to='/auth' className='Navbar-signin-button'>
                 Sign in
               </Link>
             ) : (
-              !verifyLoading &&
-              verifySuccess && (
+              user && (
                 <div
                   className={`w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden ${
                     !mobileMenu ? 'cursor-pointer' : ''

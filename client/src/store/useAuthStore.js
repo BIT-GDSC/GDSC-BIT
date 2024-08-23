@@ -1,8 +1,8 @@
-import { create } from 'zustand';
-import { toast } from 'sonner';
-import crypto from 'crypto-js';
+import { create } from 'zustand'
+import { toast } from 'sonner'
+import crypto from 'crypto-js'
 
-const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY
 
 export const useAuthStore = create(set => ({
   user: null,
@@ -145,82 +145,100 @@ export const useRegisterStore = create(() => ({
         body: formData
       }
 
-            fetch(`/api/register-details`, config)
-                .then((response) => response.json())
-                .then((result) => {
-                    if (result.success === true) {
-                        toast.success(result.msg, { duration: 7500 });
-                        localStorage.setItem("login_token", result.loginToken);
-                        if (shallRedirect) navigate("/");
-                    }
-                    if (result.success === false) toast.error(result.msg, { duration: 7500 });
-                })
-                .finally(() => {
-                    localStorage.removeItem("register_token");
-                    useAuthStore.getState().setRegisterDetail(false);
-                })
-        }
-        catch (error) {
-            toast.error("Something went wrong... Try again later!");
-        }
+      fetch(`/api/register-details`, config)
+        .then(response => response.json())
+        .then(result => {
+          if (result.success === true) {
+            toast.success(result.msg, { duration: 7500 })
+            localStorage.setItem('login_token', result.loginToken)
+            if (shallRedirect) navigate('/')
+          }
+          if (result.success === false)
+            toast.error(result.msg, { duration: 7500 })
+        })
+        .finally(() => {
+          localStorage.removeItem('register_token')
+          useAuthStore.getState().setRegisterDetail(false)
+        })
+    } catch (error) {
+      toast.error('Something went wrong... Try again later!')
     }
-}));
+  }
+}))
 
-export const useLoginStore = create(() => ({
-    userLogin: async (email, password, navigate) => {
-        try {
-            useAuthStore.getState().setVerifyLoading(true);
-            const CustomHeader = new Headers();
-            CustomHeader.append('Content-Type', 'application/json')
-            const config = {
-                method: 'POST',
-                headers: CustomHeader,
-                body: JSON.stringify({ email, password })
-            }
-            await fetch(`/api/login`, config)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success === true) {
-                        toast.success(result.msg, { duration: 7500 });
-                        localStorage.setItem("login_token", result.loginToken);
-                        navigate("/");
-                    }
+export const useLoginStore = create((set, get) => ({
+  userLogin: async (email, password, navigate) => {
+    try {
+      useAuthStore.getState().setVerifyLoading(true)
+      const CustomHeader = new Headers()
+      CustomHeader.append('Content-Type', 'application/json')
+      const config = {
+        method: 'POST',
+        headers: CustomHeader,
+        body: JSON.stringify({ email, password })
+      }
+      await fetch(`/api/login`, config)
+        .then(response => response.json())
+        .then(result => {
+          if (result.success === true) {
+            toast.success(result.msg, { duration: 7500 })
+            localStorage.setItem('login_token', result.loginToken)
+            navigate('/')
+          }
 
-                    if (result.success === false) {
-                        toast.error(result.msg, { duration: 7500 });
-                        useAuthStore.getState().setVerifyLoading(false);
-                    }
-                })
-        }
-        catch (error) {
-            useAuthStore.getState().setVerifyLoading(false);
-            toast.error("Something went wrong... Try again later!");
-        }
-    },
-    loadUser: async () => {
-        if (localStorage.getItem("login_token") === null || localStorage.getItem("login_token") === "") return;
-        try {
-            useAuthStore.getState().setVerifyLoading(true);
-            const CustomHeader = new Headers();
-            CustomHeader.append('Content-Type', 'application/json');
-            CustomHeader.append("login_token", localStorage.getItem("login_token"));
-            const config = {
-                method: 'GET',
-                headers: CustomHeader
-            }
-            await fetch(`/api/load-user`, config)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success === true) {
-                        const decryptedData = JSON.parse(
-                            crypto.AES.decrypt(result.data, SECRET_KEY).toString(
-                                crypto.enc.Utf8
-                            )
-                        );
-                        useAuthStore.getState().setUser(decryptedData.user);
-                        useAuthStore.getState().setVerifyLoading(false);
-                        useAuthStore.getState().setVerifySuccess(true);
-                    }
+          if (result.success === false) {
+            toast.error(result.msg, { duration: 7500 })
+            useAuthStore.getState().setVerifyLoading(false)
+          }
+        })
+    } catch (error) {
+      useAuthStore.getState().setVerifyLoading(false)
+      toast.error('Something went wrong... Try again later!')
+    }
+  },
+  userLogout: async () => {
+    try {
+      if (
+        localStorage.getItem('login_token') === null ||
+        localStorage.getItem('login_token') === ''
+      )
+        return
+      useAuthStore.getState().setUser(null)
+      localStorage.setItem('login_token', null)
+      toast.success('logged out.')
+    } catch (err) {
+      console.log(err)
+      toast.error('something went wrong.')
+    }
+  },
+  loadUser: async () => {
+    if (
+      localStorage.getItem('login_token') === null ||
+      localStorage.getItem('login_token') === ''
+    )
+      return
+    try {
+      useAuthStore.getState().setVerifyLoading(true)
+      const CustomHeader = new Headers()
+      CustomHeader.append('Content-Type', 'application/json')
+      CustomHeader.append('login_token', localStorage.getItem('login_token'))
+      const config = {
+        method: 'GET',
+        headers: CustomHeader
+      }
+      await fetch(`/api/load-user`, config)
+        .then(response => response.json())
+        .then(result => {
+          if (result.success === true) {
+            const decryptedData = JSON.parse(
+              crypto.AES.decrypt(result.data, SECRET_KEY).toString(
+                crypto.enc.Utf8
+              )
+            )
+            useAuthStore.getState().setUser(decryptedData.user)
+            useAuthStore.getState().setVerifyLoading(false)
+            useAuthStore.getState().setVerifySuccess(true)
+          }
 
           if (result.success === false) {
             localStorage.removeItem('login_token')
