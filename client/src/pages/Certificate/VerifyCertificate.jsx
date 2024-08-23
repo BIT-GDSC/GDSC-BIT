@@ -6,6 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import GoogleCloud from './Template/GoogleCloud'
 import GenAI24 from './Template/GenAI24'
 import GoogleCloudFacilitator from './Template/GoogleCloudFacilitator'
+import Core24 from './Template/Core24'
 
 // Main Component
 const VerifyCertificate = () => {
@@ -58,6 +59,8 @@ const VerifyCertificate = () => {
             <GoogleCloud />
           ) : certData.certificate === 'Google Gen AI Study Jam 2024' ? (
             <GenAI24 />
+          ) : certData.certificate === 'Core Team 24' ? (
+            <Core24 />
           ) : (
             certData.certificate === 'Google Cloud Study Jam Facilitator' && (
               <GoogleCloudFacilitator />

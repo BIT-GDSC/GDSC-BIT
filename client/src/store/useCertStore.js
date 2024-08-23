@@ -3,9 +3,9 @@ import crypto from 'crypto-js'
 
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY
 
-export const useCertStore = create((set) => ({
+export const useCertStore = create(set => ({
   certLoading: true,
-  setCertLoading: (certLoading) => set({ certLoading: certLoading }),
+  setCertLoading: certLoading => set({ certLoading: certLoading }),
   certData: {
     _id: '',
     fullName: '',
@@ -13,10 +13,10 @@ export const useCertStore = create((set) => ({
     verifyQR: '',
     skillBoostQR: '',
     certificate: '',
-    message: '',
+    message: ''
   },
-  setCertData: (certData) => set({ certData: certData }),
-  fetchCertData: async (certificateID) => {
+  setCertData: certData => set({ certData: certData }),
+  fetchCertData: async certificateID => {
     try {
       useCertStore.getState().setCertLoading(true)
 
@@ -24,15 +24,12 @@ export const useCertStore = create((set) => ({
       CustomHeader.append('Content-Type', 'application/json')
       const config = {
         method: 'GET',
-        headers: CustomHeader,
+        headers: CustomHeader
       }
 
-      await fetch(
-        `/api/cert/verify/${certificateID}`,
-        config
-      )
-        .then((response) => response.json())
-        .then((result) => {
+      await fetch(`/api/cert/verify/${certificateID}`, config)
+        .then(response => response.json())
+        .then(result => {
           if (result.success === true) {
             const decryptedData = JSON.parse(
               crypto.AES.decrypt(result.data, SECRET_KEY).toString(
@@ -47,12 +44,13 @@ export const useCertStore = create((set) => ({
               skillBoostQR: decryptedData.skillBoostQR,
               certificate: decryptedData.certificate,
               message: '',
+              appreciation: decryptedData.appreciation
             })
           }
 
           if (result.success === false) {
             useCertStore.getState().setCertData({
-              message: result.msg,
+              message: result.msg
             })
           }
         })
@@ -60,8 +58,8 @@ export const useCertStore = create((set) => ({
     } catch (error) {
       console.log(error)
       useCertStore.getState().setCertData({
-        message: 'Error. Try again after some time!',
+        message: 'Error. Try again after some time!'
       })
     }
-  },
+  }
 }))

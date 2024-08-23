@@ -36,11 +36,11 @@ const GoogleCloud = () => {
           alt='Skill Boost QR'
         />
       </div>
-      <div className='flex flex-col gap-3 items-center'>
-        <div className='flex items-center gap-3 flex-row sm:gap-5'>
+      <div className='flex flex-col py-12 gap-3 items-center'>
+        <div className='flex items-center justify-center gap-3 flex-wrap flex-row sm:gap-5'>
           <a
             href={`https://twitter.com/intent/tweet?text=I%20just%20earned%20the%20${certData.certificate}%20Certificate!%20Check%20it%20out%20here:%20${certData.verifyURL}`}
-            className='rounded-2xl w-[150px] h-[35px] bg-black hover:bg-white text-white hover:text-black duration-200 font-extrabold flex items-center justify-center'
+            className='rounded-2xl hover:border-gray-300 hover:border-2 w-[150px] h-[35px] bg-black hover:bg-white text-white hover:text-black duration-200 font-extrabold flex items-center justify-center'
           >
             Share on X
           </a>
@@ -49,7 +49,7 @@ const GoogleCloud = () => {
               rel='noreferrer'
               target='_blank'
               href={`https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${certData.certificate}&organizationId=97886448&issueYear=2023&issueMonth=10&certUrl=${certData.verifyURL}&certId=${certData._id}`}
-              className='rounded-2xl w-[150px] h-[35px] bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
+              className='rounded-2xl w-[150px] h-[35px] hover:border-gray-300 hover:border-2 bg-[#0072b1] hover:bg-white text-white hover:text-[#0072b1] duration-200 font-extrabold flex items-center justify-center'
             >
               Add to LinkedIn
             </a>
@@ -62,7 +62,7 @@ const GoogleCloud = () => {
           {({ blob, url, loading, error }) => (
             <button
               disabled={loading}
-              className='rounded-2xl w-[150px] h-[35px] bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'
+              className='rounded-2xl w-[150px] h-[35px] hover:border-gray-300 hover:border-2 bg-[#FFBC39] hover:bg-white text-white hover:text-[#FFBC39] duration-200 font-extrabold flex items-center justify-center'
             >
               {loading ? 'Wait...' : 'Download'}
             </button>
