@@ -1,11 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Island+Moments&family=VT323&family=Roboto:wght@100;300;400;500;700&?family=Open+Sans:wght@300..800&display=swap');
 
+/* Google Sans font variables */
+/* Normal */
 @font-face {
   font-family: 'Google Sans';
-  src: url('/fonts/ProductSans-Regular.ttf');
-  font-weight: 100;
-  font-style: normal;
+  src: url(/fonts/GoogleSans-Regular.ttf) format('truetype');
+  font-style: normal;    
+  font-weight: 400;
 }
+
+/* Medium */
+@font-face {
+  font-family: 'Google Sans';
+  src: url(/fonts/GoogleSans-Medium.ttf) format('truetype');
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Google Sans';
+  src: url(/fonts/GoogleSans-Bold.ttf) format('truetype');
+  font-style: normal;    
+  font-weight: 700;
+}
+/* Google sans font ends */
+
 
 @tailwind base;
 @tailwind components;
@@ -30,13 +50,15 @@
   --event-card-normal-height: 300px;
   --event-card-small-height: 200px;
   --event-card-small-width: 150px;
+  --mobile-breakpoint: 640px;
 }
 
 * {
-  font-family: Open Sans, sans-serif;
+  font-family: 'Google Sans', 'Open Sans', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-weight: normal;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -45,10 +67,6 @@
   -ms-user-select: none;
   user-select: none;
 }
-
-/* body {
-    overflow: scroll;
-} */
 
 h1,
 h2,
@@ -114,9 +132,8 @@ a {
   height: 72px;
   border-radius: 18px;
   background-color: #fff;
-  border: 1px solid #4b4b4b;
+  border: 1px solid #00000080;
   overflow: hidden;
-  padding: 0 1rem;
   box-shadow: 0 0 5px .125px #4b4b4b80;
   transition: all 400ms cubic-bezier(0.86, 0, 0.07, 1);
 }
@@ -126,32 +143,70 @@ a {
 }
 
 .mobile-links-container {
-  display: none; 
-  box-sizing: border-box;
+  display: none;
   width: 100%;
-  /* padding: 10px; */
+  padding: 10px 1.5rem;
   position: absolute;
   z-index: 1;
   bottom: 0;
   height: 155px;
 }
+
 .mobile-view-control {
-  min-width: 150px;
+  /* min-width: 150px; */
 }
-.mobile-view-control, .mobile-profile-control{
-  flex: 1;
+
+.mobile-view-control,
+.mobile-profile-control {
+  width: 50%;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
-.mobile-profile-control{
-  position: relative;
+
+.mobile-profile-control {
   height: 100%;
+  display: flex;
+  align-items: center;
 }
-.mobile-profile-vr{
-  position: absolute;
-  left: 0;
+
+.mobile-profile-vr {
   height: 75%;
-  width: 2px;
-  background-color: gray;
+  min-width: 3px;
+  border-radius: 1.5px;
+  background-color: #00000040;
 }
+
+.mobile-avatar-option {
+  padding-left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.mobile-avatar-option button {
+  font-weight: bold;
+  margin: 0 .5rem;
+  word-break: normal;
+  word-wrap: break-word;
+}
+.mobile-avatar-option div{
+  width: 1px;
+  height: 1rem;
+  border-radius: .5px;
+  background-color: #00000040;
+}
+/* Media query for mobile avatar option */
+@media screen and (max-width: 420px){
+  .mobile-avatar-option{
+    flex-direction: column;
+    align-items: center;
+  }
+  .mobile-avatar-option div{
+    width: 75%;
+    height: 1px;
+  }
+}
+
 .Navbar-links {
   width: 80%;
   display: flex;
@@ -187,6 +242,7 @@ a {
   position: relative;
   z-index: 2;
   height: 72px;
+  padding: 0 1rem;
   background-color: #fff;
 }
 
@@ -198,11 +254,11 @@ a {
   display: flex;
   position: relative;
   transition: transform 400ms cubic-bezier(0.86, 0, 0.07, 1);
-  transform: translateY(-5px);
+  transform: translateY(5px);
 }
 
 .Navbar-menu-bar-container.active {
-  transform: translateY(5px);
+  transform: translateY(-5px);
 }
 
 .arrow-bar {
@@ -210,7 +266,6 @@ a {
   position: relative;
   border-radius: 1.5px;
   width: 18px;
-
   background-color: #ffffff;
   transition: transform 400ms cubic-bezier(0.86, 0, 0.07, 1),
     transform-origin 400ms cubic-bezier(0.86, 0, 0.07, 1);
@@ -219,21 +274,21 @@ a {
 .Navbar-menu-toggler-top {
   left: 1.5px;
   transform-origin: 16.5px 1.5px;
-  transform: rotate(-40deg) scaleY(1.1);
+  transform: rotate(40deg) scaleY(1.1);
 }
 
 .Navbar-menu-toggler-bottom {
   right: 1.5px;
   transform-origin: 1.5px 1.5px;
-  transform: rotate(40deg) scaleY(1.1);
+  transform: rotate(-40deg) scaleY(1.1);
 }
 
 .Navbar-menu-toggler-top.active {
-  transform: rotate(40deg) scaleY(1.1);
+  transform: rotate(-40deg) scaleY(1.1);
 }
 
 .Navbar-menu-toggler-bottom.active {
-  transform: rotate(-40deg) scaleY(1.1);
+  transform: rotate(40deg) scaleY(1.1);
 }
 
 .Navbar-auth {
@@ -381,7 +436,6 @@ a {
 .event-cards-container {
   white-space: nowrap;
   position: relative;
-  /* border: 1px solid black; */
   transition: all 400ms ease-in-out;
 }
 
@@ -892,7 +946,9 @@ a {
 
 /* Media for candidate name */
 @media screen and (max-width:1600px) {
-  .candidate-name-gen-ai-24, .name-core-member-24 {
+
+  .candidate-name-gen-ai-24,
+  .name-core-member-24 {
     font-size: 4vw;
   }
 
@@ -902,10 +958,13 @@ a {
 }
 
 @media screen and (min-width: 1601px) {
-  .candidate-name-gen-ai-24, .name-core-member-24 {
+
+  .candidate-name-gen-ai-24,
+  .name-core-member-24 {
     font-size: 4.125rem;
   }
-  .candidate-appreciation{
+
+  .candidate-appreciation {
     font-size: 1.5rem;
   }
 }
@@ -928,6 +987,7 @@ a {
   position: absolute;
   right: 26%;
 }
+
 .cert-skillboost-qr,
 .cert-verify-qr {
   bottom: 5%;

@@ -6,18 +6,19 @@ import { version } from './package.json'
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 3000,
     headers: {
-      "Strict-Transport-Security": "max-age=86400; includeSubDomains", // Adds HSTS options to your website, with a expiry time of 1 day
-      "X-Content-Type-Options": "nosniff", // Protects from improper scripts runnings
-      "X-XSS-Protection": "1; mode=block", // Gives XSS protection to legacy browsers
+      'Strict-Transport-Security': 'max-age=86400; includeSubDomains', // Adds HSTS options to your website, with a expiry time of 1 day
+      'X-Content-Type-Options': 'nosniff', // Protects from improper scripts runnings
+      'X-XSS-Protection': '1; mode=block' // Gives XSS protection to legacy browsers
     },
     proxy: {
       '/api': {
         target: 'http://localhost:5000',
         changeOrigin: true,
-        secure: false,
-      },
-    },
+        secure: false
+      }
+    }
   },
   build: {
     rollupOptions: {
@@ -27,5 +28,5 @@ export default defineConfig({
         assetFileNames: `[name].${version}.[ext]`
       }
     }
-  },
+  }
 })

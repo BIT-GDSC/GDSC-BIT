@@ -6,11 +6,14 @@ import { useAuthStore } from '../store/useAuthStore'
 import { useAnimStore } from '../store/useAnimStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { toast } from 'sonner'
 
 export const Navbar = () => {
   const [dropdown, setDropdown] = useState(false)
   const { width } = useWindowDimension()
   const { verifyLoading, verifySuccess, user } = useAuthStore()
+  const [timeoutID, setTimeoutId] = useState(null)
+  const [menuAnimation, setMenuAnimation] = useState('')
   const {
     menuPopup,
     mobileMenu,
@@ -25,10 +28,17 @@ export const Navbar = () => {
 
   function handleMenuToggle () {
     setDropdown(!dropdown)
-    if (mobileMenu) {
-      closeMenu()
-      setMobileMenu(false)
+    if (timeoutID) clearTimeout(timeoutID)
+    if (menuAnimation === 'active') {
+      setMenuAnimation('')
+      const id = setTimeout(() => {
+        closeMenu()
+        setMobileMenu(false)
+      }, 400)
+      setTimeoutId(id)
     } else {
+      // clearTimeout(timeoutID)
+      setMenuAnimation('active')
       openMenu()
       setMobileMenu(true)
     }
@@ -44,12 +54,13 @@ export const Navbar = () => {
     }
     setAvatarMenu(!avatarMenu)
   }
-  // console.log(verifySuccess)
+  function handleAuthAction (e) {
+    toast.info('we are working on it.')
+  }
 
   useEffect(() => {
-    if (width <= 640 && menuPopup) document.body.style.overflow = 'hidden'
-    else {
-      document.body.style.overflow = ''
+    if (width > 640) {
+      setMenuAnimation('')
       closeMenu()
       setDropdown(false)
     }
@@ -104,20 +115,12 @@ export const Navbar = () => {
               onClick={() => handleMenuToggle()}
               title='Click to open menu'
             >
-              <div
-                className={`Navbar-menu-bar-container ${
-                  mobileMenu && 'active'
-                }`}
-              >
+              <div className={`Navbar-menu-bar-container ${menuAnimation}`}>
                 <div
-                  className={`Navbar-menu-toggler-top arrow-bar ${
-                    mobileMenu && 'active'
-                  }`}
+                  className={`Navbar-menu-toggler-top arrow-bar ${menuAnimation}`}
                 ></div>
                 <div
-                  className={`Navbar-menu-toggler-bottom ${
-                    mobileMenu && 'active'
-                  } arrow-bar`}
+                  className={`Navbar-menu-toggler-bottom ${menuAnimation} arrow-bar`}
                 ></div>
               </div>
             </button>
@@ -125,27 +128,36 @@ export const Navbar = () => {
         </div>
 
         {/* Experiment with nav */}
-        <ul className='mobile-links-container'>
-          <div className='mobile-view-control'>
-            {navData.map((item, index) => (
-              <li key={index}>
-                <Link to={item.link} className='Navbar-link' key={item.id}>
-                  <span>{item.name}</span>
-                  <div className='Navbar-link-highlight' />
-                </Link>
-              </li>
-            ))}
-          </div>
-
-          <div className='mobile-profile-control'>
-            <span className='mobile-profile-vr'></span>
-            <div>
-              <button>Sign out</button>
-              <span>{'|'}</span>
-              <button>Go to Profile</button>
+        {mobileMenu && (
+          <ul className='mobile-links-container'>
+            <div className='mobile-view-control'>
+              {navData.map((item, index) => (
+                <li key={index}>
+                  <Link to={item.link} className='Navbar-link' key={item.id}>
+                    <span>{item.name}</span>
+                    <div className='Navbar-link-highlight' />
+                  </Link>
+                </li>
+              ))}
             </div>
-          </div>
-        </ul>
+
+            {/* Show it if user is signed in */}
+            {user && (
+              <div className='mobile-profile-control'>
+                <div className='mobile-profile-vr'></div>
+                <div className='mobile-avatar-option'>
+                  <button name='signout' onClick={handleAuthAction}>
+                    Sign out
+                  </button>
+                  <div />
+                  <button name='profile' onClick={handleAuthAction}>
+                    Profile
+                  </button>
+                </div>
+              </div>
+            )}
+          </ul>
+        )}
       </div>
     </div>
   )
