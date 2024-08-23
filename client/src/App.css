@@ -5,7 +5,7 @@
 @font-face {
   font-family: 'Google Sans';
   src: url(/fonts/GoogleSans-Regular.ttf) format('truetype');
-  font-style: normal;    
+  font-style: normal;
   font-weight: 400;
 }
 
@@ -21,9 +21,10 @@
 @font-face {
   font-family: 'Google Sans';
   src: url(/fonts/GoogleSans-Bold.ttf) format('truetype');
-  font-style: normal;    
+  font-style: normal;
   font-weight: 700;
 }
+
 /* Google sans font ends */
 
 
@@ -129,17 +130,36 @@ a {
 /* Experiment with nav */
 .navbar-inner-cont {
   position: relative;
-  height: 72px;
+  /* height: 72px; */
+  height: 80px;
   border-radius: 18px;
   background-color: #fff;
-  border: 1px solid #00000080;
-  overflow: hidden;
+  outline: 1px solid #7f6434;
   box-shadow: 0 0 5px .125px #4b4b4b80;
   transition: all 400ms cubic-bezier(0.86, 0, 0.07, 1);
 }
 
 .navbar-inner-cont.expanded {
   height: 227px;
+}
+
+.Navbar-flex-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  border-radius: inherit;
+  height: 80px;
+  padding: 0 1rem;
+  background-color: #fff;
+}
+
+.Navbar-links {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
 }
 
 .mobile-links-container {
@@ -173,7 +193,7 @@ a {
   height: 75%;
   min-width: 3px;
   border-radius: 1.5px;
-  background-color: #00000040;
+  background-color: #ea4335;
 }
 
 .mobile-avatar-option {
@@ -189,25 +209,48 @@ a {
   word-break: normal;
   word-wrap: break-word;
 }
-.mobile-avatar-option div{
+
+.mobile-avatar-option div {
   width: 1px;
   height: 1rem;
   border-radius: .5px;
   background-color: #00000040;
 }
+
 /* Media query for mobile avatar option */
-@media screen and (max-width: 420px){
-  .mobile-avatar-option{
+@media screen and (max-width: 420px) {
+  .mobile-avatar-option {
     flex-direction: column;
     align-items: center;
   }
-  .mobile-avatar-option div{
+
+  .mobile-avatar-option div {
     width: 75%;
     height: 1px;
   }
 }
 
-.Navbar-links {
+/* Avatar Menu on full screen */
+.avatar-menu {
+  position: absolute;
+  display: flex;
+  gap: .5rem;
+  z-index: 1;
+  right: 0;
+  bottom: 0;
+  padding: 18px 18px 0;
+  border-radius: 0 0 18px 0;
+  box-shadow: 0 0 5px .125px #4b4b4b80;
+  outline: 1px solid #7f6434;
+  background-color: #fff;
+  transition: all 400ms cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.avatar-menu.active {
+  bottom: -25px;
+}
+
+.avatar-menu .Navbar-links {
   width: 80%;
   display: flex;
   justify-content: center;
@@ -233,17 +276,6 @@ a {
 
 .Navbar-link:hover .Navbar-link-highlight {
   display: block;
-}
-
-.Navbar-flex-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-  height: 72px;
-  padding: 0 1rem;
-  background-color: #fff;
 }
 
 .Navbar-menu-toggler {
@@ -298,67 +330,6 @@ a {
   align-items: center;
 }
 
-/* Mobile Menu */
-.mobile-menu-container {
-  height: 100svh;
-  width: 100%;
-  top: 0;
-  position: fixed;
-  transition: 400ms cubic-bezier(0.86, 0, 0.07, 1);
-}
-
-.mobile-menu-container.normal {
-  background-color: transparent;
-}
-
-.mobile-menu-container.active {
-  background-color: #00000026;
-}
-
-.mobile-menu-links {
-  position: absolute;
-  width: 100%;
-  bottom: -335px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 2rem 1rem;
-  background-color: #ffffff;
-  border-radius: 1rem 1rem 0 0;
-  transition: transform 400ms cubic-bezier(0.86, 0, 0.07, 1);
-}
-
-.mobile-menu-links.normal {
-  transform: translateY(335px);
-}
-
-.mobile-menu-links.active {
-  transform: translateY(-335px);
-}
-
-.mobile-menu-link {
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.1rem;
-  padding: 0.25rem 0;
-}
-
-.mobile-menu-link,
-.mobile-menu-close-btn {
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-.mobile-menu-close-btn {
-  margin-top: 0.5rem;
-  padding: 0.5rem 0;
-  width: 100%;
-  color: #ff0000;
-  outline: 1px solid #ff0000;
-  background-color: #ff00001a;
-}
 
 .Navbar-signin-button {
   padding: 0.5rem 1rem;
@@ -644,12 +615,19 @@ a {
   box-shadow: 0 2px 5px 2px #00000040;
 }
 
-.chapter p {
+.chapter {
   font-family: 'Google Sans', 'Open Sans', sans-serif;
   color: #5f6367;
-  font-size: 1.1rem;
+  line-height: 1.25rem;
   white-space: nowrap;
-  padding: 0;
+}
+
+.community-name {
+  font-size: 1rem;
+}
+
+.chapter .chapter-name {
+  font-size: .8rem;
 }
 
 .footer-chapter-name {
@@ -729,6 +707,11 @@ a {
 
   .Navbar-container {
     min-width: 250px;
+  }
+
+  .Navbar-flex-container,
+  .navbar-inner-cont {
+    overflow: hidden;
   }
 
   .Navbar-logo img {
@@ -868,6 +851,10 @@ a {
     padding: 2rem 0 3rem;
   }
 
+
+}
+
+@media screen and (max-width:639px) {
   .chapter {
     display: flex;
     flex-direction: column;
@@ -886,12 +873,12 @@ a {
 /*************************  Certificate Verification Styles  **********************/
 .cert-main-container {
   min-height: 100vh;
-  padding: 100px 25px 0;
 }
 
 .cert-aspect-box {
   position: relative;
-  /* padding-top: 56.25%; */
+  min-height: calc(100vh - 92px);
+  padding: 120px 25px 50px;
 }
 
 .cert-aspect-centering {

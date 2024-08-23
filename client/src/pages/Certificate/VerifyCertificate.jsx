@@ -7,6 +7,7 @@ import GoogleCloud from './Template/GoogleCloud'
 import GenAI24 from './Template/GenAI24'
 import GoogleCloudFacilitator from './Template/GoogleCloudFacilitator'
 import Core24 from './Template/Core24'
+import { Footer } from '../../components'
 
 // Main Component
 const VerifyCertificate = () => {
@@ -16,13 +17,8 @@ const VerifyCertificate = () => {
     if (certificateID) fetchCertData(certificateID)
   }, [certificateID])
   return (
-    // <div
-    //   className='flex items-center justify-center overflow-scroll md:overflow-auto'
-    //   style={{ minHeight: '100svh' }}
-    // >
     <div className='cert-main-container'>
       <div className='cert-aspect-box'>
-        {/* <div className='h-full px-6 pb-12 md:pt-[100px] flex flex-col gap-5 items-center justify-center'> */}
         <div className='cert-aspect-centering'>
           {certLoading ? (
             // Fetching Certificate
@@ -66,6 +62,25 @@ const VerifyCertificate = () => {
               <GoogleCloudFacilitator />
             )
           )}
+        </div>
+      </div>
+      <div className='gdsc-strip-logo'>
+        <div className='px-4 sm:py-[5px] sm:px-[50px] flex flex-col sm:flex-row items-center gap-2'>
+          <img
+            src='/gdsc_original.png'
+            className='md:w-[66.67px] md:h-[32.27px] w-12 h-6'
+            alt='our gdsc logo'
+          />
+          <div className='chapter'>
+            <p className='community-name'>Google Developer Student Clubs</p>
+            <p className='chapter-name'>Bengal Institute of Technology</p>
+          </div>
+        </div>
+        <div className='footer-color-strip'>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </div>
     </div>

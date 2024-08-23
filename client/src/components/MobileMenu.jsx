@@ -1,58 +1,34 @@
 import { Link } from 'react-router-dom'
-import { useAnimStore } from '../store/useAnimStore'
-import { useEffect, useRef, useState } from 'react'
 
-export default function MobileMenu({ menuLinks }) {
-  const { mobileMenu, setMobileMenu, closeMenu } = useAnimStore()
-  const [animClass, setAnimClass] = useState('')
-  const [width, setWidth] = useState(null)
-  const menuRef = useRef(null)
-  const linkRef = useRef(null)
-
-  function handleCloseButton() {
-    setAnimClass('normal')
-    closeMenu()
-    setMobileMenu(false)
-  }
-  useEffect(() => {
-    const updateDimensions = () => {
-      setWidth(window.innerWidth)
-      if (width > 650) {
-        handleCloseButton()
-      }
-    }
-    window.addEventListener('resize', updateDimensions)
-    return () => {
-      window.removeEventListener('resize', updateDimensions)
-    }
-  }, [width])
-
-  useEffect(() => {
-    if (mobileMenu) setAnimClass('active')
-    else setAnimClass('normal')
-  }, [mobileMenu])
-
+export default function MobileMenu ({ user, onAuthClick, navData }) {
   return (
-    <div ref={menuRef} className={`mobile-menu-container ${animClass}`}>
-      <div ref={linkRef} className={`mobile-menu-links ${animClass}`}>
-        {menuLinks.map(item => (
-          <Link
-            to={item.link}
-            className='mobile-menu-link'
-            key={item.id}
-          >
-            <span>{item.name}</span>
-          </Link>
+    <ul className='mobile-links-container'>
+      <div className='mobile-view-control'>
+        {navData.map((item, index) => (
+          <li key={index}>
+            <Link to={item.link} className='Navbar-link' key={item.id}>
+              <span>{item.name}</span>
+              <div className='Navbar-link-highlight' />
+            </Link>
+          </li>
         ))}
-        <button
-          onClick={() => {
-            handleCloseButton()
-          }}
-          className='mobile-menu-close-btn'
-        >
-          Close
-        </button>
       </div>
-    </div>
+
+      {/* Show it if user is signed in */}
+      {user && (
+        <div className='mobile-profile-control'>
+          <div className='mobile-profile-vr'></div>
+          <div className='mobile-avatar-option'>
+            <button name='signout' onClick={onAuthClick}>
+              Sign out
+            </button>
+            <div />
+            <button name='profile' onClick={onAuthClick}>
+              Profile
+            </button>
+          </div>
+        </div>
+      )}
+    </ul>
   )
 }
