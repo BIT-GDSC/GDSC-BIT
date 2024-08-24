@@ -92,7 +92,11 @@ a {
   min-height: 100vh;
   overflow: hidden;
 }
-
+@media screen and (max-width: 249px){
+  .global-container{
+    overflow: scroll;
+  }
+}
 #main-join-btn {
   font-family: 'VT323', monospace;
 }
@@ -259,12 +263,14 @@ a {
   justify-content: center;
   gap: 25px;
 }
-.avatar-menu div{
+
+.avatar-menu div {
   height: 1rem;
   width: 1px;
   border-radius: .5px;
   background-color: #00000040;
 }
+
 .Navbar-link {
   cursor: pointer;
   position: relative;
@@ -372,7 +378,7 @@ a {
 .events-toggler {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   padding: 8px 1rem;
   border-radius: 80px;
   border: 1px solid #00000040;
@@ -383,7 +389,9 @@ a {
   position: absolute;
   top: 8px;
   left: 1rem;
-  width: 110.3px;
+  /* width: 106.1px; */
+  /* width: calc(100% / 3 - 32px); */
+  width: calc((100% - 32px) / 3);
   height: 40px;
   border-radius: 28px;
   border: 1px solid #34a853;
@@ -405,11 +413,40 @@ a {
 }
 
 .events-toggler button:nth-child(2).active~.toggle-activator {
-  transform: translateX(calc(110.3px * 1));
+  transform: translateX(106.1px);
 }
 
 .events-toggler button:nth-child(3).active~.toggle-activator {
-  transform: translateX(calc(110.3px * 2));
+  transform: translateX(calc(106.1px * 2));
+}
+
+/* Media for toggler */
+@media screen and (max-width: 351.31px) {
+  .events-toggler {
+    padding: 8px 5px;
+    width: calc(100% - 6px);
+  }
+  .toggle-activator {
+    left: 5px;
+    width: calc((100% - 22px) / 3);
+  }
+
+  .events-toggler button {
+    padding: 0.5rem 5px;
+  }
+  .events-toggler button p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .events-toggler button:nth-child(2).active~.toggle-activator {
+    transform: translateX(calc((100vw - 10px) / 3));
+  }
+
+  .events-toggler button:nth-child(3).active~.toggle-activator {
+    transform: translateX(calc(((100vw - 10px) / 3) * 2));
+  }
 }
 
 .event-cards-container {

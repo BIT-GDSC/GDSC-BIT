@@ -8,6 +8,7 @@ import VerifyCertificate from './pages/Certificate/VerifyCertificate'
 import Auth from './pages/Auth'
 import Test from './pages/Test'
 import { useLoginStore } from './store/useAuthStore'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 function App () {
   const location = useLocation()
@@ -40,6 +41,7 @@ function App () {
           />
         </Routes>
         <Analytics />
+        <SpeedInsights />
       </Container>
     </>
   )

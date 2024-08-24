@@ -38,6 +38,7 @@ export const Navbar = () => {
     if (name === 'signout') {
       userLogout()
       handleAvatarToggle()
+      handleMenuToggle()
     } else {
       toast.info('we are working on it.')
     }
