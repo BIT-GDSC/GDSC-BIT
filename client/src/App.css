@@ -13,7 +13,7 @@
 @font-face {
   font-family: 'Google Sans';
   src: url(/fonts/GoogleSans-Medium.ttf) format('truetype');
-  font-style: normal;
+  font-style: medium;
   font-weight: 500;
 }
 
@@ -21,7 +21,7 @@
 @font-face {
   font-family: 'Google Sans';
   src: url(/fonts/GoogleSans-Bold.ttf) format('truetype');
-  font-style: normal;
+  font-style: bold;
   font-weight: 700;
 }
 
@@ -92,11 +92,13 @@ a {
   min-height: 100vh;
   overflow: hidden;
 }
-@media screen and (max-width: 249px){
-  .global-container{
+
+@media screen and (max-width: 249px) {
+  .global-container {
     overflow: scroll;
   }
 }
+
 #main-join-btn {
   font-family: 'VT323', monospace;
 }
@@ -383,14 +385,13 @@ a {
   border-radius: 80px;
   border: 1px solid #00000040;
   word-break: keep-all;
+  box-shadow: 0 2px 4px #00000040;
 }
 
 .toggle-activator {
   position: absolute;
   top: 8px;
   left: 1rem;
-  /* width: 106.1px; */
-  /* width: calc(100% / 3 - 32px); */
   width: calc((100% - 32px) / 3);
   height: 40px;
   border-radius: 28px;
@@ -412,6 +413,10 @@ a {
   color: #34a853;
 }
 
+/* .events-toggler button.active p {
+  font-weight: 500;
+} */
+
 .events-toggler button:nth-child(2).active~.toggle-activator {
   transform: translateX(106.1px);
 }
@@ -426,6 +431,7 @@ a {
     padding: 8px 5px;
     width: calc(100% - 6px);
   }
+
   .toggle-activator {
     left: 5px;
     width: calc((100% - 22px) / 3);
@@ -434,6 +440,7 @@ a {
   .events-toggler button {
     padding: 0.5rem 5px;
   }
+
   .events-toggler button p {
     white-space: nowrap;
     overflow: hidden;
