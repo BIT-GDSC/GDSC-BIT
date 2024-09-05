@@ -8,8 +8,9 @@ import VerifyCertificate from './pages/Certificate/VerifyCertificate'
 import Auth from './pages/Auth'
 import Test from './pages/Test'
 import { useLoginStore } from './store/useAuthStore'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
-function App() {
+function App () {
   const location = useLocation()
   const { loadUser } = useLoginStore()
 
@@ -22,29 +23,25 @@ function App() {
       <Container>
         <Routes>
           <Route path='/auth' element={<Auth />} />
-
           <Route path='/test' element={<Test />} />
-
           <Route path='/' element={<Home />} />
-
           <Route
             exact
             path='/events/pokeprompt'
             element={<Redirect route='game' />}
           />
-
           <Route
             exact
             path='/events/latest'
             element={<Redirect route='latest' />}
           />
-
           <Route
             path='/cert/verify/:certificateID'
             element={<VerifyCertificate />}
           />
         </Routes>
         <Analytics />
+        <SpeedInsights />
       </Container>
     </>
   )

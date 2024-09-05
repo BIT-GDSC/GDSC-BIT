@@ -2,67 +2,83 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import useWindowDimension from '../utils/useWindowDimension'
 import { navData } from '../utils/navbar'
-import { useAuthStore } from '../store/useAuthStore'
+import { useAuthStore, useLoginStore } from '../store/useAuthStore'
 import { useAnimStore } from '../store/useAnimStore'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { toast } from 'sonner'
+import MobileMenu from './MobileMenu'
 
 export const Navbar = () => {
-  const [dropdown, setDropdown] = useState(false)
   const { width } = useWindowDimension()
   const { verifyLoading, verifySuccess, user } = useAuthStore()
-  const {
-    menuPopup,
-    mobileMenu,
-    setMobileMenu,
-    openMenu,
-    closeMenu,
-    avatarMenu,
-    setAvatarMenu,
-    openAvatar,
-    closeAvatar
-  } = useAnimStore()
+  const { userLogout } = useLoginStore()
+  const [timeoutID, setTimeoutId] = useState(null)
+  const [menuAnimation, setMenuAnimation] = useState('')
+  const [avatarAnimation, setAvatarAnimation] = useState('')
+  const { mobileMenu, setMobileMenu, avatarMenu, setAvatarMenu } =
+    useAnimStore()
 
   function handleMenuToggle () {
-    setDropdown(!dropdown)
-    if (mobileMenu) {
-      closeMenu()
-      setMobileMenu(false)
+    if (timeoutID) clearTimeout(timeoutID)
+    if (menuAnimation === 'active') {
+      setMenuAnimation('')
+      const id = setTimeout(() => {
+        setMobileMenu(false)
+      }, 400)
+      setTimeoutId(id)
     } else {
-      openMenu()
+      setMenuAnimation('active')
       setMobileMenu(true)
     }
   }
 
-  function handleAvatarToggle () {
-    if (avatarMenu) {
-      closeAvatar()
-      setDropdown(true)
+  function handleAuthAction (e) {
+    const { name } = e.target
+    if (name === 'signout') {
+      userLogout()
+      handleAvatarToggle()
+      handleMenuToggle()
     } else {
-      setDropdown(false)
-      openAvatar()
+      toast.info('we are working on it.')
     }
-    setAvatarMenu(!avatarMenu)
   }
-  // console.log(verifySuccess)
-
-  useEffect(() => {
-    if (width <= 640 && menuPopup) document.body.style.overflow = 'hidden'
-    else {
-      document.body.style.overflow = ''
-      closeMenu()
-      setDropdown(false)
+  function handleAvatarToggle (e) {
+    if (width > 640 && user) {
+      console.log('called avatar menu')
+      if (timeoutID) clearTimeout(timeoutID)
+      if (avatarAnimation === 'active') {
+        setAvatarAnimation('')
+        const id = setTimeout(() => {
+          setAvatarMenu(false)
+        }, 400)
+        setTimeoutId(id)
+      } else {
+        setAvatarMenu(true)
+        const id = setTimeout(() => {
+          setAvatarAnimation('active')
+        }, 1)
+        setTimeoutId(id)
+      }
     }
-  }, [width, menuPopup])
+  }
 
   useEffect(() => {
-    if (avatarMenu) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = ''
-  }, [avatarMenu])
+    if (width > 640) {
+      setMenuAnimation('')
+      setAvatarAnimation('')
+      setMobileMenu(false)
+      setAvatarMenu(false)
+    }
+  }, [width])
 
   return (
     <div className='Navbar-container'>
-      <div className={`navbar-inner-cont ${dropdown ? 'expanded' : ''}`}>
+      <div
+        className={`navbar-inner-cont ${
+          menuAnimation === 'active' ? 'expanded' : ''
+        }`}
+      >
         <div className='Navbar-flex-container'>
           <Link to='/' className='Navbar-logo'>
             <img src='/logo-crop.png' alt='logo' />
@@ -80,15 +96,16 @@ export const Navbar = () => {
               <div className='relative w-[40px] h-[40px] rounded-full  overflow-hidden'>
                 <Skeleton className='absolute -top-1 left-0 right-0 bottom-0 w-full h-full' />
               </div>
-            ) : !verifyLoading && !verifySuccess ? (
+            ) : !user ? (
               <Link to='/auth' className='Navbar-signin-button'>
                 Sign in
               </Link>
             ) : (
-              !verifyLoading &&
-              verifySuccess && (
+              user && (
                 <div
-                  className='w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden cursor-pointer'
+                  className={`w-[40px] h-[40px] rounded-full border border-[#3c82f6] bg-white overflow-hidden ${
+                    !mobileMenu ? 'cursor-pointer' : ''
+                  }`}
                   onClick={() => handleAvatarToggle()}
                 >
                   <img
@@ -99,53 +116,44 @@ export const Navbar = () => {
               )
             )}
             {/* Mobile Menu toggler */}
+
             <button
               className='Navbar-menu-toggler'
               onClick={() => handleMenuToggle()}
               title='Click to open menu'
             >
-              <div
-                className={`Navbar-menu-bar-container ${
-                  mobileMenu && 'active'
-                }`}
-              >
+              <div className={`Navbar-menu-bar-container ${menuAnimation}`}>
                 <div
-                  className={`Navbar-menu-toggler-top arrow-bar ${
-                    mobileMenu && 'active'
-                  }`}
+                  className={`Navbar-menu-toggler-top arrow-bar ${menuAnimation}`}
                 ></div>
                 <div
-                  className={`Navbar-menu-toggler-bottom ${
-                    mobileMenu && 'active'
-                  } arrow-bar`}
+                  className={`Navbar-menu-toggler-bottom ${menuAnimation} arrow-bar`}
                 ></div>
               </div>
             </button>
           </div>
         </div>
+        {/* If there is a user and clicked on profile img */}
+        {avatarMenu && (
+          <div className={`avatar-menu ${avatarAnimation}`}>
+            <button name='signout' onClick={handleAuthAction}>
+              Sign out
+            </button>
+            <div />
+            <button name='profile' onClick={handleAuthAction}>
+              Profile
+            </button>
+          </div>
+        )}
 
         {/* Experiment with nav */}
-        <ul className='mobile-links-container'>
-          <div className='mobile-view-control'>
-            {navData.map((item, index) => (
-              <li key={index}>
-                <Link to={item.link} className='Navbar-link' key={item.id}>
-                  <span>{item.name}</span>
-                  <div className='Navbar-link-highlight' />
-                </Link>
-              </li>
-            ))}
-          </div>
-
-          <div className='mobile-profile-control'>
-            <span className='mobile-profile-vr'></span>
-            <div>
-              <button>Sign out</button>
-              <span>{'|'}</span>
-              <button>Go to Profile</button>
-            </div>
-          </div>
-        </ul>
+        {mobileMenu && (
+          <MobileMenu
+            navData={navData}
+            user={user}
+            onAuthClick={handleAuthAction}
+          />
+        )}
       </div>
     </div>
   )
