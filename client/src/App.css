@@ -385,7 +385,7 @@ a {
   border-radius: 80px;
   border: 1px solid #00000040;
   word-break: keep-all;
-  box-shadow: 0 2px 4px #00000040;
+  box-shadow: 0 0 5px #00000040;
 }
 
 .toggle-activator {
@@ -395,8 +395,10 @@ a {
   width: calc((100% - 32px) / 3);
   height: 40px;
   border-radius: 28px;
-  border: 1px solid #34a853;
-  background-color: #34a85340;
+  /* border: 1px solid #34a853; */
+  border: 1px solid #EA4235;
+  /* background-color: #34a85340; */
+  background-color: #EA423561;
   transition: 400ms;
 }
 
@@ -410,12 +412,9 @@ a {
 }
 
 .events-toggler button.active {
-  color: #34a853;
+  /* color: #34a853; */
+  color: #EA4235;
 }
-
-/* .events-toggler button.active p {
-  font-weight: 500;
-} */
 
 .events-toggler button:nth-child(2).active~.toggle-activator {
   transform: translateX(106.1px);
