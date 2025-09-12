@@ -32,6 +32,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme variables + Neumorphism tuned to palette */
 :root {
   --body-main-bg: #ffbc39;
   --body-main-bg-25: #ffbc3940;
@@ -52,6 +53,15 @@
   --event-card-small-height: 200px;
   --event-card-small-width: 150px;
   --mobile-breakpoint: 640px;
+
+  /* Neumorphism */
+  --neo-bg: #ffffff;
+  --neo-fg: #5f6367;
+  --neo-shadow-light: #2a30386b;
+  --neo-shadow-dark: #d9dee6;
+  --neo-radius: 14px;
+  --neo-gap: 10px;
+  --neo-transition: 180ms cubic-bezier(.2, .8, .2, 1);
 }
 
 * {
@@ -178,9 +188,7 @@ a {
   height: 155px;
 }
 
-.mobile-view-control {
-  /* min-width: 150px; */
-}
+/* .mobile-view-control placeholder removed (empty ruleset) */
 
 .mobile-view-control,
 .mobile-profile-control {
@@ -383,9 +391,10 @@ a {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   padding: 8px 1rem;
   border-radius: 80px;
-  border: 1px solid #00000040;
   word-break: keep-all;
-  box-shadow: 0 0 5px #00000040;
+  border: 1px solid #00000040;
+  box-shadow:
+    10px 10px 22px var(--neo-shadow-light)
 }
 
 .toggle-activator {
@@ -395,10 +404,12 @@ a {
   width: calc((100% - 32px) / 3);
   height: 40px;
   border-radius: 28px;
-  /* border: 1px solid #34a853; */
-  border: 1px solid #EA4235;
-  /* background-color: #34a85340; */
-  background-color: #EA423561;
+  border: 1px solid var(--gogle-red);
+  background-color: var(--gogle-red-fade-50);
+  z-index: 0;
+  box-shadow:
+    inset 6px 6px 12px rgba(0, 0, 0, 0.12),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.6);
   transition: 400ms;
 }
 
@@ -409,11 +420,14 @@ a {
   white-space: nowrap;
   font-weight: bold;
   transition: 400ms;
+  position: relative;
+  z-index: 1;
+  color: var(--neo-fg);
 }
 
 .events-toggler button.active {
   /* color: #34a853; */
-  color: #EA4235;
+  color: var(--gogle-red);
 }
 
 .events-toggler button:nth-child(2).active~.toggle-activator {
@@ -590,6 +604,91 @@ a {
   border: 1px solid #00000040;
   border-radius: 50%;
   box-shadow: 0 2px 5px 0px #00000040;
+}
+
+.neo-btn {
+  -webkit-tap-highlight-color: transparent;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  color: var(--neo-fg);
+  background: var(--neo-bg);
+  border-radius: var(--neo-radius);
+  transition: transform var(--neo-transition), box-shadow var(--neo-transition), color var(--neo-transition);
+  box-shadow:
+    6px 6px 14px rgba(0, 0, 0, 0.12),
+    -6px -6px 14px rgba(255, 255, 255, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+}
+
+.neo-btn:hover {
+  transform: translateY(-1px);
+}
+
+.neo-btn:focus-visible {
+  box-shadow:
+    6px 6px 14px rgba(0, 0, 0, 0.12),
+    -6px -6px 14px rgba(255, 255, 255, 0.8),
+    0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.neo-btn:active,
+.neo-btn.is-active {
+  transform: translateY(0);
+  box-shadow:
+    inset 6px 6px 14px rgba(0, 0, 0, 0.14),
+    inset -6px -6px 14px rgba(255, 255, 255, 0.7);
+}
+
+.neo-segment {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--neo-bg);
+  font-weight: 600;
+  letter-spacing: .2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neo-segment p {
+  margin: 0;
+}
+
+.neo-icon-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    8px 8px 18px rgba(0, 0, 0, 0.12),
+    -8px -8px 18px rgba(255, 255, 255, 0.75);
+}
+
+.neo-icon-btn:active {
+  box-shadow:
+    inset 8px 8px 18px rgba(0, 0, 0, 0.18),
+    inset -8px -8px 18px rgba(255, 255, 255, 0.65);
+}
+
+.neo-icon-btn ion-icon {
+  color: var(--neo-fg);
+  pointer-events: none;
+}
+
+.event-arrow-btn-container {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neo-btn {
+    transition: none;
+  }
 }
 
 /* socials */
